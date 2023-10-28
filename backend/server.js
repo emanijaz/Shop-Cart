@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const path = require('path');
+const dotenv = require('dotenv');
 const cors = require('cors');
 
 
@@ -9,7 +10,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const uri = "mongodb+srv://eman:12345@cluster0.m3rmoqm.mongodb.net/"
+
+dotenv.config({path: "backend/config/config.env"})
+const uri = process.env.ATLAS_URL;
 mongoose.connect(uri, { useNewUrlParser: true });
 const connection = mongoose.connection;
 connection.once('open', () => {
