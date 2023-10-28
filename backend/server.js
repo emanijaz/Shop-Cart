@@ -18,6 +18,11 @@ const connection = mongoose.connection;
 connection.once('open', () => {
     console.log('mongo db connection established successfully!');
 
+
+    const productRoutes = require('./routes/productRoute');
+    app.use('/products', productRoutes);
+
+
     app.use(express.static(path.resolve(__dirname, '../client/build')));
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
