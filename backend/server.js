@@ -12,7 +12,7 @@ app.use(express.json());
 
 
 dotenv.config({path: "backend/config/config.env"})
-const uri = process.env.ATLAS_URL;
+const uri = `${process.env.ATLAS_URL}/store`;
 mongoose.connect(uri, { useNewUrlParser: true });
 const connection = mongoose.connection;
 connection.once('open', () => {
