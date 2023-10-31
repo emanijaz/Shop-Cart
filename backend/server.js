@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
 const cors = require('cors');
-
+const errorMiddleware = require('./middleware/error')
 
 require('dotenv').config();
 const app = express();
@@ -21,6 +21,7 @@ connection.once('open', () => {
 
     const productRoutes = require('./routes/productRoute');
     app.use('/products', productRoutes);
+    app.use(errorMiddleware);
 
 
     app.use(express.static(path.resolve(__dirname, '../client/build')));
