@@ -10,6 +10,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// handling uncaught exception
+process.on("Uncaught Exception", (err)=> {
+    console.log(`Error: ${err}`)
+    console.log("Uncaught exception")
+})
 
 dotenv.config({path: "backend/config/config.env"})
 const uri = `${process.env.ATLAS_URL}`;
