@@ -14,6 +14,7 @@ app.use(express.json());
 process.on("Uncaught Exception", (err)=> {
     console.log(`Error: ${err}`)
     console.log("Uncaught exception")
+    process.exit(1)
 })
 
 dotenv.config({path: "backend/config/config.env"})
