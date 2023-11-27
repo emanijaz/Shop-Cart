@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const cartSchema = mongoose.Schema({
+const OrderSchema = mongoose.Schema({
     products: [
         {
             productId: {
@@ -29,4 +29,4 @@ const cartSchema = mongoose.Schema({
 },{timestamps: true} // used for created At and updated At times in moongose
 )
 
-module.exports = mongoose.model("Cart", cartSchema)
+module.exports = mongoose.model("Order", OrderSchema)
