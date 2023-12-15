@@ -7,11 +7,9 @@
 // import Menu from '@mui/material/Menu';
 // import MenuIcon from '@mui/icons-material/Menu';
 // import Container from '@mui/material/Container';
-// import Avatar from '@mui/material/Avatar';
 // import Button from '@mui/material/Button';
 // import Tooltip from '@mui/material/Tooltip';
 // import MenuItem from '@mui/material/MenuItem';
-// import Simon from '../static/images/Simon.png'
 // import SearchIcon from '@mui/icons-material/Search';
 // import { styled, alpha } from '@mui/material/styles';
 // import InputBase from '@mui/material/InputBase';
@@ -225,10 +223,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import Avatar from '@mui/material/Avatar';
+import Simon from '../static/images/Simon.png'
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -361,7 +361,8 @@ export default function Navbar() {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <Avatar alt="Remy Sharp" src={Simon} />
+
         </IconButton>
         <p>Profile</p>
       </MenuItem>
@@ -423,7 +424,7 @@ export default function Navbar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <Avatar alt="Remy Sharp" src={Simon} />
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
