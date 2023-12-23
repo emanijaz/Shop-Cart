@@ -22,40 +22,40 @@ export default function Homepage() {
             <div className="container py-3">
                 <div className='row'>
                     <div className='col-md-3 mt-5 mb-1'>
-                        <div class="card h-100 text-center" style={{width: "18rem"}}>
-                            <img class="card-img-top mt-5" src={yellow_shirt} alt="Android 1" style={{height: "250px"}}/>
-                            <div class="card-body">
-                                <p class="card-text" style={{fontSize: "20px"}}><i class="fa fa-solid fa-tags me-1"></i>50$</p>
-                                <button type="button" class="btn btn-outline-dark mx-2">Buy</button>
+                        <div className="card h-100 text-center" style={{width: "18rem"}}>
+                            <img className="card-img-top mt-5" src={yellow_shirt} alt="Android 1" style={{height: "250px"}}/>
+                            <div className="card-body">
+                                <p className="card-text" style={{fontSize: "20px"}}><i className="fa fa-solid fa-tags me-1"></i>50$</p>
+                                <button type="button" className="btn btn-outline-dark mx-2">Buy</button>
 
                             </div>
                         </div>
                     </div>
                     <div className='col-md-3 mt-5 mb-1'>
-                        <div class="card h-100 text-center" style={{width: "18rem"}}>
-                            <img class="card-img-top" src={iphone11promax} alt="iphone11 pro" style={{height: "300px"}}/>
-                            <div class="card-body">
-                                <p class="card-text" style={{fontSize: "20px"}}><i class="fa fa-solid fa-tags me-1"></i>50$</p>
-                                <button type="button" class="btn btn-outline-dark mx-2">Buy</button>
+                        <div className="card h-100 text-center" style={{width: "18rem"}}>
+                            <img className="card-img-top" src={iphone11promax} alt="iphone11 pro" style={{height: "300px"}}/>
+                            <div className="card-body">
+                                <p className="card-text" style={{fontSize: "20px"}}><i className="fa fa-solid fa-tags me-1"></i>50$</p>
+                                <button type="button" className="btn btn-outline-dark mx-2">Buy</button>
 
                             </div>
                         </div>
                     </div>
                     <div className='col-md-3 mt-5 mb-1'>
-                        <div class="card  h-100 text-center"  style={{width: "18rem"}}>
-                            <img class="card-img-top mt-5" src={iphone12} alt="Iphone 11 pro" style={{height: "250px"}}/>
-                            <div class="card-body">
-                                <p class="card-text" style={{fontSize: "20px"}}><i class="fa fa-solid fa-tags me-1"></i>50$</p>
-                                <button type="button" class="btn btn-outline-dark mx-2">Buy</button>
+                        <div className="card  h-100 text-center"  style={{width: "18rem"}}>
+                            <img className="card-img-top mt-5" src={iphone12} alt="Iphone 11 pro" style={{height: "250px"}}/>
+                            <div className="card-body">
+                                <p className="card-text" style={{fontSize: "20px"}}><i className="fa fa-solid fa-tags me-1"></i>50$</p>
+                                <button type="button" className="btn btn-outline-dark mx-2">Buy</button>
                             </div>
                         </div>
                     </div>
                     <div className='col-md-3 mt-5 mb-1'>
-                        <div class="card  h-100 text-center"  style={{width: "18rem"}}>
-                            <img class="card-img-top mt-5" src={iphone12mini} alt="Iphone 11 pro" style={{height: "250px"}}/>
-                            <div class="card-body">
-                                <p class="card-text" style={{fontSize: "20px"}}><i class="fa fa-solid fa-tags me-1"></i>50$</p>
-                                <button type="button" class="btn btn-outline-dark mx-2">Buy</button>
+                        <div className="card  h-100 text-center"  style={{width: "18rem"}}>
+                            <img className="card-img-top mt-5" src={iphone12mini} alt="Iphone 11 pro" style={{height: "250px"}}/>
+                            <div className="card-body">
+                                <p className="card-text" style={{fontSize: "20px"}}><i className="fa fa-solid fa-tags me-1"></i>50$</p>
+                                <button type="button" className="btn btn-outline-dark mx-2">Buy</button>
 
                             </div>
                         </div>
@@ -63,29 +63,29 @@ export default function Homepage() {
                 </div>
                 <div className='row'>
                     <div className='col-md-3 mt-5 mb-1'>
-                        <div class="card h-100 text-center" style={{width: "18rem"}}>
-                            <img class="card-img-top mt-5" src={iphone12pro} alt="Android 1" style={{height: "250px"}}/>
-                            <div class="card-body">
-                                <p class="card-text" style={{fontSize: "20px"}}><i class="fa fa-solid fa-tags me-1"></i>50$</p>
-                                <button type="button" class="btn btn-outline-dark mx-2">Buy</button>
+                        <div className="card h-100 text-center" style={{width: "18rem"}}>
+                            <img className="card-img-top mt-5" src={iphone12pro} alt="Android 1" style={{height: "250px"}}/>
+                            <div className="card-body">
+                                <p className="card-text" style={{fontSize: "20px"}}><i className="fa fa-solid fa-tags me-1"></i>50$</p>
+                                <button type="button" className="btn btn-outline-dark mx-2">Buy</button>
                             </div>
                         </div>
                     </div>
                     <div className='col-md-3 mt-5 mb-1'>
-                        <div class="card h-100 text-center" style={{width: "18rem"}}>
-                            <img class="card-img-top mt-5" src={iphone11pro} alt="Android 1" style={{height: "250px"}}/>
-                            <div class="card-body">
-                                <p class="card-text" style={{fontSize: "20px"}}><i class="fa fa-solid fa-tags me-1"></i>50$</p>
-                                <button type="button" class="btn btn-outline-dark mx-2">Buy</button>
+                        <div className="card h-100 text-center" style={{width: "18rem"}}>
+                            <img className="card-img-top mt-5" src={iphone11pro} alt="Android 1" style={{height: "250px"}}/>
+                            <div className="card-body">
+                                <p className="card-text" style={{fontSize: "20px"}}><i className="fa fa-solid fa-tags me-1"></i>50$</p>
+                                <button type="button" className="btn btn-outline-dark mx-2">Buy</button>
                             </div>
                         </div>
                     </div>
                     <div className='col-md-3 mt-5 mb-1'>
-                        <div class="card h-100 text-center" style={{width: "18rem"}}>
-                            <img class="card-img-top mt-5" src={iphoneSE} alt="Android 1" style={{height: "250px"}}/>
-                            <div class="card-body">
-                                <p class="card-text" style={{fontSize: "20px"}}><i class="fa fa-solid fa-tags me-1"></i>50$</p>
-                                <button type="button" class="btn btn-outline-dark mx-2">Buy</button>
+                        <div className="card h-100 text-center" style={{width: "18rem"}}>
+                            <img className="card-img-top mt-5" src={iphoneSE} alt="Android 1" style={{height: "250px"}}/>
+                            <div className="card-body">
+                                <p className="card-text" style={{fontSize: "20px"}}><i className="fa fa-solid fa-tags me-1"></i>50$</p>
+                                <button type="button" className="btn btn-outline-dark mx-2">Buy</button>
                             </div>
                         </div>
                     </div>
