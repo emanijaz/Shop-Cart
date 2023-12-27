@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="bg-body-tertiary text-center">
       <hr/>
-      <div class="container p-4">
+      <div className="container p-4">
         <section className="mb-4 ">
           <a
             data-mdb-ripple-init
@@ -12,7 +12,7 @@ export default function Footer() {
             href="#!"
             role="button"
           >
-            <i class="fa fa-brands fa-facebook"></i>
+            <i className="fa fa-brands fa-facebook"></i>
           </a>
 
           <a
@@ -21,7 +21,7 @@ export default function Footer() {
             href="#!"
             role="button"
           >
-            <i class="fa fa-brands fa-instagram"></i>
+            <i className="fa fa-brands fa-instagram"></i>
           </a>
 
           <a
@@ -30,7 +30,7 @@ export default function Footer() {
             href="#!"
             role="button"
           >
-            <i class="fa fa-brands fa-twitter"></i>
+            <i className="fa fa-brands fa-twitter"></i>
           </a>
 
           <a
@@ -39,7 +39,7 @@ export default function Footer() {
             href="#!"
             role="button"
           >
-            <i class="fa fa-brands fa-google"></i>
+            <i className="fa fa-brands fa-google"></i>
           </a>
 
           <a
@@ -48,7 +48,7 @@ export default function Footer() {
             href="#!"
             role="button"
           >
-            <i class="fa fa-brands fa-linkedin"></i>
+            <i className="fa fa-brands fa-linkedin"></i>
           </a>
           <a
             data-mdb-ripple-init
@@ -56,7 +56,7 @@ export default function Footer() {
             href="#!"
             role="button"
           >
-            <i class="fa fa-brands fa-github"></i>
+            <i className="fa fa-brands fa-github"></i>
           </a>
         </section>
 
@@ -79,7 +79,7 @@ export default function Footer() {
                 </div>
               </div>
               <div className="col-auto">
-                <button type="button" class="btn btn-outline-dark mb-4">Subscribe</button>
+                <button type="button" className="btn btn-outline-dark mb-4">Subscribe</button>
               </div>
             </div>
           </form>
@@ -105,18 +105,18 @@ export default function Footer() {
               <ul className="list-unstyled mb-0">
                 <li>
                   <a className="text-body" href="#!">
-                  <i class="fa fa-solid fa-house-user mx-2"></i>Home
+                  <i className="fa fa-solid fa-house-user mx-2"></i>Home
                   </a>
                 </li>
                 <li>
                   <a className="text-body" href="#!">
-                  <i class="fa fa-solid fa-info mx-2"></i>About
+                  <i className="fa fa-solid fa-info mx-2"></i>About
                   </a>
                 </li>
                 
                 <li>
                   <a className="text-body" href="#!">
-                  <i class="fa fa-brands fa-envira mx-2"></i> Gallery
+                  <i className="fa fa-brands fa-envira mx-2"></i> Gallery
                   </a>
                 </li>
               </ul>
@@ -127,17 +127,17 @@ export default function Footer() {
               <ul className="list-unstyled mb-0">
                 <li>
                   <a className="text-body" href="#!">
-                  <i class="fa fa-solid fa-phone mx-2"></i>Phone
+                  <i className="fa fa-solid fa-phone mx-2"></i>Phone
                   </a>
                 </li>
                 <li>
                   <a className="text-body" href="#!">
-                  <i class="fa fa-solid fa-address-book mx-2"></i>Address
+                  <i className="fa fa-solid fa-address-book mx-2"></i>Address
                   </a>
                 </li>
                 <li>
                   <a className="text-body" href="#!">
-                  <i class="fa fa-solid fa-envelope mx-2"></i>Email
+                  <i className="fa fa-solid fa-envelope mx-2"></i>Email
                   </a>
                 </li>
                 
