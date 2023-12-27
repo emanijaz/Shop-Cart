@@ -2,6 +2,7 @@ import React from 'react'
 import yellow_shirt from './assets/yellow_shirt.jpg'
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
+import Avatar from 'react-avatar';
 
 
 export default function ProductDetails() {
@@ -81,9 +82,8 @@ export default function ProductDetails() {
                         <div class="card mt-3 mb-1 border border-bottom">
                             <div class="card-body">
                                 <div className='row'>
-                                    <div className='col-md-2'>
-                                    <img class="avatar avatar-128 bg-light rounded-circle text-white p-2"
-                                    src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg"/>
+                                    <div className='col-md-2 d-md-flex justify-content-center mt-md-4'>
+                                    <Avatar src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" size="40" round={true} />
                                     </div>
                                     <div className='col-md-8'>
                                     <div className='row'>
@@ -107,51 +107,75 @@ export default function ProductDetails() {
                         <div class="card mt-3 mb-1 border border-bottom">
                             <div class="card-body">
                                 <div className='row'>
-                                    <div className='col-md-8'>
-                                        <h5 class="card-title">Review Title</h5>
+                                    <div className='col-md-2 d-md-flex justify-content-center mt-md-4'>
+                                    <Avatar src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" size="40" round={true} />
                                     </div>
-                                    <div className='col-md-4 mb-3'>
-                                    <p class="card-text">
-                                        <Rating name="read-only" value="2" size="small" readOnly />
-                                    </p>
+                                    <div className='col-md-8'>
+                                    <div className='row'>
+                                    
+                                        <div className='col-md-8'>
+                                            <h5 class="card-title">Review Title</h5>
+                                        </div>
+                                        <div className='col-md-4 mb-3'>
+                                            <p class="card-text">
+                                                <Rating name="read-only" value="2" size="small" readOnly />
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
+                                    standard dummy text ever since the 1500s, </p>
                                     </div>
                                 </div>
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
-                                standard dummy text ever since the 1500s, </p>
                             </div>
                         </div>
 
                         <div class="card mt-3 mb-1 border border-bottom">
                             <div class="card-body">
                                 <div className='row'>
-                                    <div className='col-md-8'>
-                                        <h5 class="card-title">Review Title</h5>
+                                    <div className='col-md-2 d-md-flex justify-content-center mt-md-4'>
+                                    <Avatar src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" size="40" round={true} />
                                     </div>
-                                    <div className='col-md-4 mb-3'>
-                                    <p class="card-text">
-                                        <Rating name="read-only" value="2" size="small" readOnly />
-                                    </p>
+                                    <div className='col-md-8'>
+                                    <div className='row'>
+                                    
+                                        <div className='col-md-8'>
+                                            <h5 class="card-title">Review Title</h5>
+                                        </div>
+                                        <div className='col-md-4 mb-3'>
+                                            <p class="card-text">
+                                                <Rating name="read-only" value="2" size="small" readOnly />
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
+                                    standard dummy text ever since the 1500s, </p>
                                     </div>
                                 </div>
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
-                                standard dummy text ever since the 1500s, </p>
                             </div>
                         </div>
 
                         <div class="card mt-3 mb-1 border border-bottom">
                             <div class="card-body">
                                 <div className='row'>
-                                    <div className='col-md-8'>
-                                        <h5 class="card-title">Review Title</h5>
+                                    <div className='col-md-2 d-md-flex justify-content-center mt-md-4'>
+                                    <Avatar src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" size="40" round={true} />
                                     </div>
-                                    <div className='col-md-4 mb-3'>
-                                    <p class="card-text">
-                                        <Rating name="read-only" value="2" size="small" readOnly />
-                                    </p>
+                                    <div className='col-md-8'>
+                                    <div className='row'>
+                                    
+                                        <div className='col-md-8'>
+                                            <h5 class="card-title">Review Title</h5>
+                                        </div>
+                                        <div className='col-md-4 mb-3'>
+                                            <p class="card-text">
+                                                <Rating name="read-only" value="2" size="small" readOnly />
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
+                                    standard dummy text ever since the 1500s, </p>
                                     </div>
                                 </div>
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
-                                standard dummy text ever since the 1500s, </p>
                             </div>
                         </div>
                     </div>
