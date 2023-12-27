@@ -67,7 +67,9 @@ export default function ProductDetails() {
                                                 }}
                                             />
                                         </div>
-                                        <button type="submit" className="btn btn-sm btn-outline-dark mx-2 ">Publish Review</button>
+                                        <div>
+                                            <button type="submit" className="btn btn-sm btn-outline-dark mt-2">Publish Review</button>
+                                        </div>
 
                                     </form>
                                     </div>
