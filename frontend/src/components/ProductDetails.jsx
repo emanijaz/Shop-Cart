@@ -3,12 +3,15 @@ import yellow_shirt from './assets/yellow_shirt.jpg'
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import Avatar from 'react-avatar';
+import Navbar from './Navbar';
 
 
 export default function ProductDetails() {
     const [value, setValue] = React.useState(2);
     return (
-    <div className="container py-3">
+    <>
+        <Navbar />
+        <div className="container py-3">
                 <div className='row'>
                     <div className='col-md-6 mt-5 mb-1'>
                         <img src={yellow_shirt} alt="yellow shirt" style={{height: "500px", width: "500px"}} />
@@ -182,6 +185,7 @@ export default function ProductDetails() {
                         </div>
                     </div>
                 </div>
-    </div>
+        </div>
+    </>
     )
 }
