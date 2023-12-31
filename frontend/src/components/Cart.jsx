@@ -89,14 +89,10 @@ export default function Cart() {
                     </div>
                 </div>
                 <div className='card-body row' style={{fontSize: "15px"}}>
-                    <div className='col-md-8'>
+                    <div className='col-md-12'>
                         <div class="card-text">
-                            {/* <button type="button" className="btn btn-sm btn-outline-dark block">Checkout</button> */}
-                            <button type="button" class="btn btn-dark btn-md btn-block">Checkout</button>
+                            <button type="button" class="btn btn-dark">Checkout</button>
                         </div>
-                    </div>
-                    <div className='col-md-4'>
-                        <div class="card-text"></div>
                     </div>
                 </div>
             </div>
