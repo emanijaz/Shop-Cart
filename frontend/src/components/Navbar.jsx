@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 export default function Navbar() {
   return(
     <nav className="navbar navbar-expand-lg bg-body-tertiary shadow-sm py-3">
@@ -28,7 +29,11 @@ export default function Navbar() {
           </form> */}
           <button type="button" className="btn btn-outline-dark mx-2"><i className="fa fa-sign-in me-1" aria-hidden="true"></i>Login</button>
           <button type="button" className="btn btn-outline-dark me-2"><i className="fa fa-user-plus me-1" aria-hidden="true"></i>Register</button>
-          <button type="button" className="btn btn-outline-dark me-2"><i className="fa fa-shopping-cart me-1" aria-hidden="true"></i>Cart(2)</button>
+          <button type="button" className="btn btn-outline-dark me-2">
+            <Link to="/cart">
+            <i className="fa fa-shopping-cart me-1" aria-hidden="true"></i>Cart(2)
+            </Link>
+          </button>
 
         </div>
       </div>
