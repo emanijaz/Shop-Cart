@@ -3,7 +3,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import ProductDetails from "./components/ProductDetails";
+
+import SignUp from "./components/SignUp";
 import Cart from "./components/Cart";
+
 
 function App() {
   return (
@@ -13,7 +16,11 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />}/>
             <Route path="/product/:id" element={<ProductDetails />}/>
+
+            <Route path="/register" element={<SignUp />}/>
+
             <Route path="/cart/" element={<Cart />}/>
+
 
 
           </Routes>
