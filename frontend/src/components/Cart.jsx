@@ -1,6 +1,6 @@
 import React from 'react'
 import Navbar from './Navbar';
-import yellow_shirt from './assets/yellow_shirt.jpg'
+
 
 
 export default function Cart() {
@@ -20,7 +20,7 @@ export default function Cart() {
                 <tbody>
                     <tr>
                         <th scope="row">
-                            <img src={yellow_shirt} alt="yellow shirt" style={{height: "250px", width: "250px"}} />
+                            <img src="/assets/yellow_shirt.jpg" alt="yellow shirt" style={{height: "250px", width: "250px"}} />
 
                         </th>
                         <td>50$</td>
@@ -45,7 +45,7 @@ export default function Cart() {
                     </tr>
                     <tr>
                     <th scope="row">
-                            <img src={yellow_shirt} alt="yellow shirt" style={{height: "250px", width: "250px"}} />
+                            <img src="/assets/yellow_shirt.jpg" alt="yellow shirt" style={{height: "250px", width: "250px"}} />
 
                         </th>
                         <td>50$</td>
