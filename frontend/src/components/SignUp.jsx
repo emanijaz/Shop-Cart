@@ -1,6 +1,6 @@
 import React from 'react'
 import {useState} from  'react'
-import logo from './assets/cart1.jpg'
+
 const gradientStyle = {
     background: '#fccb90',
 
@@ -31,7 +31,7 @@ export default function SignUp() {
                 <div className="card-body p-md-5 mx-md-4">
 
                 <div className="text-center">
-                <img src={logo} style={{width: "185px"}} alt="abc"/>
+                <img src="/assets/cart1.jpg" style={{width: "185px"}} alt="abc"/>
                 <h4 className="mt-1 mb-5 pb-1">We are The ShopCart Team</h4>
                 </div>
 

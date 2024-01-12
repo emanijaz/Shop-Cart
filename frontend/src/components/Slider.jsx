@@ -1,21 +1,26 @@
 import React from 'react'
-import women_banner from './assets/banner_women.png'
-import kids_banner from './assets/banner_kids.png'
-import men_banner from './assets/banner_mens.png'
+
 
 export default function Slider() {
+
+  const imageStyle = {
+    height: "600px", // Set the desired height
+    width: "100%",   // Set the width to 100% for responsiveness
+    objectFit: "cover", // Maintain aspect ratio and cover the entire container
+  };
+
   return (
     <div>
      <div id="carouselExampleSlidesOnly" className="carousel slide" data-ride="carousel">
         <div className="carousel-inner">
         <div className="carousel-item active">
-            <img className="d-block w-100" src={women_banner} alt="First slide"/>
+            <img className="d-block w-100" src="/assets/cover1.jpg" alt="First slide" style={imageStyle} />
         </div>
         <div className="carousel-item">
-            <img className="d-block w-100" src={kids_banner} alt="Second slide"/>
+            <img className="d-block w-100" src="/assets/banner_kids.png" alt="Second slide"/>
         </div>
         <div className="carousel-item">
-            <img className="d-block w-100" src={men_banner} alt="Third slide"/>
+            <img className="d-block w-100" src="/assets/banner_mens.png" alt="Third slide"/>
         </div>
         </div>
      </div>
