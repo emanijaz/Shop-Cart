@@ -1,31 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import Avatar from 'react-avatar';
 import Navbar from './Navbar';
-
+import { useParams } from 'react-router-dom';
 
 export default function ProductDetails() {
-    const [value, setValue] = React.useState(2);
+    const [value, setValue] = useState(2);
+    const { id } = useParams();
+    const [product, setProduct] = useState();
+    useEffect(()=> {
+
+        const getProductDetails = async() => {
+            try{
+                const response = await fetch(`http://localhost:5000/products/${id}`);
+                const data = await response.json();
+                setProduct(data.product);
+            }
+            catch(error){
+                console.error('Error fetching products:', error);
+            }
+        }
+        getProductDetails();
+    }, [id])
     return (
     <>
         <Navbar />
-        <div className="container py-3">
+        {product && 
+            <div className="container py-3">
                 <div className='row'>
                     <div className='col-md-6 mt-5 mb-1'>
-                        <img src="/assets/yellow_shirt.jpg" alt="yellow shirt" style={{height: "500px", width: "500px"}} />
+                        <img src={`/assets/${product.images[0].url}`} alt="" style={{height: "500px", width: "500px"}} />
                     </div>
                     <div className='col-md-6 mt-5 mb-1'>
-                        <h3>Yellow Shirt</h3><hr/>
-                        <p style={{marginTop: "5%"}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
-                        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                        It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
-                        It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+                        <h3>{product.name}</h3><hr/>
+                        <p style={{marginTop: "5%"}}>{product.description}</p>
 
-                        <p className="card-text display-6 fw-bold" style={{fontSize: "20px"}}>50$</p>
-
+                        <p className="card-text display-6 fw-bold" style={{fontSize: "20px"}}>{product.price}$</p>
                         <p style={{marginTop: "5%"}}><b>Quantity</b></p>
-                        <input type="number" id="quantity" name="quantity" min="1" max="100" />
+                        <input type="number" id="quantity" name="quantity" min="1" max={product.stock} />
                         <button type="button" className="btn btn-sm btn-outline-dark mx-2">Add to Cart</button>
 
                     </div>
@@ -33,48 +46,48 @@ export default function ProductDetails() {
                 <div class="row">
                     <div class="col-md-6">
                         <div className='row'>
+                            {product.numOfReviews > 0 ? 
                             <div class="card mt-3 mb-1 border border-bottom" style={{height: "150px", width: "500px"}}>
                                 <div class="card-body">
                                     <h5 class="card-title">Rating</h5>
                                     <p class="card-text">
-                                    <Typography component="legend">Based on 3 reviews</Typography>
-                                    <Rating name="read-only" value="2" readOnly />
-                                    
+                                        <Typography component="legend">Based on {product.numOfReviews} reviews</Typography>
+                                        <Rating name="read-only" value={product.numOfReviews} readOnly />
                                     </p>
-                                    
                                 </div>
                             </div>
+                            : "No Reviews"
+                            }
                         </div>
                         <div className='row'>
                             <div class="card mt-3 mb-1 border border-bottom" style={{height: "350px", width: "500px"}}>
                                 <div class="card-body">
                                 <h5 class="card-title">Add Review</h5>
                                     <p class="card-text">
-                                    <div className='mt-3'>
-                                    <form >
-                                        <div className="form-group my-3">
-                                            <label className='mb-1' for="title">Title</label>
-                                            <input type="text" class="form-control" id="title"  placeholder="Enter title"/>
+                                        <div className='mt-3'>
+                                            <form >
+                                                <div className="form-group my-3">
+                                                    <label className='mb-1' for="title">Title</label>
+                                                    <input type="text" class="form-control" id="title"  placeholder="Enter title"/>
+                                                </div>
+                                                <div className="form-group my-3">
+                                                    <label for="comment">Review</label>
+                                                    <textarea type="text" class="form-control" id="comment" placeholder="Write Review"/>
+                                                </div>
+                                                <div className="form-group">
+                                                        <Rating size='small'
+                                                        name="simple-controlled"
+                                                        value={value}
+                                                        onChange={(event, newValue) => {
+                                                        setValue(newValue);
+                                                        }}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <button type="submit" className="btn btn-sm btn-outline-dark mt-2">Publish Review</button>
+                                                </div>
+                                            </form>
                                         </div>
-                                        <div className="form-group my-3">
-                                            <label for="comment">Review</label>
-                                            <textarea type="text" class="form-control" id="comment" placeholder="Write Review"/>
-                                        </div>
-                                        <div className="form-group">
-                                                <Rating size='small'
-                                                name="simple-controlled"
-                                                value={value}
-                                                onChange={(event, newValue) => {
-                                                setValue(newValue);
-                                                }}
-                                            />
-                                        </div>
-                                        <div>
-                                            <button type="submit" className="btn btn-sm btn-outline-dark mt-2">Publish Review</button>
-                                        </div>
-
-                                    </form>
-                                    </div>
                                     
                                     </p>
                                     
@@ -83,108 +96,37 @@ export default function ProductDetails() {
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="card mt-3 mb-1 border border-bottom">
-                            <div class="card-body">
-                                <div className='row'>
-                                    <div className='col-md-2 d-md-flex justify-content-center mt-md-4'>
-                                    <Avatar src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" size="40" round={true} />
-                                    </div>
-                                    <div className='col-md-8'>
+                    {
+                        product.reviews.map((review)=>{
+                            return (
+                            <div class="card mt-3 mb-1 border border-bottom">
+                                <div class="card-body">
                                     <div className='row'>
-                                    
+                                        <div className='col-md-2 d-md-flex justify-content-center mt-md-4'>
+                                            <Avatar src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" size="40" round={true} />
+                                        </div>
                                         <div className='col-md-8'>
-                                            <h5 class="card-title">Review Title</h5>
+                                        <div className='row'>
+                                            <div className='col-md-8'>
+                                                <h5 class="card-title">{review.title}</h5>
+                                            </div>
+                                            <div className='col-md-4 mb-3'>
+                                                <p class="card-text">
+                                                    <Rating name="read-only" value={review.rating} size="small" readOnly />
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div className='col-md-4 mb-3'>
-                                            <p class="card-text">
-                                                <Rating name="read-only" value="2" size="small" readOnly />
-                                            </p>
+                                        <p>{review.comment}</p>
                                         </div>
-                                    </div>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
-                                    standard dummy text ever since the 1500s, </p>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="card mt-3 mb-1 border border-bottom">
-                            <div class="card-body">
-                                <div className='row'>
-                                    <div className='col-md-2 d-md-flex justify-content-center mt-md-4'>
-                                    <Avatar src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" size="40" round={true} />
-                                    </div>
-                                    <div className='col-md-8'>
-                                    <div className='row'>
-                                    
-                                        <div className='col-md-8'>
-                                            <h5 class="card-title">Review Title</h5>
-                                        </div>
-                                        <div className='col-md-4 mb-3'>
-                                            <p class="card-text">
-                                                <Rating name="read-only" value="2" size="small" readOnly />
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
-                                    standard dummy text ever since the 1500s, </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card mt-3 mb-1 border border-bottom">
-                            <div class="card-body">
-                                <div className='row'>
-                                    <div className='col-md-2 d-md-flex justify-content-center mt-md-4'>
-                                    <Avatar src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" size="40" round={true} />
-                                    </div>
-                                    <div className='col-md-8'>
-                                    <div className='row'>
-                                    
-                                        <div className='col-md-8'>
-                                            <h5 class="card-title">Review Title</h5>
-                                        </div>
-                                        <div className='col-md-4 mb-3'>
-                                            <p class="card-text">
-                                                <Rating name="read-only" value="2" size="small" readOnly />
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
-                                    standard dummy text ever since the 1500s, </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card mt-3 mb-1 border border-bottom">
-                            <div class="card-body">
-                                <div className='row'>
-                                    <div className='col-md-2 d-md-flex justify-content-center mt-md-4'>
-                                    <Avatar src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" size="40" round={true} />
-                                    </div>
-                                    <div className='col-md-8'>
-                                    <div className='row'>
-                                    
-                                        <div className='col-md-8'>
-                                            <h5 class="card-title">Review Title</h5>
-                                        </div>
-                                        <div className='col-md-4 mb-3'>
-                                            <p class="card-text">
-                                                <Rating name="read-only" value="2" size="small" readOnly />
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
-                                    standard dummy text ever since the 1500s, </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            </div>)
+                        })
+                    }
                     </div>
                 </div>
-        </div>
+            </div>
+        }
     </>
     )
 }
