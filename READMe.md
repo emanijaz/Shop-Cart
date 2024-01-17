@@ -2,4 +2,4 @@ its an ecommerce store MERN project that allow users to login/ register, view pr
 Further it allows admin to add, delete and edit products and view all purchases.
 
 Techonologies used:
-Bootstrap, react, express, nodejs, mongodb, redux
+Bootstrap, react, express, nodejs, mongodb, redux, stripe
