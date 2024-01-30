@@ -19,7 +19,45 @@ const gradientForm = {
 export default function SignUp() {
 
     let [isLogin, setIsLogin] = useState(true);
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+      });
+    
+    const { email, password } = formData;
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+          const response = await fetch('http://localhost:5000/users/register/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          });
+          console.log(response)
+          // if (!response.ok) {
+          //   throw new Error('Failed to save data to database');
+          // }
+    
+          console.log('Data saved successfully');
+          // Optionally, reset form fields after successful submission
+          setFormData({
+            email: '',
+            password: ''
+          });
+        } catch (error) {
+          console.error('Error:', error.message);
+        }
+      };
 
+      const handleChange = (event) => {
+        console.log("form data", formData)
+        setFormData({
+          ...formData,
+          [event.target.name]: event.target.value
+        });
+      };
   return (
     <div><section className="h-100" style={gradientForm}>
     <div className="container py-5 h-100">
@@ -35,30 +73,18 @@ export default function SignUp() {
                 <h4 className="mt-1 mb-5 pb-1">We are The ShopCart Team</h4>
                 </div>
 
-                <form>
+                <form onSubmit={handleSubmit}>
                         {
                             isLogin ?  <p>Please login to your account</p> :  <p>Create Account</p>
                         }
                         <div className="form-outline mb-4">
-                        <input type="email" id="form2Example11" className="form-control"
-                            placeholder="Email address" />
+                        <input type="email" id="form2Example11" className="form-control" name="email"
+                            placeholder="Email address" onChange={handleChange} value={email}/>
                         </div>
     
                         <div className="form-outline mb-4">
-                            <input type="password" id="password" className="form-control" placeholder="Password" />
+                            <input type="password" id="password" className="form-control" name="password" placeholder="Password" onChange={handleChange} value={password} />
                         </div>
-                        {
-                            !isLogin &&
-                            <div className="form-outline mb-4">
-                                <input type="text" id="firstName" className="form-control" placeholder="First Name" />
-                            </div>
-                        }
-                        {
-                            !isLogin &&
-                            <div className="form-outline mb-4">
-                                <input type="text" id="lastName" className="form-control" placeholder="Last Name" />
-                            </div>
-                        }
                         {
                             isLogin && 
                             <div className="pt-1 mb-3 pb-1">
@@ -68,7 +94,7 @@ export default function SignUp() {
                         {
                             !isLogin && 
                             <div className="pt-1 mb-3 pb-1">
-                                <button type="button" className="btn btn-dark btn-block mx-2">Create Account</button>
+                                <button type="button" className="btn btn-dark btn-block mx-2" onClick={handleSubmit}>Create Account</button>
                             </div>
                         }
                         {
@@ -96,9 +122,9 @@ export default function SignUp() {
                         
 
                     
-                        <div class="row">
-                                <div class="col-md-12">
-                                    <button type="button" class="btn btn-md btn-google btn-outline-dark">
+                        <div className="row">
+                                <div className="col-md-12">
+                                    <button type="button" className="btn btn-md btn-google btn-outline-dark">
                                         <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="sign up with google"/> Signup with Google
                                     </button>
 
