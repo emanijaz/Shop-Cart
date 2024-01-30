@@ -11,16 +11,15 @@ const secretKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkw
 // Registration endpoint
 exports.signup = catchAsyncError(async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    
-    console.log(email, password)
+    const { email, password, username } = req.body;
+  
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(hashedPassword)
-    const user = new User({ email, password: hashedPassword });
+    const user = new User({ email: email, password: hashedPassword, username: username });
     await user.save();
     res.status(201).json({ message: 'Registration successful' });
   } catch (error) {
-    return next(new ErrorHandler(500, 'Registration failed'));
+    console.log(error)
+    return next(new ErrorHandler(500, `${error}. Registration failed`));
   }
 });
 

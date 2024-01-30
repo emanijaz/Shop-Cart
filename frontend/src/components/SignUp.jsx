@@ -21,10 +21,11 @@ export default function SignUp() {
     let [isLogin, setIsLogin] = useState(true);
     const [formData, setFormData] = useState({
         email: '',
-        password: ''
+        password: '',
+        username: '',
       });
     
-    const { email, password } = formData;
+    const { email, password, username } = formData;
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -44,7 +45,8 @@ export default function SignUp() {
           // Optionally, reset form fields after successful submission
           setFormData({
             email: '',
-            password: ''
+            password: '',
+            username: '',
           });
         } catch (error) {
           console.error('Error:', error.message);
@@ -85,15 +87,19 @@ export default function SignUp() {
                         <div className="form-outline mb-4">
                             <input type="password" id="password" className="form-control" name="password" placeholder="Password" onChange={handleChange} value={password} />
                         </div>
+                        <div>
+                            <input type="text" id="form2Example11" className="form-control" name="username"
+                            placeholder="Username" onChange={handleChange} value={username}/>
+                        </div>
                         {
                             isLogin && 
-                            <div className="pt-1 mb-3 pb-1">
+                            <div className="pt-1 mb-3 pb-1 mt-3">
                                 <button type="button" className="btn btn-dark btn-block mx-2">Login</button>
                             </div>
                         }
                         {
                             !isLogin && 
-                            <div className="pt-1 mb-3 pb-1">
+                            <div className="pt-1 mb-3 pb-1 mt-3">
                                 <button type="button" className="btn btn-dark btn-block mx-2" onClick={handleSubmit}>Create Account</button>
                             </div>
                         }
