@@ -1,3 +1,4 @@
+import { compareSync } from 'bcrypt';
 import React from 'react'
 import {useState} from  'react'
 
@@ -19,6 +20,7 @@ const gradientForm = {
 export default function SignUp() {
 
     let [isLogin, setIsLogin] = useState(true);
+    const [alertMessage, setAlertMessage] = useState('');
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -27,6 +29,8 @@ export default function SignUp() {
     
     const { email, password, username } = formData;
     const handleSubmit = async (event) => {
+      console.log("in submit")
+      if(!isLogin){
         event.preventDefault();
         try {
           const response = await fetch('http://localhost:5000/users/register/', {
@@ -36,32 +40,69 @@ export default function SignUp() {
             },
             body: JSON.stringify(formData)
           });
-          console.log(response)
-          // if (!response.ok) {
-          //   throw new Error('Failed to save data to database');
-          // }
-    
-          console.log('Data saved successfully');
-          // Optionally, reset form fields after successful submission
-          setFormData({
-            email: '',
-            password: '',
-            username: '',
-          });
+          
+          if(response.status == 201){
+            setAlertMessage('Registration successful');
+          }
+          else{
+            setAlertMessage('Registration Unsuccessful');
+          }
+          
         } catch (error) {
+          setAlertMessage('Registration Unsuccessful');
           console.error('Error:', error.message);
+        } finally {
+          // Clear alert message after 2 seconds
+          setTimeout(() => {
+            setAlertMessage('');
+          }, 2000);
         }
-      };
+      }
+      else{  // login
+        console.log("in login")
+        event.preventDefault();
+        try {
+          const response = await fetch('http://localhost:5000/users/login/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          });
+          
+          if(response.status == 200){
+            setAlertMessage('Login successful');
+          }
+          else{
+            setAlertMessage('Login Unsuccessful');
+          }
+          
+        } catch (error) {
+          setAlertMessage('Login Unsuccessful');
+          console.error('Error:', error.message);
+        } finally {
+          // Clear alert message after 2 seconds
+          setTimeout(() => {
+            setAlertMessage('');
+          }, 2000);
+        }
+      }
+    };
 
-      const handleChange = (event) => {
-        console.log("form data", formData)
-        setFormData({
-          ...formData,
-          [event.target.name]: event.target.value
-        });
-      };
+    const handleChange = (event) => {
+      setFormData({
+        ...formData,
+        [event.target.name]: event.target.value
+      });
+    };
   return (
-    <div><section className="h-100" style={gradientForm}>
+    <div>
+    <section className="h-100" style={gradientForm}>
+    {alertMessage && (
+        <div className="alert alert-success" role="alert">
+          {alertMessage}
+        </div>
+    )}
     <div className="container py-5 h-100">
       <div className="row d-flex justify-content-center align-items-center h-100">
         <div className="col-xl-10">
