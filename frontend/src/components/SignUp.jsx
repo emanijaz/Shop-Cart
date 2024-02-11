@@ -1,6 +1,6 @@
-import { compareSync } from 'bcrypt';
 import React from 'react'
 import {useState} from  'react'
+import { useNavigate } from 'react-router-dom';
 
 const gradientStyle = {
     background: '#fccb90',
@@ -21,6 +21,9 @@ export default function SignUp() {
 
     let [isLogin, setIsLogin] = useState(true);
     const [alertMessage, setAlertMessage] = useState('');
+    const [alertColor, setAlertColor] = useState('success');
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -29,7 +32,6 @@ export default function SignUp() {
     
     const { email, password, username } = formData;
     const handleSubmit = async (event) => {
-      console.log("in submit")
       if(!isLogin){
         event.preventDefault();
         try {
@@ -41,25 +43,27 @@ export default function SignUp() {
             body: JSON.stringify(formData)
           });
           
-          if(response.status == 201){
-            setAlertMessage('Registration successful');
+          if(response.status === 201){
+            setAlertMessage('Account created successfully');
+            setAlertColor('success');
+            navigate('/');
           }
           else{
-            setAlertMessage('Registration Unsuccessful');
+            setAlertMessage('Couldnt create account, Try new credentials');
+            setAlertColor('danger');
           }
           
         } catch (error) {
-          setAlertMessage('Registration Unsuccessful');
+          setAlertMessage('Couldnt create account, Retry');
+          setAlertColor('danger');
           console.error('Error:', error.message);
         } finally {
-          // Clear alert message after 2 seconds
           setTimeout(() => {
             setAlertMessage('');
           }, 2000);
         }
       }
       else{  // login
-        console.log("in login")
         event.preventDefault();
         try {
           const response = await fetch('http://localhost:5000/users/login/', {
@@ -69,16 +73,23 @@ export default function SignUp() {
             },
             body: JSON.stringify(formData)
           });
-          
-          if(response.status == 200){
+          console.log('response: ',response)
+          if(response.status === 200){
+            const responseData = await response.json();
+            console.log(responseData)
+            localStorage.setItem('token', responseData.token);
             setAlertMessage('Login successful');
+            setAlertColor('success');
+            navigate('/');
           }
           else{
             setAlertMessage('Login Unsuccessful');
+            setAlertColor('danger');
           }
           
         } catch (error) {
           setAlertMessage('Login Unsuccessful');
+          setAlertColor('danger');
           console.error('Error:', error.message);
         } finally {
           // Clear alert message after 2 seconds
@@ -99,7 +110,7 @@ export default function SignUp() {
     <div>
     <section className="h-100" style={gradientForm}>
     {alertMessage && (
-        <div className="alert alert-success" role="alert">
+        <div className={`alert alert-${alertColor}`} role="alert">
           {alertMessage}
         </div>
     )}
@@ -135,7 +146,7 @@ export default function SignUp() {
                         {
                             isLogin && 
                             <div className="pt-1 mb-3 pb-1 mt-3">
-                                <button type="button" className="btn btn-dark btn-block mx-2">Login</button>
+                                <button type="button" className="btn btn-dark btn-block mx-2" onClick={handleSubmit}>Login</button>
                             </div>
                         }
                         {
@@ -166,9 +177,6 @@ export default function SignUp() {
                             </div>
                         
                         }
-                        
-
-                    
                         <div className="row">
                                 <div className="col-md-12">
                                     <button type="button" className="btn btn-md btn-google btn-outline-dark">
@@ -177,9 +185,6 @@ export default function SignUp() {
 
                                 </div>
                         </div>
-
-                    
-  
                   </form>
   
                 </div>
