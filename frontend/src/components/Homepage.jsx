@@ -3,11 +3,14 @@ import Navbar from './Navbar'
 import Slider from './Slider'; 
 import Footer from './Footer';
 import { Link } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function Homepage() {
     const [products, setProducts] = useState([]);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const navigate = useNavigate();
+
     const gradientForm = {
         '@media (min-width: 768px)': {
             height: '100vh !important'
@@ -20,22 +23,21 @@ export default function Homepage() {
         const fetchAllProducts = async()=>{
             try{
                 const token = localStorage.getItem('token');
-                console.log('token in homepage: ', token)
                 const response = await fetch('http://localhost:5000/products/',{
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
                 const data = await response.json();
-                console.log(data)
-
-                if(data.error && data.error === "Authentication failed"){
-                    setIsAuthenticated(false);
-                }
-                else{
-                    console.log('setting products')
+                if(data.success){
                     setProducts(data.products);
                     setIsAuthenticated(true);
+                }
+                else{
+                    setIsAuthenticated(false);
+                    navigate('/register');
+
+
                 }
             }
             catch(error){
@@ -91,9 +93,9 @@ export default function Homepage() {
 
     return (
         <>
-        {!isAuthenticated ? 
-            (<Navigate to="/register" />) : (
-                <div style={gradientForm}>
+        {isAuthenticated &&
+            
+            <div style={gradientForm}>
                 
                     
                         <Navbar />
@@ -110,9 +112,7 @@ export default function Homepage() {
                         }
                         <Footer/> 
                     
-                
-                </div>
-            )
+            </div>
         }
         </>
     )

@@ -73,14 +73,15 @@ export default function SignUp() {
             },
             body: JSON.stringify(formData)
           });
-          console.log('response: ',response)
           if(response.status === 200){
             const responseData = await response.json();
-            console.log(responseData)
             localStorage.setItem('token', responseData.token);
             setAlertMessage('Login successful');
             setAlertColor('success');
-            navigate('/');
+            setTimeout(() => {
+              setAlertMessage('');
+              navigate('/'); // Redirect to homepage after 2 seconds
+            }, 2000);
           }
           else{
             setAlertMessage('Login Unsuccessful');
@@ -92,7 +93,6 @@ export default function SignUp() {
           setAlertColor('danger');
           console.error('Error:', error.message);
         } finally {
-          // Clear alert message after 2 seconds
           setTimeout(() => {
             setAlertMessage('');
           }, 2000);
@@ -127,7 +127,7 @@ export default function SignUp() {
                 <h4 className="mt-1 mb-5 pb-1">We are The ShopCart Team</h4>
                 </div>
 
-                <form onSubmit={handleSubmit}>
+                <form >
                         {
                             isLogin ?  <p>Please login to your account</p> :  <p>Create Account</p>
                         }
