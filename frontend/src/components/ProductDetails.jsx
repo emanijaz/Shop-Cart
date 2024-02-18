@@ -6,9 +6,56 @@ import Navbar from './Navbar';
 import { useParams } from 'react-router-dom';
 
 export default function ProductDetails() {
-    const [value, setValue] = useState(2);
     const { id } = useParams();
     const [product, setProduct] = useState();
+    const [reviewTitle, setReviewTitle] = useState('');
+    const [reviewComment, setReviewComment] = useState('');
+    const [reviewRating, setReviewRating] = useState(0);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [alertColor, setAlertColor] = useState('success');
+
+    const handleSubmit = async (event) => {
+        event.preventDefault() // prevent page from getting reloaded on submitting form
+        const newReview = {
+            title: reviewTitle,
+            comment: reviewComment,
+            rating: reviewRating
+        };
+
+        const updatedProduct = {
+            ...product,
+            reviews: [...product.reviews, newReview],
+            numOfReviews: product.numOfReviews +1
+
+        };
+
+        try {
+            const response = await fetch(`http://localhost:5000/products/update/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedProduct)
+            });
+            console.log(response)
+            if(response.status === 200){
+                setProduct(updatedProduct);
+                setAlertMessage('Review Published successfully');
+                setAlertColor('success');
+            }
+            else{
+                setAlertMessage('Failed publishing review');
+                setAlertColor('danger');
+            }
+        } catch (error) {
+            setAlertMessage("Failed publishing review");
+            setAlertColor('danger');
+        } finally {
+            setTimeout(() => {
+              setAlertMessage('');
+            }, 2000);
+        }
+    }
     useEffect(()=> {
 
         const getProductDetails = async() => {
@@ -22,10 +69,16 @@ export default function ProductDetails() {
             }
         }
         getProductDetails();
-    }, [id])
+    })
+
     return (
     <>
         <Navbar />
+        {alertMessage && (
+            <div className={`alert alert-${alertColor}`} role="alert">
+            {alertMessage}
+            </div>
+        )}
         {product && 
             <div className="container py-3">
                 <div className='row'>
@@ -68,23 +121,23 @@ export default function ProductDetails() {
                                             <form >
                                                 <div className="form-group my-3">
                                                     <label className='mb-1' for="title">Title</label>
-                                                    <input type="text" class="form-control" id="title"  placeholder="Enter title"/>
+                                                    <input type="text" class="form-control" id="title"  placeholder="Enter title"  onChange={(e) => setReviewTitle(e.target.value)}/>
                                                 </div>
                                                 <div className="form-group my-3">
                                                     <label for="comment">Review</label>
-                                                    <textarea type="text" class="form-control" id="comment" placeholder="Write Review"/>
+                                                    <textarea type="text" class="form-control" id="comment" placeholder="Write Review" onChange={(e) => setReviewComment(e.target.value)}/>
                                                 </div>
                                                 <div className="form-group">
                                                         <Rating size='small'
                                                         name="simple-controlled"
-                                                        value={value}
+                                                        value={reviewRating}
                                                         onChange={(event, newValue) => {
-                                                        setValue(newValue);
+                                                        setReviewRating(newValue);
                                                         }}
                                                     />
                                                 </div>
                                                 <div>
-                                                    <button type="submit" className="btn btn-sm btn-outline-dark mt-2">Publish Review</button>
+                                                    <button onClick={handleSubmit} className="btn btn-sm btn-outline-dark mt-2">Publish Review</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -99,7 +152,7 @@ export default function ProductDetails() {
                     {
                         product.reviews.map((review)=>{
                             return (
-                            <div class="card mt-3 mb-1 border border-bottom">
+                            <div key={review.title} class="card mt-3 mb-1 border border-bottom">
                                 <div class="card-body">
                                     <div className='row'>
                                         <div className='col-md-2 d-md-flex justify-content-center mt-md-4'>
