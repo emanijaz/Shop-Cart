@@ -100,17 +100,22 @@ export default function Homepage() {
                     
                         <Navbar />
                         <Slider />
-                        { products ? 
-                        <div className="container py-3" >
-                            <h3 className='d-md-flex justify-content-center mt-5 mb-3'>All Products </h3>
-                                {allProducts()}
-                        </div> : 
-                        
-                        <div className='container py-3'>
-                            <h3>Loading Products</h3>
+                        <div id="products">
+                            { products ? 
+                            <div className="container py-3" >
+                                <h3 className='d-md-flex justify-content-center mt-5 mb-3'>All Products </h3>
+                                    {allProducts()}
+                            </div> : 
+                            
+                            <div className='container py-3'>
+                                <h3>Loading Products</h3>
+                            </div>
+                            
+                            }
                         </div>
-                        }
-                        <Footer/> 
+                        <div id="contacts">
+                        <Footer /> 
+                        </div>
                     
             </div>
         }

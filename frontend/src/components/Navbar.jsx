@@ -1,5 +1,21 @@
 import { Link } from "react-router-dom";
 export default function Navbar() {
+  const scrollToProducts = (event) => {
+    event.preventDefault(); // Prevent the default anchor link behavior
+    
+    const productsElement = document.getElementById('products');
+    if (productsElement) {
+      productsElement.scrollIntoView({ behavior: 'smooth' }); // Scroll to the target element
+    }
+  };
+  const scrollToContacts = (event) => {
+    event.preventDefault(); // Prevent the default anchor link behavior
+    
+    const contactsElement = document.getElementById('contacts');
+    if (contactsElement) {
+      contactsElement.scrollIntoView({ behavior: 'smooth' }); // Scroll to the target element
+    }
+  };
   return(
     <nav className="navbar navbar-expand-lg bg-body-tertiary shadow-sm py-3">
       <div className="container">
@@ -13,13 +29,10 @@ export default function Navbar() {
               <a className="nav-link active" aria-current="page" href="/#">Home</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/#">Products</a>
+              <a className="nav-link active" aria-current="page" href="#products" onClick={scrollToProducts}>Products</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/#">About</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/#">Contact</a>
+              <a className="nav-link active" aria-current="page" href="#contacts" onClick={scrollToContacts}>Contact</a>
             </li>
           
           </ul>
@@ -27,14 +40,16 @@ export default function Navbar() {
             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
             <button className="btn btn-outline-primary" type="submit">Search</button>
           </form> */}
-          <button type="button" className="btn btn-outline-dark mx-2"><i className="fa fa-sign-in me-1" aria-hidden="true"></i>Login</button>
-          <button type="button" className="btn btn-outline-dark me-2"><i className="fa fa-user-plus me-1" aria-hidden="true"></i>Register</button>
-          <button type="button" className="btn btn-outline-dark me-2">
-            <Link to="/cart">
-            <i className="fa fa-shopping-cart me-1" aria-hidden="true"></i>Cart(2)
-            </Link>
-          </button>
-
+          {/* <button type="button" className="btn btn-outline-dark mx-2"><i className="fa fa-sign-in me-1" aria-hidden="true"></i>Login</button>
+          <button type="button" className="btn btn-outline-dark me-2"><i className="fa fa-user-plus me-1" aria-hidden="true"></i>Register</button> */}
+          <Link to="/cart">
+            <button style={{fontSize: "20px"}} type="button" className="btn btn-light">
+              
+              <i className="fa fa-shopping-cart" aria-hidden="true"></i>
+              
+            </button>
+          </Link>
+          <button style={{fontSize: "20px"}} type="button" className="btn btn-light"><i className="fa fa-sign-out" aria-hidden="true"></i></button>
         </div>
       </div>
     </nav>
