@@ -37,7 +37,6 @@ export default function ProductDetails() {
                 },
                 body: JSON.stringify(updatedProduct)
             });
-            console.log(response)
             if(response.status === 200){
                 setProduct(updatedProduct);
                 setAlertMessage('Review Published successfully');
