@@ -6,7 +6,6 @@ import Navbar from './Navbar';
 import { useParams } from 'react-router-dom';
 
 export default function ProductDetails() {
-    // const [value, setValue] = useState(2);
     const { id } = useParams();
     const [product, setProduct] = useState();
     const [reviewTitle, setReviewTitle] = useState('');
@@ -15,7 +14,8 @@ export default function ProductDetails() {
     const [alertMessage, setAlertMessage] = useState('');
     const [alertColor, setAlertColor] = useState('success');
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event) => {
+        event.preventDefault() // prevent page from getting reloaded on submitting form
         const newReview = {
             title: reviewTitle,
             comment: reviewComment,
@@ -30,7 +30,6 @@ export default function ProductDetails() {
         };
 
         try {
-            // Update the product on the server
             const response = await fetch(`http://localhost:5000/products/update/${id}`, {
                 method: 'PUT',
                 headers: {
@@ -43,15 +42,14 @@ export default function ProductDetails() {
                 setProduct(updatedProduct);
                 setAlertMessage('Review Published successfully');
                 setAlertColor('success');
-                console.log("Review published successfully!");
             }
             else{
                 setAlertMessage('Failed publishing review');
                 setAlertColor('danger');
-                console.error("Failed to publish review.");
             }
         } catch (error) {
-            console.error('Error publishing review:', error);
+            setAlertMessage("Failed publishing review");
+            setAlertColor('danger');
         } finally {
             setTimeout(() => {
               setAlertMessage('');
@@ -71,7 +69,7 @@ export default function ProductDetails() {
             }
         }
         getProductDetails();
-    }, [id])
+    })
 
     return (
     <>
@@ -134,7 +132,6 @@ export default function ProductDetails() {
                                                         name="simple-controlled"
                                                         value={reviewRating}
                                                         onChange={(event, newValue) => {
-                                                        // setValue(newValue);
                                                         setReviewRating(newValue);
                                                         }}
                                                     />
@@ -155,7 +152,7 @@ export default function ProductDetails() {
                     {
                         product.reviews.map((review)=>{
                             return (
-                            <div class="card mt-3 mb-1 border border-bottom">
+                            <div key={review.title} class="card mt-3 mb-1 border border-bottom">
                                 <div class="card-body">
                                     <div className='row'>
                                         <div className='col-md-2 d-md-flex justify-content-center mt-md-4'>
