@@ -4,12 +4,13 @@ import Slider from './Slider';
 import Footer from './Footer';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
+import {useSelector} from 'react-redux';
 
 export default function Homepage() {
     const [products, setProducts] = useState([]);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
+    const counter = useSelector((state)=>state.counter);
 
     const gradientForm = {
         '@media (min-width: 768px)': {
@@ -46,7 +47,7 @@ export default function Homepage() {
         }
 
         fetchAllProducts();
-    },[])
+    })
 
     
     const allProducts = ()=> {
@@ -88,6 +89,7 @@ export default function Homepage() {
                 </div>
                 );
             }
+            return null;
         })
     }
 
@@ -101,6 +103,7 @@ export default function Homepage() {
                         <Navbar />
                         <Slider />
                         <div id="products">
+                            <h2>{counter}</h2>
                             { products ? 
                             <div className="container py-3" >
                                 <h3 className='d-md-flex justify-content-center mt-5 mb-3'>All Products </h3>

@@ -1,7 +1,7 @@
 import React from 'react'
 import {useState} from  'react'
 import { useNavigate } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
 const gradientStyle = {
     background: '#fccb90',
 
@@ -23,7 +23,8 @@ export default function SignUp() {
     const [alertMessage, setAlertMessage] = useState('');
     const [alertColor, setAlertColor] = useState('success');
     const navigate = useNavigate();
-
+    const isLoggedIn = useSelector(state => state.auth.isLoggedIn)
+    console.log('isLoggedIn: ', isLoggedIn)
     const [formData, setFormData] = useState({
         email: '',
         password: '',
