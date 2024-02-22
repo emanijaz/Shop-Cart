@@ -8,9 +8,9 @@ import {useSelector} from 'react-redux';
 
 export default function Homepage() {
     const [products, setProducts] = useState([]);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    // const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const isLoggedIn = useSelector(state=> state.auth.isLoggedIn);
     const navigate = useNavigate();
-    const counter = useSelector((state)=>state.counter);
 
     const gradientForm = {
         '@media (min-width: 768px)': {
@@ -32,10 +32,10 @@ export default function Homepage() {
                 const data = await response.json();
                 if(data.success){
                     setProducts(data.products);
-                    setIsAuthenticated(true);
+                    // setIsAuthenticated(true);
                 }
                 else{
-                    setIsAuthenticated(false);
+                    // setIsAuthenticated(false);
                     navigate('/register');
 
 
@@ -95,7 +95,7 @@ export default function Homepage() {
 
     return (
         <>
-        {isAuthenticated &&
+        {isLoggedIn &&
             
             <div style={gradientForm}>
                 
@@ -103,7 +103,6 @@ export default function Homepage() {
                         <Navbar />
                         <Slider />
                         <div id="products">
-                            <h2>{counter}</h2>
                             { products ? 
                             <div className="container py-3" >
                                 <h3 className='d-md-flex justify-content-center mt-5 mb-3'>All Products </h3>
