@@ -4,11 +4,12 @@ import Slider from './Slider';
 import Footer from './Footer';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
+import {useSelector} from 'react-redux';
 
 export default function Homepage() {
     const [products, setProducts] = useState([]);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    // const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const isLoggedIn = useSelector(state=> state.auth.isLoggedIn);
     const navigate = useNavigate();
 
     const gradientForm = {
@@ -31,10 +32,10 @@ export default function Homepage() {
                 const data = await response.json();
                 if(data.success){
                     setProducts(data.products);
-                    setIsAuthenticated(true);
+                    // setIsAuthenticated(true);
                 }
                 else{
-                    setIsAuthenticated(false);
+                    // setIsAuthenticated(false);
                     navigate('/register');
 
 
@@ -46,7 +47,7 @@ export default function Homepage() {
         }
 
         fetchAllProducts();
-    },[])
+    })
 
     
     const allProducts = ()=> {
@@ -88,12 +89,13 @@ export default function Homepage() {
                 </div>
                 );
             }
+            return null;
         })
     }
 
     return (
         <>
-        {isAuthenticated &&
+        {isLoggedIn &&
             
             <div style={gradientForm}>
                 
