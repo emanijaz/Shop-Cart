@@ -2,7 +2,6 @@ import React from 'react'
 import {useState} from  'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
 import { authActions } from '../store/authSlice';
 const gradientStyle = {
     background: '#fccb90',
@@ -21,12 +20,11 @@ const gradientForm = {
 }
 export default function SignUp() {
 
-    // let [isLogin, setIsLogin] = useState(true);
+    let [existingAccount, setExistingAccount] = useState(true);
     const [alertMessage, setAlertMessage] = useState('');
     const [alertColor, setAlertColor] = useState('success');
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const isLoggedIn = useSelector(state=> state.auth.isLoggedIn);
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -35,7 +33,7 @@ export default function SignUp() {
     
     const { email, password, username } = formData;
     const handleSubmit = async (event) => {
-      if(!isLoggedIn){
+      if(!existingAccount){
         event.preventDefault();
         try {
           const response = await fetch('http://localhost:5000/users/register/', {
@@ -49,6 +47,7 @@ export default function SignUp() {
           if(response.status === 201){
             setAlertMessage('Account created successfully');
             setAlertColor('success');
+            dispatch(authActions.login())
             navigate('/');
           }
           else{
@@ -81,6 +80,7 @@ export default function SignUp() {
             localStorage.setItem('token', responseData.token);
             setAlertMessage('Login successful');
             setAlertColor('success');
+            dispatch(authActions.login())
             setTimeout(() => {
               setAlertMessage('');
               navigate('/'); // Redirect to homepage after 2 seconds
@@ -132,7 +132,7 @@ export default function SignUp() {
 
                 <form >
                         {
-                            isLoggedIn ?  <p>Please login to your account</p> :  <p>Create Account</p>
+                            existingAccount ?  <p>Please login to your account</p> :  <p>Create Account</p>
                         }
                         <div className="form-outline mb-4">
                         <input type="email" id="form2Example11" className="form-control" name="email"
@@ -147,36 +147,36 @@ export default function SignUp() {
                             placeholder="Username" onChange={handleChange} value={username}/>
                         </div>
                         {
-                            isLoggedIn && 
+                            existingAccount && 
                             <div className="pt-1 mb-3 pb-1 mt-3">
                                 <button type="button" className="btn btn-dark btn-block mx-2" onClick={handleSubmit}>Login</button>
                             </div>
                         }
                         {
-                            !isLoggedIn && 
+                            !existingAccount && 
                             <div className="pt-1 mb-3 pb-1 mt-3">
                                 <button type="button" className="btn btn-dark btn-block mx-2" onClick={handleSubmit}>Create Account</button>
                             </div>
                         }
                         {
-                            !isLoggedIn && 
+                            !existingAccount && 
                             <div className="d-flex justify-content-left mx-2 mb-4">
                                 <p className="mb-0 me-2">Already have an account?</p>
-                                <a onClick={()=> {dispatch(authActions.login())}} href="#!">Login</a>
+                                <a onClick={()=> {setExistingAccount(true)}} href="#!">Login</a>
                             </div>
                         }
                         
                         {
-                            isLoggedIn && 
+                            existingAccount && 
                             <div  className="mb-5 mx-2">
                                 <a className="text-muted mt-3" href="#!">Forgot password?</a>
                             </div>
                         }
                         
-                        { isLoggedIn && 
+                        { existingAccount && 
                             <div className="d-flex justify-content-left mx-2 mb-4">
                                 <p className="mb-0 me-2">Don't have an account?</p>
-                                <a onClick={()=> {dispatch(authActions.logout())}} href="#!">Create New</a>
+                                <a onClick={()=> {setExistingAccount(false)}} href="#!">Create New</a>
                             </div>
                         
                         }

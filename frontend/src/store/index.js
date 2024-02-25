@@ -9,6 +9,7 @@
 
 import {configureStore} from '@reduxjs/toolkit';
 import authSlice from './authSlice';
+import cartSlice from './cartslice';
 // const counterSlice = createSlice({
 //     name: 'counter',
 //     initialState: {counter: 0},
@@ -29,7 +30,8 @@ import authSlice from './authSlice';
 
 const store=configureStore({
     reducer: {
-        auth: authSlice.reducer
+        auth: authSlice.reducer,
+        cart: cartSlice.reducer,
     }
 })
 export default store;

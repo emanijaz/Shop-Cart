@@ -10,6 +10,7 @@ export default function Homepage() {
     const [products, setProducts] = useState([]);
     // const [isAuthenticated, setIsAuthenticated] = useState(false);
     const isLoggedIn = useSelector(state=> state.auth.isLoggedIn);
+    console.log("homepage login : ", isLoggedIn)
     const navigate = useNavigate();
 
     const gradientForm = {
