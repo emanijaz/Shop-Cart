@@ -19,7 +19,7 @@ export default function ProductDetails() {
     const [alertColor, setAlertColor] = useState('success');
     const dispatch = useDispatch();
     const cartItems = useSelector(state=> state.cart.totalQuantity);
-
+    console.log(cartItems)
     const addToCart = () => {
         dispatch(cartActions.addToCart({
             id: id,

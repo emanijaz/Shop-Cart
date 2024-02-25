@@ -14,13 +14,15 @@ const cartSlice = createSlice({
             const existingProduct = state.productsList.find((product)=> product.id === newProduct.id);
             
             if(existingProduct){
-                if(existingProduct.stock > existingProduct.quantity+newProduct.quantity){
+                console.log('adding existing product in cart')
+                if(existingProduct.stock < existingProduct.quantity+newProduct.quantity){
                     return;
                 }
                 existingProduct.price += newProduct.price;
                 existingProduct.quantity += newProduct.quantity;
             }
             else{ // newly added to cart
+                console.log('adding new product in cart')
                 state.productsList.push({
                     id: newProduct.id,
                     quantity: newProduct.quantity,
