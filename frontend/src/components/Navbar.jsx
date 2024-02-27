@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
+import { useSelector } from 'react-redux';
+
 export default function Navbar() {
+  const totalQuantity = useSelector(state=> state.cart.totalQuantity);
+
   const scrollToProducts = (event) => {
     event.preventDefault(); // Prevent the default anchor link behavior
     
@@ -26,7 +30,7 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/#">Home</a>
+              <Link className="nav-link active" aria-current="page" to="/">Home</Link>
             </li>
             <li className="nav-item">
               <a className="nav-link active" aria-current="page" href="#products" onClick={scrollToProducts}>Products</a>
@@ -48,6 +52,10 @@ export default function Navbar() {
               <i className="fa fa-shopping-cart" aria-hidden="true"></i>
               
             </button>
+            {/* Icon to be shown over the cart button */}
+            <span className="position-absolute translate-middle badge rounded-pill bg-danger">
+                {totalQuantity}
+            </span>
           </Link>
           <button style={{fontSize: "20px"}} type="button" className="btn btn-light"><i className="fa fa-sign-out" aria-hidden="true"></i></button>
         </div>

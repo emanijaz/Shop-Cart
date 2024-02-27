@@ -4,16 +4,31 @@ import Typography from '@mui/material/Typography';
 import Avatar from 'react-avatar';
 import Navbar from './Navbar';
 import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { cartActions } from '../store/cartslice';
 
 export default function ProductDetails() {
     const { id } = useParams();
-    const [product, setProduct] = useState();
+    const [product, setProduct] = useState(null);
+    const [productQuantity, setProductQuantity] = useState(1);
+
     const [reviewTitle, setReviewTitle] = useState('');
     const [reviewComment, setReviewComment] = useState('');
     const [reviewRating, setReviewRating] = useState(0);
     const [alertMessage, setAlertMessage] = useState('');
     const [alertColor, setAlertColor] = useState('success');
+    const dispatch = useDispatch();
 
+    const addToCart = () => {
+        dispatch(cartActions.addToCart({
+            id: id,
+            name: product.name,
+            price: product.price,
+            quantity: Number(productQuantity),
+            stock: product.stock,
+            url: product.images[0].url
+        }));
+    };
     const handleSubmit = async (event) => {
         event.preventDefault() // prevent page from getting reloaded on submitting form
         const newReview = {
@@ -90,8 +105,8 @@ export default function ProductDetails() {
 
                         <p className="card-text display-6 fw-bold" style={{fontSize: "20px"}}>{product.price}$</p>
                         <p style={{marginTop: "5%"}}><b>Quantity</b></p>
-                        <input type="number" id="quantity" name="quantity" min="1" max={product.stock} />
-                        <button type="button" className="btn btn-sm btn-outline-dark mx-2">Add to Cart</button>
+                        <input onChange={e=>{setProductQuantity(e.target.value)}} type="number" id="quantity" name="quantity" min="1" max={product.stock} />
+                        <button onClick={addToCart} type="button" className="btn btn-sm btn-outline-dark mx-2">Add to Cart</button>
 
                     </div>
                 </div>
