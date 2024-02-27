@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from 'react-avatar';
 import Navbar from './Navbar';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { cartActions } from '../store/cartslice';
 
 export default function ProductDetails() {
@@ -18,14 +18,15 @@ export default function ProductDetails() {
     const [alertMessage, setAlertMessage] = useState('');
     const [alertColor, setAlertColor] = useState('success');
     const dispatch = useDispatch();
-    const cartItems = useSelector(state=> state.cart.totalQuantity);
-    console.log(cartItems)
+
     const addToCart = () => {
         dispatch(cartActions.addToCart({
             id: id,
+            name: product.name,
             price: product.price,
-            quantity: productQuantity,
-            stock: product.stock
+            quantity: Number(productQuantity),
+            stock: product.stock,
+            url: product.images[0].url
         }));
     };
     const handleSubmit = async (event) => {
@@ -92,7 +93,6 @@ export default function ProductDetails() {
             {alertMessage}
             </div>
         )}
-        <h1>car items {cartItems}</h1>
         {product && 
             <div className="container py-3">
                 <div className='row'>
