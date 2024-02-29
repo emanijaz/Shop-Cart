@@ -1,28 +1,33 @@
 import React from 'react'
+import { useState } from 'react'
 import Navbar from './Navbar';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-
+import { cartActions } from '../store/cartslice';
 
 export default function Cart() {
     const cartItems = useSelector(state=> state.cart.productsList);
     const totalPrice = useSelector(state=> state.cart.totalPrice);
+    const [productQuantity, setProductQuantity] = useState(1);
     const dispatch = useDispatch();
 
-    const addToCart = () => {
+    const addToCart = (prodid,name,price,stock,url) => {
+        console.log('adding to cart')
         dispatch(cartActions.addToCart({
-            id: id,
-            name: product.name,
-            price: product.price,
+            id: prodid,
+            name: name,
+            price: price,
             quantity: Number(productQuantity),
-            stock: product.stock,
-            url: product.images[0].url
+            stock: stock,
+            url: url
         }));
     };
     return (
     <div>
         <Navbar />
         <div className='container mt-5'>
+        {cartItems.length>0 ? 
+            <div>
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
@@ -33,6 +38,7 @@ export default function Cart() {
                     </tr>
                 </thead>
                 <tbody>
+                    
                     {cartItems.map(item => {
                         const itemTotalPrice = item.quantity * item.price;
                         return(
@@ -52,9 +58,23 @@ export default function Cart() {
                                                 <div class="input-group-prepend">
                                                     <button class="btn btn-dark btn-sm" id="minus-btn"><i class="fa fa-minus"></i></button>
                                                 </div>
-                                                <input type="number" id="qty_input" class="form-control form-control-sm" value={item.quantity} min="1" max={item.stock}/>
+                                                {/* <input
+    onChange={(e) => {
+        const newValue = Math.min(Math.max(Number(e.target.value), 1), item.stock);
+        setProductQuantity(newValue);
+    }}
+    type="number"
+    id="qty_input"
+    className="form-control form-control-sm"
+    value={item.quantity}
+    min="1"
+    max={item.stock}
+/> */}
+                                                {/* <input onChange={e=>{setProductQuantity(e.target.value)}} type="number" id="quantity" value={item.quantity} name="quantity" min="1" max={item.stock} /> */}
+                                                
+                                                <input onChange={e=>{setProductQuantity(e.target.value)}} type="number" id="qty_input" class="form-control form-control-sm" value={item.quantity} min="1"  max={`${item.stock}`}/>
                                                 <div class="input-group-prepend">
-                                                    <button onClick={addToCart} class="btn btn-dark btn-sm" id="plus-btn"><i class="fa fa-plus"></i></button>
+                                                    <button onClick={()=>addToCart(item.id,item.name,item.price,item.stock,item.url)} class="btn btn-dark btn-sm" id="plus-btn"><i class="fa fa-plus"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -66,34 +86,9 @@ export default function Cart() {
                         })
                     }
                     
-                    {/* <tr>
-                    <th scope="row">
-                            <img src="/assets/yellow_shirt.jpg" alt="yellow shirt" style={{height: "250px", width: "250px"}} />
-
-                        </th>
-                        <td>50$</td>
-                        <td>
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-sm-4 col-sm-offset-4">
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <button class="btn btn-dark btn-sm" id="minus-btn"><i class="fa fa-minus"></i></button>
-                                            </div>
-                                            <input type="number" id="qty_input" class="form-control form-control-sm" value="1" min="1"/>
-                                            <div class="input-group-prepend">
-                                                <button class="btn btn-dark btn-sm" id="plus-btn"><i class="fa fa-plus"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>$50</td>
-                    </tr> */}
-                    
                 </tbody>
             </table>
+
             <div class="card border-light mt-3 mb-3" style={{maxWidth:  "30rem", marginLeft: "auto"}}>
                 <div className='card-body row fw-bold' style={{fontSize: "20px"}}>
                     <div className='col-md-8'>
@@ -133,6 +128,15 @@ export default function Cart() {
                     </div>
                 </div>
             </div>
+            </div>
+                : <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    
+                    <img src="/assets/empty-cart.svg" alt="Empty cart" style={{ width: "400px", height: "400px" }} />
+                    <p class="font-weight-bold">Your cart is empty</p>
+                    <p class="text-secondary">Looks like you haven't selected anything yet!</p>
+                  </div>
+            }
+
         </div>
 
         

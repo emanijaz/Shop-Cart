@@ -35,7 +35,7 @@ const productSchema = mongoose.Schema({
         required: [true, "Please enter Product Category"]
     },
     stock:{
-        type: String,
+        type: Number,
         required: [true, "Please enter Product quantity"],
         maxLength: [10, "Quantity cannot be more than 10"],
         default: 1
