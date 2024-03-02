@@ -62,7 +62,7 @@ export default function Cart() {
                                     <p>{item.name}</p>
                                 </div>
                             </th>
-                            <td>{item.price}</td>
+                            <td>${item.price}</td>
                             <td>
                                 <div>
                                     <div class="row">
@@ -83,7 +83,7 @@ export default function Cart() {
                             <td>${itemTotalPrice}</td>
                             <td className="text-center align-middle">
                                 <div>
-                                    <button onClick={()=>deleteItemFromCart(item.id)} class="btn btn-sm" style={{backgroundColor: "#C5C6D0"}} id="cross-btn" data-toggle="tooltip" data-placement="bottom" title="Remove product">
+                                    <button onClick={()=>deleteItemFromCart(item.id)} class="btn btn-sm" style={{backgroundColor: "#c3c3c3"}} id="cross-btn" data-toggle="tooltip" data-placement="bottom" title="Remove product">
                                         <i class="fa fa-times"></i>
                                     </button>
                                 </div>

@@ -38,10 +38,11 @@ const cartSlice = createSlice({
             const givenProduct = action.payload;
             const existingProduct = state.productsList.find((product)=> product.id === givenProduct.id);
             
-            if(existingProduct.quantity >=1){
+            if(existingProduct.quantity >1){
                 existingProduct.quantity -= givenProduct.quantity;
                 state.totalPrice -= givenProduct.price*givenProduct.quantity;
                 state.totalQuantity -= givenProduct.quantity;
+                existingProduct.message= ""
             }
 
             
