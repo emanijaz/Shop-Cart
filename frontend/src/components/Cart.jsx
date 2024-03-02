@@ -2,27 +2,44 @@ import React from 'react'
 import Navbar from './Navbar';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-
+import { cartActions } from '../store/cartslice';
 
 export default function Cart() {
     const cartItems = useSelector(state=> state.cart.productsList);
     const totalPrice = useSelector(state=> state.cart.totalPrice);
     const dispatch = useDispatch();
 
-    const addToCart = () => {
+    const addToCart = (prodid,name,quantity, price,stock,url) => {
         dispatch(cartActions.addToCart({
-            id: id,
-            name: product.name,
-            price: product.price,
-            quantity: Number(productQuantity),
-            stock: product.stock,
-            url: product.images[0].url
+            id: prodid,
+            name: name,
+            price: price,
+            quantity: quantity,
+            stock: stock,
+            url: url
+        }));
+    };
+    const removeFromCart = (prodid,name,quantity,price,stock,url) => {
+        dispatch(cartActions.removeFromCart({
+            id: prodid,
+            name: name,
+            price: price,
+            quantity: quantity,
+            stock: stock,
+            url: url
+        }));
+    };
+    const deleteItemFromCart = (prodid) => {
+        dispatch(cartActions.deleteItemFromCart({
+            id: prodid,
         }));
     };
     return (
     <div>
         <Navbar />
         <div className='container mt-5'>
+        {cartItems.length>0 ? 
+            <div>
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
@@ -33,28 +50,30 @@ export default function Cart() {
                     </tr>
                 </thead>
                 <tbody>
+                    
                     {cartItems.map(item => {
                         const itemTotalPrice = item.quantity * item.price;
                         return(
-                        <tr>
-                            <th scope="row" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                        <tr key={item.id}>
+                            <th scope="row" style={{display: "flex", flexDirection: "column", alignItems: "center"}} >
                                 
-                                <img src={`/assets/${item.url}`} alt="yellow shirt" style={{height: "250px", width: "250px", marginBottom: "5%"}} />
-                                <p>{item.name}</p>
-                                
+                                <img src={`/assets/${item.url}`} alt="product" style={{height: "250px", width: "250px", marginBottom: "5%"}} />
+                                <div >
+                                    <p>{item.name}</p>
+                                </div>
                             </th>
-                            <td>{item.price}</td>
+                            <td>${item.price}</td>
                             <td>
-                                <div class="container">
+                                <div>
                                     <div class="row">
-                                        <div class="col-sm-4 col-sm-offset-4">
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <button class="btn btn-dark btn-sm" id="minus-btn"><i class="fa fa-minus"></i></button>
+                                        <div class="col-sm-4">
+                                            <div class="d-flex justify-content-center align-items-center mb-3">
+                                                <div class="input-group-prepend mr-3">
+                                                    <button onClick={()=>removeFromCart(item.id,item.name,1,item.price,item.stock,item.url)} class="btn btn-dark btn-sm" id="minus-btn"><i class="fa fa-minus"></i></button>
                                                 </div>
-                                                <input type="number" id="qty_input" class="form-control form-control-sm" value={item.quantity} min="1" max={item.stock}/>
-                                                <div class="input-group-prepend">
-                                                    <button onClick={addToCart} class="btn btn-dark btn-sm" id="plus-btn"><i class="fa fa-plus"></i></button>
+                                                <input type="text" class="form-control form-control-sm" value={item.quantity} min="1" max={`${item.stock}`} disabled/>
+                                                <div class="input-group-append ml-3">
+                                                    <button onClick={()=>addToCart(item.id,item.name,1,item.price,item.stock,item.url)} class="btn btn-dark btn-sm" id="plus-btn"><i class="fa fa-plus"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -62,38 +81,20 @@ export default function Cart() {
                                 </div>
                             </td>
                             <td>${itemTotalPrice}</td>
+                            <td className="text-center align-middle">
+                                <div>
+                                    <button onClick={()=>deleteItemFromCart(item.id)} class="btn btn-sm" style={{backgroundColor: "#c3c3c3"}} id="cross-btn" data-toggle="tooltip" data-placement="bottom" title="Remove product">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>)
                         })
                     }
                     
-                    {/* <tr>
-                    <th scope="row">
-                            <img src="/assets/yellow_shirt.jpg" alt="yellow shirt" style={{height: "250px", width: "250px"}} />
-
-                        </th>
-                        <td>50$</td>
-                        <td>
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-sm-4 col-sm-offset-4">
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <button class="btn btn-dark btn-sm" id="minus-btn"><i class="fa fa-minus"></i></button>
-                                            </div>
-                                            <input type="number" id="qty_input" class="form-control form-control-sm" value="1" min="1"/>
-                                            <div class="input-group-prepend">
-                                                <button class="btn btn-dark btn-sm" id="plus-btn"><i class="fa fa-plus"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>$50</td>
-                    </tr> */}
-                    
                 </tbody>
             </table>
+
             <div class="card border-light mt-3 mb-3" style={{maxWidth:  "30rem", marginLeft: "auto"}}>
                 <div className='card-body row fw-bold' style={{fontSize: "20px"}}>
                     <div className='col-md-8'>
@@ -133,6 +134,15 @@ export default function Cart() {
                     </div>
                 </div>
             </div>
+            </div>
+                : <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    
+                    <img src="/assets/empty-cart.svg" alt="Empty cart" style={{ width: "400px", height: "400px" }} />
+                    <p class="font-weight-bold">Your cart is empty</p>
+                    <p class="text-secondary">Looks like you haven't selected anything yet!</p>
+                  </div>
+            }
+
         </div>
 
         
