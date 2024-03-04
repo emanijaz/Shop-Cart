@@ -49,7 +49,10 @@ const cartSlice = createSlice({
         },
         deleteItemFromCart(state, action){
             const productToRemove = action.payload;
-            state.productsList = state.productsList.filter(product => product.id !== productToRemove.id);
+            const existingProduct = state.productsList.find((product)=> product.id === productToRemove.id);
+            state.totalPrice -= existingProduct.price*existingProduct.quantity;
+            state.totalQuantity -= existingProduct.quantity;
+            state.productsList = state.productsList.filter(product => product.id !== productToRemove.id); // update product list
         },
         setShowCart(state){
             state.showCart = true;

@@ -40,12 +40,6 @@ export default function Navbar() {
             </li>
           
           </ul>
-          {/* <form className="d-flex" role="search">
-            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-            <button className="btn btn-outline-primary" type="submit">Search</button>
-          </form> */}
-          {/* <button type="button" className="btn btn-outline-dark mx-2"><i className="fa fa-sign-in me-1" aria-hidden="true"></i>Login</button>
-          <button type="button" className="btn btn-outline-dark me-2"><i className="fa fa-user-plus me-1" aria-hidden="true"></i>Register</button> */}
           <Link to="/cart">
             <button style={{fontSize: "20px"}} type="button" className="btn btn-light">
               
