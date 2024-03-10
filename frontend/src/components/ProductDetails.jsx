@@ -8,6 +8,9 @@ import { useDispatch } from 'react-redux';
 import { cartActions } from '../store/cartslice';
 import TextField from '@mui/material/TextField';
 import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
 
 export default function ProductDetails() {
     const { id } = useParams();
@@ -19,20 +22,21 @@ export default function ProductDetails() {
     const [reviewRating, setReviewRating] = useState(0);
     const [alertMessage, setAlertMessage] = useState('');
     const [showAlert, setShowAlert] = useState(false);
+    const [alertSeverity, setAlertSeverity] = useState('');
 
-    const [alertColor, setAlertColor] = useState('success');
     const dispatch = useDispatch();
 
     const handleQuantityChange = (event) => {
         const newQuantity = parseInt(event.target.value);
-        console.log('stock: ', product.stock)
         if (newQuantity >= 1 && newQuantity <= product.stock) {
-            console.log('setting new quant')
             setProductQuantity(newQuantity);
+            setAlertSeverity('');
             setShowAlert(false);
         }
         else{
             setShowAlert(true);
+            setAlertSeverity('error');
+            setAlertMessage("Please enter a quantity between 1 and "+product.stock);
         }
 
     };
@@ -46,6 +50,15 @@ export default function ProductDetails() {
             stock: product.stock,
             url: product.images[0].url
         }));
+        setAlertMessage('Product added to cart successfully');
+        setAlertSeverity('success');
+        setShowAlert(true);
+        setTimeout(() => {
+            setAlertMessage('');
+            setShowAlert(false);
+            setAlertSeverity('');
+          }, 2000);
+        
     };
     const handleSubmit = async (event) => {
         event.preventDefault() // prevent page from getting reloaded on submitting form
@@ -73,20 +86,30 @@ export default function ProductDetails() {
             if(response.status === 200){
                 setProduct(updatedProduct);
                 setAlertMessage('Review Published successfully');
-                setAlertColor('success');
+                setAlertSeverity('success');
+                setShowAlert(true);
+
             }
             else{
                 setAlertMessage('Failed publishing review');
-                setAlertColor('danger');
+                setShowAlert(true);
+                setAlertSeverity('error');
+
             }
         } catch (error) {
             setAlertMessage("Failed publishing review");
-            setAlertColor('danger');
+            setShowAlert(true);
+            setAlertSeverity('error');
+
         } finally {
             setTimeout(() => {
               setAlertMessage('');
+              setShowAlert(false);
+              setAlertSeverity('');
+
             }, 2000);
         }
+
     }
     useEffect(()=> {
 
@@ -102,41 +125,11 @@ export default function ProductDetails() {
         }
         getProductDetails();
     })
-
-    const addProductQuantity = () =>{
-        console.log(product.stock)
-        if(productQuantity < product.stock){
-            setProductQuantity(productQuantity+1);
-        }
-    }
-    const decreaseProductQuantity = () =>{
-        if(productQuantity >1){
-            setProductQuantity(productQuantity-1);
-
-        }
-    }
-    // const handleFocus = () => {
-    //     // Store the original quantity when the input field gains focus
-    //     setOriginalQuantity(productQuantity);
-    // };
-
-    const handleBlur = () => {
-        // Reset the quantity to the original value if the entered value is invalid
-        if (productQuantity < 1 || productQuantity > product.stock) {
-            setProductQuantity(1);
-        }
-    };
-
     return (
     <>
         <Navbar />
-        {alertMessage && (
-            <div className={`alert alert-${alertColor}`} role="alert">
-            {alertMessage}
-            </div>
-        )}
         {showAlert && (
-                <Alert severity="error">Please enter a quantity between 1 and {product.stock}.</Alert>
+                <Alert severity={alertSeverity}>{alertMessage}</Alert>    
         )}
         {product && 
             <div className="container py-3">
@@ -150,13 +143,6 @@ export default function ProductDetails() {
 
                         <p className="card-text display-6 fw-bold" style={{fontSize: "20px"}}>{product.price}$</p>
                         <p style={{marginTop: "5%"}}><b>Quantity</b></p>
-                        {/* <div class="input-group-prepend mr-3">
-                            <button onClick={decreaseProductQuantity}class="btn btn-dark btn-sm" id="minus-btn"><i class="fa fa-minus"></i></button>
-                        </div>
-                        <input type="text" class="form-control form-control-sm" value={productQuantity} placeholder={`Stock Available: ${product.stock}`} min="1" max={`${product.stock}`} disabled/>
-                        <div class="input-group-append ml-3">
-                            <button onClick={addProductQuantity} class="btn btn-dark btn-sm" id="plus-btn"><i class="fa fa-plus"></i></button>
-                        </div> */}
                         <TextField
                             id="outlined-number"
                             label="Number"
@@ -167,14 +153,14 @@ export default function ProductDetails() {
                             min="1"
                             max={product.stock}
                             onChange={handleQuantityChange}
-                            // onFocus={handleFocus}
-                            onBlur={handleBlur}
-                            
+                            placeholder={`Stock Available: ${product.stock}`}
+                            size="small"
                         />
-                        {/* <input onChange={e=>{setProductQuantity(e.target.value)}} type="number" id="quantity" name="quantity" placeholder={`Stock Available: ${product.stock}`} min="1" max={product.stock} /> */}
-                        
-                        <button onClick={addToCart} type="button" className="btn btn-sm btn-outline-dark mx-2">Add to Cart</button>
-
+                        <div style={{marginTop: "2%"}}>
+                        <Button onClick={addToCart} style={{backgroundColor: "black"}} variant="contained" endIcon={<ShoppingCartIcon />}>
+                            Add To Cart
+                        </Button>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
