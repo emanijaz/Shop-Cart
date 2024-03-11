@@ -10,6 +10,7 @@ import TextField from '@mui/material/TextField';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Footer from './Footer';
 
 
 export default function ProductDetails() {
@@ -246,7 +247,10 @@ export default function ProductDetails() {
                     </div>
                 </div>
             </div>
+
         }
+        <Footer /> 
+
     </>
     )
 }
