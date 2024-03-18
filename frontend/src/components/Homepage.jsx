@@ -109,7 +109,7 @@ export default function Homepage() {
                             <Slider />
                             { products ? 
                             <div className="container py-3" >
-                                <h3 className='d-md-flex justify-content-center mt-5 mb-3'>All Products </h3>
+                                <h3 className='d-md-flex justify-content-center mt-5 mb-3'>Featured Products </h3>
                                     {allProducts()}
                             </div> : 
                             

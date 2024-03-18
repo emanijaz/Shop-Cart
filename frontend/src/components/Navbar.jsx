@@ -4,14 +4,14 @@ import { useSelector } from 'react-redux';
 export default function Navbar() {
   const totalQuantity = useSelector(state=> state.cart.totalQuantity);
 
-  const scrollToProducts = (event) => {
-    event.preventDefault(); // Prevent the default anchor link behavior
+  // const scrollToProducts = (event) => {
+  //   event.preventDefault(); // Prevent the default anchor link behavior
     
-    const productsElement = document.getElementById('products');
-    if (productsElement) {
-      productsElement.scrollIntoView({ behavior: 'smooth' }); // Scroll to the target element
-    }
-  };
+  //   const productsElement = document.getElementById('products');
+  //   if (productsElement) {
+  //     productsElement.scrollIntoView({ behavior: 'smooth' }); // Scroll to the target element
+  //   }
+  // };
   const scrollToContacts = (event) => {
     event.preventDefault(); // Prevent the default anchor link behavior
     
@@ -33,7 +33,8 @@ export default function Navbar() {
               <Link className="nav-link active" aria-current="page" to="/">Home</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#products" onClick={scrollToProducts}>Products</a>
+              {/* <a className="nav-link active" aria-current="page" href="#products" onClick={scrollToProducts}>Products</a> */}
+              <Link className="nav-link active" aria-current="page" to="/product-lists">Products</Link>
             </li>
             <li className="nav-item">
               <a className="nav-link active" aria-current="page" href="#contacts" onClick={scrollToContacts}>Contact</a>
