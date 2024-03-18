@@ -33,7 +33,6 @@ export default function Navbar() {
               <Link className="nav-link active" aria-current="page" to="/">Home</Link>
             </li>
             <li className="nav-item">
-              {/* <a className="nav-link active" aria-current="page" href="#products" onClick={scrollToProducts}>Products</a> */}
               <Link className="nav-link active" aria-current="page" to="/product-lists">Products</Link>
             </li>
             <li className="nav-item">
