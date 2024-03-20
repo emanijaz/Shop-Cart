@@ -16,6 +16,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShirt, faShoppingBag, faRing, faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -26,7 +28,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function ProductList() {
-    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState('Mobile');
     const [selectedPrices, setSelectedPrices] = useState([]);
     const [products, setProducts] = useState([]);
 
@@ -35,24 +37,39 @@ export default function ProductList() {
         setSelectedCategory(item);
     };
 
+    // const handlePriceItemClick = (item) => {
+    //     const selectedIndex = selectedPrices.indexOf(item.range);
+    //     let newSelected = [];
+
+    //     if (selectedIndex === -1) {
+    //         newSelected = newSelected.concat(selectedPrices, item.range);
+    //         console.log(newSelected)
+    //     } else if (selectedIndex === 0) {
+    //         newSelected = newSelected.concat(selectedPrices.slice(1));
+    //     } else if (selectedIndex === selectedPrices.length - 1) { // removing last element
+    //         newSelected = newSelected.concat(selectedPrices.slice(0, -1));
+    //     } else if (selectedIndex > 0) {   // removing any element other than last and first
+    //         newSelected = newSelected.concat(
+    //             selectedPrices.slice(0, selectedIndex),
+    //             selectedPrices.slice(selectedIndex + 1)
+    //         );
+    //     }
+
+    //     setSelectedPrices(newSelected);
+    // };
     const handlePriceItemClick = (item) => {
-        const selectedIndex = selectedPrices.indexOf(item.id);
+        console.log(item)
+        const selectedIndex = selectedPrices.findIndex(priceRange => JSON.stringify(priceRange) === JSON.stringify(item.range));
         let newSelected = [];
-
+    
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selectedPrices, item.id);
-            console.log(newSelected)
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selectedPrices.slice(1));
-        } else if (selectedIndex === selectedPrices.length - 1) { // removing last element
-            newSelected = newSelected.concat(selectedPrices.slice(0, -1));
-        } else if (selectedIndex > 0) {   // removing any element other than last and first
-            newSelected = newSelected.concat(
-                selectedPrices.slice(0, selectedIndex),
-                selectedPrices.slice(selectedIndex + 1)
-            );
+            // If the range is not already selected, add it to the selectedPrices array
+            newSelected = [...selectedPrices, item.range];
+        } else {
+            // If the range is already selected, remove it from the selectedPrices array
+            newSelected = selectedPrices.filter((range, index) => index !== selectedIndex);
         }
-
+    
         setSelectedPrices(newSelected);
     };
 
@@ -69,8 +86,10 @@ export default function ProductList() {
                                         <div className="card-body">
                                             <p className="card-text" style={{ fontSize: "16px" }}>{product.name}</p>
                                             <p className="card-text" style={{ fontSize: "18px" }}><i className="fa fa-solid fa-tags me-1"></i>{product.price}</p>
-                                            
-                                        </div>
+                                            <Link to={`/product/${product._id}`} key={product._id} className='col-md-3 mt-3 mb-1'>
+                                                <Button size="small" style={{ color: 'black', borderColor: 'black' }} variant="outlined">Add to Cart</Button>
+                                            </Link>
+                                        </div>  
                                         </div>
                             </Item>
                     </Grid>
@@ -83,7 +102,9 @@ export default function ProductList() {
                                         <div className="card-body">
                                             <p className="card-text" style={{ fontSize: "16px" }}>{nextProduct.name}</p>
                                             <p className="card-text" style={{ fontSize: "18px" }}><i className="fa fa-solid fa-tags me-1"></i>{nextProduct.price}</p>
-                                            
+                                            <Link to={`/product/${nextProduct._id}`} key={product._id} className='col-md-3 mt-3 mb-1'>
+                                                <Button size="small" style={{ color: 'black', borderColor: 'black' }} variant="outlined">Add to Cart</Button>
+                                            </Link>
                                         </div>
                                         </div>
                             </Item>
@@ -100,7 +121,6 @@ export default function ProductList() {
         const fetchAllProducts = async()=>{
             try{
                 const token = localStorage.getItem('token');
-                console.log(token)
                 const response = await fetch('http://localhost:5000/products/',{
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -109,7 +129,18 @@ export default function ProductList() {
                 const data = await response.json();
                 if(data.success){
                     console.log(data.products)
-                    setProducts(data.products);
+                    const filteredProducts = data.products.filter(product => {
+                        console.log(product.category)
+                        console.log(selectedCategory.text)
+                        console.log(product.category === selectedCategory.text)
+                        const categoryMatch = selectedCategory ? product.category === selectedCategory.text : true;
+                        
+                        // const priceMatch = selectedPrices.length === 0 || selectedPrices.includes(product.price);
+                        // console.log(priceMatch)
+                        return categoryMatch;
+                    });
+                    console.log('filtered prods: ', filteredProducts)
+                    setProducts(filteredProducts);
                 }
             }
             catch(error){
@@ -118,7 +149,7 @@ export default function ProductList() {
         }
 
         fetchAllProducts();
-    },[])
+    },[selectedCategory,selectedPrices])
 
     return (
         <>
@@ -138,11 +169,11 @@ export default function ProductList() {
                                     
                                 >
                                     {[
-                                    { id: 1, icon: <PhoneAndroidIcon fontSize="small" />, text: 'Mobiles' },
-                                    { id: 2, icon: <FontAwesomeIcon icon={faShirt} />, text: 'Shirts' },
-                                    { id: 3, icon: <FontAwesomeIcon icon={faShoppingBag} />, text: 'Bags' },
-                                    { id: 4, icon: <FontAwesomeIcon icon={faShoePrints} />, text: 'Shoes' },
-                                    { id: 5, icon: <FontAwesomeIcon icon={faRing} />, text: 'Rings' },
+                                    { id: 1, icon: <PhoneAndroidIcon fontSize="small" />, text: 'Mobile' },
+                                    { id: 2, icon: <FontAwesomeIcon icon={faShirt} />, text: 'Shirt' },
+                                    { id: 3, icon: <FontAwesomeIcon icon={faShoppingBag} />, text: 'Bag' },
+                                    { id: 4, icon: <FontAwesomeIcon icon={faShoePrints} />, text: 'Shoe' },
+                                    { id: 5, icon: <FontAwesomeIcon icon={faRing} />, text: 'Ring' },
                                     ].map((item) => (
                                     <ListItemButton
                                         key={item.id}
@@ -172,11 +203,11 @@ export default function ProductList() {
                                     aria-labelledby="nested-list-subheader"
                                 >
                                     {[
-                                    { id: 1, text: 'less than $100' },
-                                    { id: 2, text: '$100 - $200' },
-                                    { id: 3, text: '$200 - $350' },
-                                    { id: 4, text: '$350 - $500' },
-                                    { id: 5, text: '$500 - $1200' },
+                                    { id: 1, range: [0,100] },
+                                    { id: 2, range: [100,200] },
+                                    { id: 3, range: [200,350] },
+                                    { id: 4, range: [350,500] },
+                                    { id: 5, range: [500,1200] },
                                     ].map((item) => (
                                     <ListItemButton
                                         key={item.id}
@@ -195,7 +226,7 @@ export default function ProductList() {
                                                 variant="body2"
                                                 style={{color: selectedPrices.includes(item.id) ? 'black' : 'grey', }}
                                             >
-                                                {item.text}
+                                                ${item.range[0]} - ${item.range[1]} 
                                             </Typography>
                                         </ListItemText>
                                     </ListItemButton>
@@ -208,7 +239,7 @@ export default function ProductList() {
                                 <Grid container sx={{ border: 'none' }}>
                                     <FormRow />
                                 </Grid>
-                            ) : null}
+                            ) : <p>No products found</p>}
                         </Grid>
                         
                     </Grid>
