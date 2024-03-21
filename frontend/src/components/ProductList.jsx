@@ -16,6 +16,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShirt, faShoppingBag, faRing, faShoePrints } from '@fortawesome/free-solid-svg-icons';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -26,58 +28,58 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function ProductList() {
-    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState({'text': 'Mobile'});
     const [selectedPrices, setSelectedPrices] = useState([]);
     const [products, setProducts] = useState([]);
 
     const handleCategoryItemClick = (item) => {
-        console.log(item)
         setSelectedCategory(item);
     };
 
     const handlePriceItemClick = (item) => {
-        const selectedIndex = selectedPrices.indexOf(item.id);
+        const isSelected = selectedPrices.some(priceRange => 
+            JSON.stringify(priceRange) === JSON.stringify(item.range)
+        );
+        
         let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selectedPrices, item.id);
-            console.log(newSelected)
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selectedPrices.slice(1));
-        } else if (selectedIndex === selectedPrices.length - 1) { // removing last element
-            newSelected = newSelected.concat(selectedPrices.slice(0, -1));
-        } else if (selectedIndex > 0) {   // removing any element other than last and first
-            newSelected = newSelected.concat(
-                selectedPrices.slice(0, selectedIndex),
-                selectedPrices.slice(selectedIndex + 1)
-            );
+        if (!isSelected) {
+            // If the range is not already selected, add it to the selectedPrices array
+            newSelected = [...selectedPrices, item.range];
+        } else {
+            // If the range is already selected, remove it from the selectedPrices array
+            newSelected = selectedPrices.filter(priceRange => {
+                return JSON.stringify(priceRange) !== JSON.stringify(item.range)
+            });   
+        
         }
-
         setSelectedPrices(newSelected);
     };
 
 
     function FormRow() {   
         return products.map((product, index) => {
-            if (index % 3 === 0) {
+            if (index % 4 === 0) {
                 return (
-                <React.Fragment>
-                    <Grid item xs={4} sx={{ border: 'none' }}>
+                <React.Fragment className="border-0">
+                    <Grid item xs={4} className='border-0'>
                             <Item>
-                                        <div className="card h-100 text-center border-0" style={{ width: "18rem" }}>
+                                <Link to={`/product/${product._id}`} key={product._id} className='col-md-3 mt-3 mb-1' style={{textDecoration: "none"}}>
+                                    <div className="card h-100 text-center border-0" style={{ width: "18rem" }}>
                                         <img className="card-img-top mt-3" src={`/assets/${product.images[0].url}`} alt="Android 1" style={{ height: "250px" }} />
                                         <div className="card-body">
                                             <p className="card-text" style={{ fontSize: "16px" }}>{product.name}</p>
                                             <p className="card-text" style={{ fontSize: "18px" }}><i className="fa fa-solid fa-tags me-1"></i>{product.price}</p>
                                             
-                                        </div>
-                                        </div>
+                                        </div>  
+                                    </div>
+                                </Link>
                             </Item>
                     </Grid>
     
-                    {products.slice(index + 1, index + 3).map((nextProduct) => (
-                        <Grid item xs={4} sx={{ border: 'none' }}>
+                    {products.slice(index + 1, index + 4).map((nextProduct) => (
+                        <Grid id={nextProduct._id} item xs={4} className='border-0'>
                             <Item>
+                                    <Link to={`/product/${nextProduct._id}`} key={product._id} className='col-md-3 mt-3 mb-1' style={{textDecoration: "none"}}>
                                         <div className="card h-100 text-center border-0" style={{ width: "18rem" }}>
                                         <img className="card-img-top mt-3" src={`/assets/${nextProduct.images[0].url}`} alt="Android 1" style={{ height: "250px" }} />
                                         <div className="card-body">
@@ -86,6 +88,7 @@ export default function ProductList() {
                                             
                                         </div>
                                         </div>
+                                    </Link>
                             </Item>
                         </Grid>
                     ))}
@@ -100,7 +103,6 @@ export default function ProductList() {
         const fetchAllProducts = async()=>{
             try{
                 const token = localStorage.getItem('token');
-                console.log(token)
                 const response = await fetch('http://localhost:5000/products/',{
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -108,8 +110,14 @@ export default function ProductList() {
                 });
                 const data = await response.json();
                 if(data.success){
-                    console.log(data.products)
-                    setProducts(data.products);
+                    const filteredProducts = data.products.filter(product => {
+                        const categoryMatch = selectedCategory ? product.category === selectedCategory.text : true;
+                        const priceMatch = selectedPrices.length === 0 || selectedPrices.some(priceRange => {
+                            return product.price >= priceRange[0] && product.price <= priceRange[1];
+                        });
+                        return categoryMatch && priceMatch;
+                    });
+                    setProducts(filteredProducts);
                 }
             }
             catch(error){
@@ -118,15 +126,15 @@ export default function ProductList() {
         }
 
         fetchAllProducts();
-    },[])
+    },[selectedCategory,selectedPrices])
 
     return (
         <>
             <Navbar />
             <Container maxWidth="30">
                 <h3 className='d-md-flex justify-content-center mt-5 mb-3'>Product List </h3>
-                <Box sx={{  height: '100vh', padding: '2%', flexGrow: 1}}>
-                    <Grid container spacing={3} columns={16}>
+                <Box sx={{  height: '100vh', paddingTop: '2%', px: "5%", flexGrow: 1}}>
+                    <Grid container spacing={6} columns={12}>
                         <Grid item xs={3}>
                             <Item>
                                 <Typography variant="h6">Categories</Typography>
@@ -138,11 +146,11 @@ export default function ProductList() {
                                     
                                 >
                                     {[
-                                    { id: 1, icon: <PhoneAndroidIcon fontSize="small" />, text: 'Mobiles' },
-                                    { id: 2, icon: <FontAwesomeIcon icon={faShirt} />, text: 'Shirts' },
-                                    { id: 3, icon: <FontAwesomeIcon icon={faShoppingBag} />, text: 'Bags' },
-                                    { id: 4, icon: <FontAwesomeIcon icon={faShoePrints} />, text: 'Shoes' },
-                                    { id: 5, icon: <FontAwesomeIcon icon={faRing} />, text: 'Rings' },
+                                    { id: 1, icon: <PhoneAndroidIcon fontSize="small" />, text: 'Mobile' },
+                                    { id: 2, icon: <FontAwesomeIcon icon={faShirt} />, text: 'Shirt' },
+                                    { id: 3, icon: <FontAwesomeIcon icon={faShoppingBag} />, text: 'Bag' },
+                                    { id: 4, icon: <FontAwesomeIcon icon={faShoePrints} />, text: 'Shoe' },
+                                    { id: 5, icon: <FontAwesomeIcon icon={faRing} />, text: 'Ring' },
                                     ].map((item) => (
                                     <ListItemButton
                                         key={item.id}
@@ -172,20 +180,20 @@ export default function ProductList() {
                                     aria-labelledby="nested-list-subheader"
                                 >
                                     {[
-                                    { id: 1, text: 'less than $100' },
-                                    { id: 2, text: '$100 - $200' },
-                                    { id: 3, text: '$200 - $350' },
-                                    { id: 4, text: '$350 - $500' },
-                                    { id: 5, text: '$500 - $1200' },
+                                    { id: 1, range: [0,100] },
+                                    { id: 2, range: [100,200] },
+                                    { id: 3, range: [200,350] },
+                                    { id: 4, range: [350,500] },
+                                    { id: 5, range: [500,1200] },
                                     ].map((item) => (
                                     <ListItemButton
                                         key={item.id}
                                         onClick={() => handlePriceItemClick(item)}
-                                        style={{ color: selectedPrices.includes(item.id) ? 'black' : 'grey',  }}
-                                    >
+                                        style={{ color: selectedPrices.some(priceRange => JSON.stringify(priceRange) === JSON.stringify(item.range)) ? 'black' : 'grey',  }}>
                                         <ListItemIcon>
                                             <Checkbox
-                                                checked={selectedPrices.includes(item.id)}
+                                                checked={selectedPrices.some(priceRange => 
+                                                    JSON.stringify(priceRange) === JSON.stringify(item.range))}
                                                 onChange={() => handlePriceItemClick(item)}
                                                 size="small"
                                             />
@@ -193,9 +201,10 @@ export default function ProductList() {
                                         <ListItemText>
                                             <Typography
                                                 variant="body2"
-                                                style={{color: selectedPrices.includes(item.id) ? 'black' : 'grey', }}
+                                                style={{color: selectedPrices.some(priceRange => 
+                                                    JSON.stringify(priceRange) === JSON.stringify(item.range)) ? 'black' : 'grey', }}
                                             >
-                                                {item.text}
+                                                ${item.range[0]} - ${item.range[1]} 
                                             </Typography>
                                         </ListItemText>
                                     </ListItemButton>
@@ -205,10 +214,10 @@ export default function ProductList() {
                         </Grid>
                         <Grid item xs={9}>
                             {products ? (
-                                <Grid container sx={{ border: 'none' }}>
+                                <Grid container>
                                     <FormRow />
                                 </Grid>
-                            ) : null}
+                            ) : <p>No products found</p>}
                         </Grid>
                         
                     </Grid>
