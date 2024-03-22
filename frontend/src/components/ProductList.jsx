@@ -17,7 +17,7 @@ import { faShirt, faShoppingBag, faRing, faShoePrints } from '@fortawesome/free-
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
+import ProductSkeleton from './ProductSkeleton';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -31,6 +31,7 @@ export default function ProductList() {
     const [selectedCategory, setSelectedCategory] = useState({ id: 1, icon: <PhoneAndroidIcon fontSize="small" />, text: 'Mobile' });
     const [selectedPrices, setSelectedPrices] = useState([]);
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const handleCategoryItemClick = (item) => {
         setSelectedCategory(item);
@@ -57,6 +58,8 @@ export default function ProductList() {
 
 
     function FormRow() {   
+        
+        
         return products.map((product, index) => {
             if (index % 4 === 0) {
                 return (
@@ -97,6 +100,7 @@ export default function ProductList() {
             }
             return null;
         })
+        
     }
 
     useEffect(()=> {
@@ -117,6 +121,7 @@ export default function ProductList() {
                         });
                         return categoryMatch && priceMatch;
                     });
+                    setLoading(false);
                     console.log('filtered prods: ', filteredProducts)
                     setProducts(filteredProducts);
                     
@@ -130,6 +135,31 @@ export default function ProductList() {
         fetchAllProducts();
     },[selectedCategory,selectedPrices])
 
+    if (loading) {
+        return (
+            <div>
+                <Container maxWidth="30">
+                    <Box sx={{  height: '100vh', paddingTop: '2%', px: "5%", flexGrow: 1}}>
+                        <Grid container spacing={6} columns={12}>
+                            {[...Array(8)].map((_, index) => (
+                                <Grid key={index} item xs={4} className='border-0'>
+                                    <Grid item xs={9}>
+                            
+                                        <Grid container>
+                                            <Item>
+                                                <ProductSkeleton key={index} />
+                                            </Item>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            ))
+                            }
+                        </Grid>
+                    </Box>
+                </Container>
+            </div>
+        );
+    }
     return (
         <>
             <Navbar />
@@ -226,7 +256,11 @@ export default function ProductList() {
                                             <p className="font-weight-bold">No products found</p> {/* Show loading message */}
                                         </div> 
                                 }
-                                <FormRow />
+                                {
+                                    products.length > 0 && (
+                                
+                                    <FormRow /> )
+                                }
                                 
                                 </Grid>
                             
