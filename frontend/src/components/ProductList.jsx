@@ -17,7 +17,7 @@ import { faShirt, faShoppingBag, faRing, faShoePrints } from '@fortawesome/free-
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
+import ProductSkeleton from './ProductSkeleton';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -28,9 +28,10 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function ProductList() {
-    const [selectedCategory, setSelectedCategory] = useState({'text': 'Mobile'});
+    const [selectedCategory, setSelectedCategory] = useState({ id: 1, icon: <PhoneAndroidIcon fontSize="small" />, text: 'Mobile' });
     const [selectedPrices, setSelectedPrices] = useState([]);
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const handleCategoryItemClick = (item) => {
         setSelectedCategory(item);
@@ -57,10 +58,12 @@ export default function ProductList() {
 
 
     function FormRow() {   
+        
+        
         return products.map((product, index) => {
             if (index % 4 === 0) {
                 return (
-                <React.Fragment className="border-0">
+                <React.Fragment>
                     <Grid item xs={4} className='border-0'>
                             <Item>
                                 <Link to={`/product/${product._id}`} key={product._id} className='col-md-3 mt-3 mb-1' style={{textDecoration: "none"}}>
@@ -97,6 +100,7 @@ export default function ProductList() {
             }
             return null;
         })
+        
     }
 
     useEffect(()=> {
@@ -117,7 +121,10 @@ export default function ProductList() {
                         });
                         return categoryMatch && priceMatch;
                     });
+                    setLoading(false);
+                    console.log('filtered prods: ', filteredProducts)
                     setProducts(filteredProducts);
+                    
                 }
             }
             catch(error){
@@ -128,6 +135,31 @@ export default function ProductList() {
         fetchAllProducts();
     },[selectedCategory,selectedPrices])
 
+    if (loading) {
+        return (
+            <div>
+                <Container maxWidth="30">
+                    <Box sx={{  height: '100vh', paddingTop: '2%', px: "5%", flexGrow: 1}}>
+                        <Grid container spacing={6} columns={12}>
+                            {[...Array(8)].map((_, index) => (
+                                <Grid key={index} item xs={4} className='border-0'>
+                                    <Grid item xs={9}>
+                            
+                                        <Grid container>
+                                            <Item>
+                                                <ProductSkeleton key={index} />
+                                            </Item>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            ))
+                            }
+                        </Grid>
+                    </Box>
+                </Container>
+            </div>
+        );
+    }
     return (
         <>
             <Navbar />
@@ -155,7 +187,7 @@ export default function ProductList() {
                                     <ListItemButton
                                         key={item.id}
                                         onClick={() => handleCategoryItemClick(item)}
-                                        style={{ color: selectedCategory && selectedCategory.id === item.id ? 'black' : 'grey',  }}
+                                        style={{ color: selectedCategory && selectedCategory.id === item.id ? 'black' : 'grey', fontWeight: selectedCategory && selectedCategory.id === item.id ? "bold" : "normal"  }}
                                     >
                                         <ListItemIcon>{item.icon}</ListItemIcon>
                                         <ListItemText>
@@ -213,11 +245,25 @@ export default function ProductList() {
                             </Item>
                         </Grid>
                         <Grid item xs={9}>
-                            {products ? (
+                            
                                 <Grid container>
-                                    <FormRow />
+                                
+                                
+                                
+                                { products.length === 0 &&
+                                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "10%" }}>
+                                            <img src="/assets/noProduct.jpg" alt="No Products found" style={{ width: "400px", height: "400px" }} />
+                                            <p className="font-weight-bold">No products found</p> {/* Show loading message */}
+                                        </div> 
+                                }
+                                {
+                                    products.length > 0 && (
+                                
+                                    <FormRow /> )
+                                }
+                                
                                 </Grid>
-                            ) : <p>No products found</p>}
+                            
                         </Grid>
                         
                     </Grid>
