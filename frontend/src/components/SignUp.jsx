@@ -3,6 +3,8 @@ import {useState} from  'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../store/authSlice';
+import Alert from '@mui/material/Alert';
+
 const gradientStyle = {
     background: '#fccb90',
 
@@ -22,7 +24,8 @@ export default function SignUp() {
 
     let [existingAccount, setExistingAccount] = useState(true);
     const [alertMessage, setAlertMessage] = useState('');
-    const [alertColor, setAlertColor] = useState('success');
+    const [alertSeverity, setAlertSeverity] = useState('');
+    const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({
@@ -46,22 +49,27 @@ export default function SignUp() {
           
           if(response.status === 201){
             setAlertMessage('Account created successfully');
-            setAlertColor('success');
+            setAlertSeverity('success');
+            setShowAlert(true);
             dispatch(authActions.login())
             navigate('/');
           }
           else{
             setAlertMessage('Couldnt create account, Try new credentials');
-            setAlertColor('danger');
+            setAlertSeverity('danger');
+            setShowAlert(true);
           }
           
         } catch (error) {
           setAlertMessage('Couldnt create account, Retry');
-          setAlertColor('danger');
+          setAlertSeverity('danger');
+          setShowAlert(true);
           console.error('Error:', error.message);
         } finally {
           setTimeout(() => {
             setAlertMessage('');
+            setShowAlert(false);
+            setAlertSeverity('');
           }, 2000);
         }
       }
@@ -79,25 +87,32 @@ export default function SignUp() {
             const responseData = await response.json();
             localStorage.setItem('token', responseData.token);
             setAlertMessage('Login successful');
-            setAlertColor('success');
+            setAlertSeverity('success');
+            setShowAlert(true);
             dispatch(authActions.login())
             setTimeout(() => {
               setAlertMessage('');
+              setShowAlert(false);
+              setAlertSeverity('');
               navigate('/'); // Redirect to homepage after 2 seconds
             }, 2000);
           }
           else{
             setAlertMessage('Login Unsuccessful');
-            setAlertColor('danger');
+            setAlertSeverity('danger');
+            setShowAlert(true);
           }
           
         } catch (error) {
           setAlertMessage('Login Unsuccessful');
-          setAlertColor('danger');
+          setAlertSeverity('danger');
+          setShowAlert(true);
           console.error('Error:', error.message);
         } finally {
           setTimeout(() => {
             setAlertMessage('');
+            setShowAlert(false);
+            setAlertSeverity('');
           }, 2000);
         }
       }
@@ -112,10 +127,9 @@ export default function SignUp() {
   return (
     <div>
     <section className="h-100" style={gradientForm}>
-    {alertMessage && (
-        <div className={`alert alert-${alertColor}`} role="alert">
-          {alertMessage}
-        </div>
+    {showAlert && (
+          <Alert severity={alertSeverity}>{alertMessage}</Alert>    
+
     )}
     <div className="container py-5 h-100">
       <div className="row d-flex justify-content-center align-items-center h-100">
