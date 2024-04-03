@@ -8,13 +8,15 @@ import {useSelector} from 'react-redux';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import '../styles.css'; 
+import { useAuth } from '../context/AuthContext';
 
 export default function Homepage() {
     const [products, setProducts] = useState([]);
     // const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const isLoggedIn = useSelector(state=> state.auth.isLoggedIn);
-    console.log("homepage login : ", isLoggedIn)
+    // const isLoggedIn = useSelector(state=> state.auth.isLoggedIn);
+    // console.log("homepage login : ", isLoggedIn)
     const navigate = useNavigate();
+    const { user, logout } = useAuth();
 
     const gradientForm = {
         '@media (min-width: 768px)': {
@@ -98,7 +100,7 @@ export default function Homepage() {
 
     return (
         <>
-        {isLoggedIn &&
+        {user &&
             
             <div style={gradientForm}>
                 
