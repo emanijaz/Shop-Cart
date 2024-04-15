@@ -17,6 +17,8 @@ export const AuthProvider = ({ children }) => {
                 // console.log('fetch user in auth context: ', response.data)
                 // setUser(response.data);
                 const accessToken = localStorage.getItem('accessToken');
+                const refreshToken = localStorage.getItem('refreshToken');
+
                 console.log("access token in auth context: ", accessToken)
                 if (accessToken) {
                     const response = await axios.get("http://localhost:5000/users/user/", {
@@ -27,8 +29,7 @@ export const AuthProvider = ({ children }) => {
                     });
                     console.log('fetch user in auth context: ', response.data);
                     // setUser(response.data);
-                    console.log(user)
-                    setUser((prevUser) => ({ ...prevUser, accessToken: accessToken }));
+                    setUser({ accessToken: accessToken, refreshToken: refreshToken });
                 } else {
                     console.log('Access token not available');
                 }
@@ -68,6 +69,7 @@ export const AuthProvider = ({ children }) => {
             console.log("refresh token in auth: ", user.refreshToken)
             const response = await axios.post('http://localhost:5000/users/refresh/', { refreshToken: user.refreshToken });
             console.log("new access token: ", response.data.accessToken)
+            localStorage.setItem('accessToken', response.data.accessToken);
             setUser((prevUser) => ({ ...prevUser, accessToken: response.data.accessToken }));
         } catch (error) {
                 console.error(error);

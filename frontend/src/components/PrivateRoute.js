@@ -21,7 +21,11 @@ const PrivateRoute = () => {
             }
         };
 
-        if (user && user.accessToken) {
+        if (user === null) {
+            console.log("user is null in private route, setting loading to true")
+            setIsLoading(true);
+        } else if (user && user.accessToken) {
+            console.log("user is present in private route")
             const tokenExp = new Date(jwtDecode(user.accessToken).exp * 1000);
             const now = new Date();
 
