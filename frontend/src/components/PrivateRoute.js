@@ -1,52 +1,49 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Route, Navigate, Outlet } from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
-const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-// // const secretKey = crypto.randomBytes(32).toString('hex');
-// const secretKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
-
-// const PrivateRoute = ({ component: Component, ...rest }) => {
-//     const { user } = useAuth();
-
-//     return (
-//         <Route
-//             {...rest}
-//             render={(props) => (user ? <Component {...props} /> : <Navigate to="/login" replace={true} />)}
-//         />
-//     );
-// };
-
-// 
-
+import { jwtDecode } from 'jwt-decode';
 
 const PrivateRoute = () => {
 
     const { user, logout, refreshToken } = useAuth();
 
+    // console.log("user in private route", user)
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
         const refresh = async () => {
-        try {
-            await refreshToken();
-        } catch (error) {
-            console.error(error);
-            logout();
-        }
+            try {
+                await refreshToken();
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
         };
 
-        if (user && user.accessToken) {
-        const tokenExp = new Date(jwt.decode(user.accessToken).exp * 1000);
-        const now = new Date();
+        if (user === null) {
+            console.log("user is null in private route, setting loading to true")
+            setIsLoading(true);
+        } else if (user && user.accessToken) {
+            console.log("user is present in private route")
+            const tokenExp = new Date(jwtDecode(user.accessToken).exp * 1000);
+            const now = new Date();
 
-        // Refresh token if it's about to expire
-        if (tokenExp - now < 60 * 1000) {
-            refresh();
+            // Refresh token if it's about to expire
+            if (tokenExp - now < 60 * 1000) {
+                refresh();
+            } else {
+                setIsLoading(false);
+            }
+        } else {
+            setIsLoading(false);
         }
-        }
-    }, [user, refreshToken, logout]);
+    }, [user, refreshToken]);
 
-    // If authorized, return an outlet that will render child elements
-    // If not, return element that will navigate to login page
-    return user && user.accessToken ?<Outlet /> : <Navigate to="/login" />;
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    return user && user.accessToken ?<Outlet /> : <Navigate to="/register" />;
 }
 export default PrivateRoute;

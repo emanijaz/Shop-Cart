@@ -19,26 +19,21 @@ function App() {
         <BrowserRouter>
         <AuthProvider>
             <Routes>
-              {/* <PrivateRoute path="/" element={<Homepage />}/> */}
               <Route exact path='/' element={<PrivateRoute/>}>
                 <Route exact path='/' element={<Homepage/>}/>
               </Route>
-              {/* <PrivateRoute path="/product/:id" element={<ProductDetails />}/> */}
               <Route exact path='/product/:id' element={<PrivateRoute/>}>
                 <Route exact path='/product/:id' element={<ProductDetails/>}/>
               </Route>
 
               <Route path="/register" element={<SignUp />}/>
 
-              {/* <PrivateRoute path="/cart/" element={<Cart />}/> */}
               <Route exact path='/cart' element={<PrivateRoute/>}>
                 <Route exact path='/cart' element={<Cart/>}/>
               </Route>
-              {/* <PrivateRoute path="/product-lists/" element={<ProductList />}/> */}
               <Route exact path='/product-lists' element={<PrivateRoute/>}>
                 <Route exact path='/product-lists' element={<ProductList/>}/>
               </Route>
-
 
 
             </Routes>
