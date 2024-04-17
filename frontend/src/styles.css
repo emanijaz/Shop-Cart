@@ -1,3 +1,23 @@
 .card-hover:hover {
     border: 1px solid black;
 };
+.spinner-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(226, 37, 37, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner-grow {
+    width: 10rem;
+    height: 10rem;
+}
+
+.text-primary {
+    color: #007bff; /* Change this color to match your primary color */
+}

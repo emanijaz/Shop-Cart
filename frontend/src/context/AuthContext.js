@@ -11,11 +11,6 @@ export const AuthProvider = ({ children }) => {
         const fetchUser = async () => {
             try {
                 console.log('fetching user in auth provider')
-                // const response = await axios.get("http://localhost:5000/users/user/", {
-                //     withCredentials: true,
-                // });
-                // console.log('fetch user in auth context: ', response.data)
-                // setUser(response.data);
                 const accessToken = localStorage.getItem('accessToken');
                 const refreshToken = localStorage.getItem('refreshToken');
 
@@ -27,8 +22,6 @@ export const AuthProvider = ({ children }) => {
                         },
                         withCredentials: true,
                     });
-                    console.log('fetch user in auth context: ', response.data);
-                    // setUser(response.data);
                     setUser({ accessToken: accessToken, refreshToken: refreshToken });
                 } else {
                     console.log('Access token not available');
@@ -43,10 +36,21 @@ export const AuthProvider = ({ children }) => {
         fetchUser();
     }, []);
 
+    const register = async (email, password, username) => {
+        try {
+        const response = await axios.post("http://localhost:5000/users/register/", { email, password, username });
+        const { accessToken, refreshToken } = response.data;
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        setUser(response.data);
+        } catch (error) {
+        console.error(error);
+        }
+    };
+
     const login = async (email, password) => {
         try {
         const response = await axios.post("http://localhost:5000/users/login/", { email, password });
-        console.log('response: ', response)
         const { accessToken, refreshToken } = response.data;
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
@@ -59,6 +63,8 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         try {
         await axios.post("http://localhost:5000/users/logout/", {}, { withCredentials: true });
+        localStorage.setItem('accessToken', null);
+        localStorage.setItem('refreshToken', null);
         setUser(null);
         } catch (error) {
         console.error(error);
@@ -66,9 +72,8 @@ export const AuthProvider = ({ children }) => {
     };
     const refreshToken = async () => {
         try {
-            console.log("refresh token in auth: ", user.refreshToken)
+            console.log('in refresh auth context')
             const response = await axios.post('http://localhost:5000/users/refresh/', { refreshToken: user.refreshToken });
-            console.log("new access token: ", response.data.accessToken)
             localStorage.setItem('accessToken', response.data.accessToken);
             setUser((prevUser) => ({ ...prevUser, accessToken: response.data.accessToken }));
         } catch (error) {
@@ -80,9 +85,8 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-          console.log("refrshing token in auth context")
           refreshToken();
-        }, 1 * 60 * 1000); // Refresh every 1 minutes
+        }, 5 * 60 * 1000); // Refresh every 5 minutes
     
         return () => clearInterval(interval);
       }, [user]);
@@ -90,6 +94,7 @@ export const AuthProvider = ({ children }) => {
     const contextValue = {
         user,
         login,
+        register,
         logout,
         refreshToken
     };

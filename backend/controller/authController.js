@@ -14,7 +14,14 @@ exports.signup = catchAsyncError(async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ email: email, password: hashedPassword, username: username });
     await user.save();
-    res.status(201).json({ message: 'Registration successful' });
+    const accessToken = jwt.sign({ userId: user._id, email: user.email }, secretKey, {
+      expiresIn: '15m',
+    });
+    const refreshToken = jwt.sign({ userId: user._id, email: user.email }, secretKey, {
+      expiresIn: '2h',
+    });
+    res.status(201).json({ accessToken, refreshToken });
+    // res.status(201).json({ message: 'Registration successful' });
   } catch (error) {
     return next(new ErrorHandler(500, `${error}. Registration failed`));
   }
@@ -24,14 +31,11 @@ exports.login = catchAsyncError(async(req,res,next)=> {
   console.log('in login')
   try {
     const { email, password } = req.body;
-    console.log(email)
-    console.log(password)
     const user = await User.findOne({ email });
     if (!user) {
       return next(new ErrorHandler(401, "User isn't found for given email"));
     }
     const passwordMatch = await bcrypt.compare(password, user.password);
-    console.log("password match :", passwordMatch)
     if (!passwordMatch) {
       return next(new ErrorHandler(401, "Authentication failed, password didn't match"));
 
@@ -72,7 +76,7 @@ exports.refresh = catchAsyncError(async(req,res,next)=> {
 })
 
 exports.logout = catchAsyncError(async(req,res,next)=> {
-  console.log('in logout')
+  console.log('in logout auth controler')
   // Clear the refresh token on the server
   // You may want to implement additional security measures here
   // such as blacklisting the token
