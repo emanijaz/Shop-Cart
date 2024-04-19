@@ -1,38 +1,20 @@
-// import {createStore} from 'redux';
-
-// const reducerFn =(state = {counter: 20}, action) => {
-//     return state;
-// }
-// const store =createStore(reducerFn);
-
-// export default store;
-
 import {configureStore} from '@reduxjs/toolkit';
-import authSlice from './authSlice';
-import cartSlice from './cartslice';
-// const counterSlice = createSlice({
-//     name: 'counter',
-//     initialState: {counter: 0},
-//     reducers: {
-//         increment(state, action){
-//             return state.counter++;
-//         },
-//         decrement(state, action){
-//             return state.counter--;
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
-//         },
-//         addBy(state, action){
-//             return state.counter+= action.payload;
+import rootReducer from './rootReducer';
 
-//         }
-//     }
-// })
 
-const store=configureStore({
-    reducer: {
-        auth: authSlice.reducer,
-        cart: cartSlice.reducer,
-    }
+const persistConfig = {
+    key: 'root',
+    storage,
+    // Optionally, you can specify a list of reducer keys to persist
+    // whitelist: ['cart'],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store=configureStore({
+    reducer: persistedReducer,
 })
-export default store;
-// export const actions = counterSlice.actions;
+export const persistor = persistStore(store);
