@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
   const totalQuantity = useSelector(state=> state.cart.totalQuantity);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   // const scrollToProducts = (event) => {
   //   event.preventDefault(); // Prevent the default anchor link behavior
@@ -20,6 +24,15 @@ export default function Navbar() {
       contactsElement.scrollIntoView({ behavior: 'smooth' }); // Scroll to the target element
     }
   };
+  const signOut = async () => {
+    console.log('logging out')
+    await logout();
+    setTimeout(() => {
+      navigate('/register'); // Redirect to homepage after 2 seconds
+      }, 5000);
+
+  }
+  
   return(
     <nav className="navbar navbar-expand-lg bg-body-tertiary shadow-sm py-3">
       <div className="container">
@@ -51,7 +64,7 @@ export default function Navbar() {
                 {totalQuantity}
             </span>
           </Link>
-          <button style={{fontSize: "20px"}} type="button" className="btn btn-light"><i className="fa fa-sign-out" aria-hidden="true"></i></button>
+          <button style={{fontSize: "20px"}} type="button" className="btn btn-light" onClick={signOut}><i className="fa fa-sign-out" aria-hidden="true"></i></button>
         </div>
       </div>
     </nav>
