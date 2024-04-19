@@ -76,10 +76,7 @@ exports.refresh = catchAsyncError(async(req,res,next)=> {
 })
 
 exports.logout = catchAsyncError(async(req,res,next)=> {
-  console.log('in logout auth controler')
-  // Clear the refresh token on the server
-  // You may want to implement additional security measures here
-  // such as blacklisting the token
+
   res.sendStatus(204);
 })
 
