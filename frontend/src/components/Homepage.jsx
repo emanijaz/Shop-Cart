@@ -4,16 +4,18 @@ import Slider from './Slider';
 import Footer from './Footer';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import {useSelector} from 'react-redux';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 import '../styles.css'; 
 import { useAuth } from '../context/AuthContext';
+
 
 export default function Homepage() {
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
-    const { user, logout } = useAuth();
+    const { user } = useAuth();
 
     const gradientForm = {
         '@media (min-width: 768px)': {
@@ -104,19 +106,15 @@ export default function Homepage() {
                         
                         <div id="products">
                             <Slider />
-                            { products ? 
-                            <div className="container py-3" >
-                                <h3 className='d-md-flex justify-content-center mt-5 mb-3'>Featured Products </h3>
-                                    {allProducts()}
-                            </div> : 
-                            
-                            <div className='container py-3'>
-                                <h3>Loading Products</h3>
-                            </div>
+                            { products && products.length > 0 ? 
+                                <div className="container py-3" >
+                                    <h3 className='d-md-flex justify-content-center mt-5 mb-3'>Featured Products </h3>
+                                        {allProducts()}
+                                </div> : null
                             
                             }
                         </div>
-                        {products ? null : (
+                        {(!products || products.length === 0) && (
         
                             <div style={{
                                 position: 'fixed',
@@ -130,7 +128,8 @@ export default function Homepage() {
                                 backgroundColor: 'white',
                                 zIndex: 9999,
                                 }}>
-                                <CircularProgress/>
+                                <CircularProgress color="inherit"/>
+
                             </div>
                         )}
                         <div id="contacts">

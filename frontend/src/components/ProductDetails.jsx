@@ -268,7 +268,7 @@ export default function ProductDetails() {
                 backgroundColor: 'white',
                 zIndex: 9999,
                 }}>
-                <CircularProgress/>
+                <CircularProgress color="inherit"/>
             </div>
         )}
         

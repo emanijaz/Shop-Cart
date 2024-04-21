@@ -16,7 +16,6 @@ const PrivateRoute = () => {
                 await refreshToken();
             } catch (error) {
                 console.error(error);
-                // logout();
             } finally {
                 setIsLoading(false);
             }
@@ -41,9 +40,7 @@ const PrivateRoute = () => {
 
     if (isLoading) {
         return (
-            <div class="spinner-grow text-secondary" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
+            <></>
         )
     }
 

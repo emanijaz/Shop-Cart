@@ -36,6 +36,7 @@
     "react-router-dom": "^6.21.1",
     "react-scripts": "^5.0.1",
     "redux": "^5.0.1",
+    "redux-persist": "^6.0.0",
     "stream": "^0.0.2",
     "stream-browserify": "^3.0.0",
     "url": "^0.11.3",
