@@ -19,7 +19,7 @@ export default function Navbar() {
   // };
   const scrollToContacts = (event) => {
     event.preventDefault(); // Prevent the default anchor link behavior
-    
+    navigate('/');
     const contactsElement = document.getElementById('contacts');
     if (contactsElement) {
       contactsElement.scrollIntoView({ behavior: 'smooth' }); // Scroll to the target element
