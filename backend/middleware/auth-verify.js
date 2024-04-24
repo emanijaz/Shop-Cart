@@ -7,10 +7,12 @@ const secretKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkw
 module.exports = (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
+    console.log("token in authverify: ", token)
     if (!token) {
       throw new ErrorHandler(401, 'Token Authentication failed');
     }
     const decodedToken = jwt.verify(token, secretKey);
+    console.log("decoded token : ", decodedToken)
     req.userData = { userId: decodedToken.userId, email: decodedToken.email };
     next();
   } catch (error) {

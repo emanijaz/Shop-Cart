@@ -7,6 +7,9 @@ import ProductDetails from "./components/ProductDetails";
 import SignUp from "./components/SignUp";
 import Cart from "./components/Cart";
 import ProductList from "./components/ProductList";
+import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './components/PrivateRoute';
+
 
 
 function App() {
@@ -14,19 +17,27 @@ function App() {
     <div className="App">
       <header className="App-header">
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Homepage />}/>
-            <Route path="/product/:id" element={<ProductDetails />}/>
+        <AuthProvider>
+            <Routes>
+              <Route exact path='/' element={<PrivateRoute/>}>
+                <Route exact path='/' element={<Homepage/>}/>
+              </Route>
+              <Route exact path='/product/:id' element={<PrivateRoute/>}>
+                <Route exact path='/product/:id' element={<ProductDetails/>}/>
+              </Route>
 
-            <Route path="/register" element={<SignUp />}/>
+              <Route path="/register" element={<SignUp />}/>
 
-            <Route path="/cart/" element={<Cart />}/>
-            <Route path="/product-lists/" element={<ProductList />}/>
+              <Route exact path='/cart' element={<PrivateRoute/>}>
+                <Route exact path='/cart' element={<Cart/>}/>
+              </Route>
+              <Route exact path='/product-lists' element={<PrivateRoute/>}>
+                <Route exact path='/product-lists' element={<ProductList/>}/>
+              </Route>
 
 
-
-
-          </Routes>
+            </Routes>
+          </AuthProvider>
       </BrowserRouter>
       </header>
     </div>

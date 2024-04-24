@@ -1,9 +1,8 @@
 import React from 'react'
 import {useState} from  'react'
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { authActions } from '../store/authSlice';
 import Alert from '@mui/material/Alert';
+import { useAuth } from '../context/AuthContext';
 
 const gradientStyle = {
     background: '#fccb90',
@@ -27,37 +26,30 @@ export default function SignUp() {
     const [alertSeverity, setAlertSeverity] = useState('');
     const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const { login, register } = useAuth();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
         username: '',
       });
-    
     const { email, password, username } = formData;
+    
     const handleSubmit = async (event) => {
       if(!existingAccount){
         event.preventDefault();
         try {
-          const response = await fetch('http://localhost:5000/users/register/', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-          });
-          
-          if(response.status === 201){
-            setAlertMessage('Account created successfully');
+          if (email && password && username) {
+            await register(email, password, username);
+
+            setAlertMessage('Registration successful');
             setAlertSeverity('success');
             setShowAlert(true);
-            dispatch(authActions.login())
-            navigate('/');
-          }
-          else{
-            setAlertMessage('Couldnt create account, Try new credentials');
-            setAlertSeverity('danger');
-            setShowAlert(true);
+            setTimeout(() => {
+            setAlertMessage('');
+            setShowAlert(false);
+            setAlertSeverity('');
+            navigate('/'); // Redirect to homepage after 2 seconds
+            }, 2000);
           }
           
         } catch (error) {
@@ -76,45 +68,34 @@ export default function SignUp() {
       else{  // login
         event.preventDefault();
         try {
-          const response = await fetch('http://localhost:5000/users/login/', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-          });
-          if(response.status === 200){
-            const responseData = await response.json();
-            localStorage.setItem('token', responseData.token);
+          // const { email, password, username } = formData;
+
+          if (email && password) {
+            await login(email, password);
+
             setAlertMessage('Login successful');
             setAlertSeverity('success');
             setShowAlert(true);
-            dispatch(authActions.login())
+            setTimeout(() => {
+            setAlertMessage('');
+            setShowAlert(false);
+            setAlertSeverity('');
+            navigate('/'); // Redirect to homepage after 2 seconds
+            }, 2000);
+          }
+          
+          } catch (error) {
+            setAlertMessage('Login Unsuccessful');
+            setAlertSeverity('danger');
+            setShowAlert(true);
+            console.error('Error:', error.message);
+          } finally {
             setTimeout(() => {
               setAlertMessage('');
               setShowAlert(false);
               setAlertSeverity('');
-              navigate('/'); // Redirect to homepage after 2 seconds
             }, 2000);
           }
-          else{
-            setAlertMessage('Login Unsuccessful');
-            setAlertSeverity('danger');
-            setShowAlert(true);
-          }
-          
-        } catch (error) {
-          setAlertMessage('Login Unsuccessful');
-          setAlertSeverity('danger');
-          setShowAlert(true);
-          console.error('Error:', error.message);
-        } finally {
-          setTimeout(() => {
-            setAlertMessage('');
-            setShowAlert(false);
-            setAlertSeverity('');
-          }, 2000);
-        }
       }
     };
 
