@@ -6,8 +6,6 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
-import LinearProgress from '@mui/material/LinearProgress';
 import '../styles.css'; 
 import { useAuth } from '../context/AuthContext';
 

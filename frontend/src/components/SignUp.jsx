@@ -68,7 +68,6 @@ export default function SignUp() {
       else{  // login
         event.preventDefault();
         try {
-          // const { email, password, username } = formData;
 
           if (email && password) {
             await login(email, password);
@@ -175,14 +174,16 @@ export default function SignUp() {
                             </div>
                         
                         }
-                        <div className="row">
-                                <div className="col-md-12">
-                                    <button type="button" className="btn btn-md btn-google btn-outline-dark">
-                                        <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="sign up with google"/> Signup with Google
-                                    </button>
+                        { existingAccount && 
+                          <div className="row">
+                                  <div className="col-md-12">
+                                      <button type="button" className="btn btn-md btn-google btn-outline-dark">
+                                          <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="sign up with google"/> Signin with Google
+                                      </button>
 
-                                </div>
-                        </div>
+                                  </div>
+                          </div>
+                        }
                   </form>
   
                 </div>
