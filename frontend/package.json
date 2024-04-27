@@ -31,6 +31,7 @@
     "react-avatar": "^5.0.3",
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
+    "react-google-login": "^5.2.2",
     "react-rating": "^2.0.5",
     "react-redux": "^9.0.0-rc.0",
     "react-router-dom": "^6.21.1",

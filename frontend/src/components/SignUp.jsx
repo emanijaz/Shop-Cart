@@ -3,6 +3,7 @@ import {useState} from  'react'
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import { useAuth } from '../context/AuthContext';
+import GoogleLogin from 'react-google-login';
 
 const gradientStyle = {
     background: '#fccb90',
@@ -104,6 +105,21 @@ export default function SignUp() {
         [event.target.name]: event.target.value
       });
     };
+
+    const handleGoogleLogin = async googleData => {  
+      console.log("google data: ", googleData)
+      // const res = await fetch("/api/v1/auth/google", {
+      //     method: "POST",
+      //     body: JSON.stringify({
+      //     token: googleData.tokenId
+      //   }),
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   }
+      // })  
+    // const data = await res.json()
+    // store returned user somehow
+    }
   return (
     <div>
     <section className="h-100" style={gradientForm}>
@@ -177,9 +193,16 @@ export default function SignUp() {
                         { existingAccount && 
                           <div className="row">
                                   <div className="col-md-12">
-                                      <button type="button" className="btn btn-md btn-google btn-outline-dark">
+                                      {/* <button type="button" className="btn btn-md btn-google btn-outline-dark">
                                           <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="sign up with google"/> Signin with Google
-                                      </button>
+                                      </button> */}
+                                      <GoogleLogin
+                                          clientId="189093438619-aqjp61l48qrbsv6okstcldm0a5bnoii0.apps.googleusercontent.com"
+                                          buttonText="Log in with Google"
+                                          onSuccess={handleGoogleLogin}
+                                          onFailure={handleGoogleLogin}
+                                          cookiePolicy={'single_host_origin'}
+                                      />
 
                                   </div>
                           </div>
