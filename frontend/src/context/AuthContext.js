@@ -43,25 +43,65 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (email, password, username) => {
         try {
-        const response = await axios.post("http://localhost:5000/users/register/", { email, password, username });
-        const { accessToken, refreshToken } = response.data;
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        setUser(response.data);
+            const response = await axios.post("http://localhost:5000/users/register/", { email, password, username });
+            if(response.status === 500 || response.status === false){
+                setUser(null);
+                return false;
+            }
+            else if (response.status !== 201) {
+                console.error(`Request failed with status ${response.status}`);
+                return false;
+            }
+            const { accessToken, refreshToken } = response.data;
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
+            setUser(response.data);
+            return true;
         } catch (error) {
-        console.error(error);
+            console.error(error);
+            return false;
         }
     };
 
     const login = async (email, password) => {
         try {
-        const response = await axios.post("http://localhost:5000/users/login/", { email, password });
-        const { accessToken, refreshToken } = response.data;
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        setUser(response.data);
+            const response = await axios.post("http://localhost:5000/users/login/", { email, password });
+            if(response.status === 401 || response.status === false){
+                setUser(null);
+                return false;
+            }
+            else if (response.status !== 200) {
+                console.error(`Request failed with status ${response.status}`);
+                return false;
+            }
+            const { accessToken, refreshToken } = response.data;
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
+            setUser(response.data);
+            return true;
         } catch (error) {
-        console.error(error);
+            console.error(error);
+            return false;
+        }
+    };
+    const googleLogin = async (googleData) => {
+        try {
+            const response = await axios.post("http://localhost:5000/users/google-login/", {
+                token: googleData.credential
+            });
+            if (response.status !== 200) {
+                setUser(null);
+                console.error(`Request failed with status ${response.status}`);
+                return false;
+            }
+            const { accessToken, refreshToken } = response.data;
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
+            setUser(response.data);
+            return true;
+        } catch (error) {
+            console.error(error);
+            return false;
         }
     };
 
@@ -99,6 +139,7 @@ export const AuthProvider = ({ children }) => {
     const contextValue = {
         user,
         login,
+        googleLogin,
         register,
         logout,
         refreshToken
