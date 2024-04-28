@@ -7,6 +7,8 @@ const ErrorHandler = require('../utils/errorHandler');
 // const crypto = require('crypto');
 // const secretKey = crypto.randomBytes(32).toString('hex');
 const secretKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
+const { OAuth2Client } = require('google-auth-library')
+const client = new OAuth2Client("189093438619-aqjp61l48qrbsv6okstcldm0a5bnoii0.apps.googleusercontent.com")
 
 exports.signup = catchAsyncError(async (req, res, next) => {
   try {
@@ -21,14 +23,12 @@ exports.signup = catchAsyncError(async (req, res, next) => {
       expiresIn: '2h',
     });
     res.status(201).json({ accessToken, refreshToken });
-    // res.status(201).json({ message: 'Registration successful' });
   } catch (error) {
     return next(new ErrorHandler(500, `${error}. Registration failed`));
   }
 });
 
 exports.login = catchAsyncError(async(req,res,next)=> {
-  console.log('in login')
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -47,7 +47,6 @@ exports.login = catchAsyncError(async(req,res,next)=> {
       expiresIn: '2h',
     });
     res.status(200).json({ accessToken, refreshToken });
-    // res.status(200).json({ token, user: user });
   } catch (error) {
       return next(new ErrorHandler(500, `Authentication failed , ${error}`));
   }
@@ -98,3 +97,33 @@ exports.user = catchAsyncError(async (req, res, next) => {
       res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+exports.googleLogin = catchAsyncError(async(req,res,next)=> {
+  try {
+    const { token }  = req.body   
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: "189093438619-aqjp61l48qrbsv6okstcldm0a5bnoii0.apps.googleusercontent.com"
+    });
+    const { name, email } = ticket.getPayload();    
+
+
+    let user = await User.findOne({ email });
+    if (!user) {
+      const hashedPassword = await bcrypt.hash(token, 10); // creating user with token set as password
+      const newUser = new User({ email: email, password: hashedPassword, username: name });
+      user = await newUser.save();
+
+    }
+    
+    const accessToken = jwt.sign({ userId: user._id, email: user.email }, secretKey, {
+      expiresIn: '15m',
+    });
+    const refreshToken = jwt.sign({ userId: user._id, email: user.email }, secretKey, {
+      expiresIn: '2h',
+    });
+    res.status(200).json({ accessToken, refreshToken });
+  } catch (error) {
+      return next(new ErrorHandler(500, `Authentication failed , ${error}`));
+  }
+})

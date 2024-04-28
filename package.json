@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "google-auth-library": "^9.9.0",
     "jsonwebtoken": "^8.5.1",
     "nodemon": "^3.0.1"
   },
