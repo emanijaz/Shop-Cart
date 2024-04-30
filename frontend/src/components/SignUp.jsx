@@ -143,7 +143,15 @@ export default function SignUp() {
                         {
                             existingAccount && 
                             <div className="pt-1 mb-3 pb-1 mt-3">
-                                <button type="button" className="btn btn-dark btn-block mx-2" onClick={handleSubmit}>Login</button>
+                                <button 
+                                style={{ 
+                                  display: 'block', 
+                                  width: '100%', 
+                                  padding: '10px', 
+                                  fontSize: '16px', 
+                                  textAlign: 'center'
+                                }}
+                                type="button" className="btn btn-dark btn-block" onClick={handleSubmit}>Login</button>
                             </div>
                         }
                         {

@@ -20,11 +20,16 @@ import { Link } from 'react-router-dom';
 import ProductSkeleton from './ProductSkeleton';
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(2),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    boxShadow: 'none', // Remove box shadow
+    transition: 'background-color 0.3s', // Add transition for smooth color change
+    '&:hover': {
+      backgroundColor: theme.palette.mode === 'dark' ? '#25303b' : '#f5f5f5', // Change background color on hover
+    },
 }));
 
 export default function ProductList() {
@@ -67,8 +72,8 @@ export default function ProductList() {
                     <Grid item xs={4} className='border-0'>
                             <Item>
                                 <Link to={`/product/${product._id}`} key={product._id} className='col-md-3 mt-3 mb-1' style={{textDecoration: "none"}}>
-                                    <div className="card h-100 text-center border-0" style={{ width: "18rem" }}>
-                                        <img className="card-img-top mt-3" src={`/assets/${product.images[0].url}`} alt="Android 1" style={{ height: "250px" }} />
+                                    <div className="card h-100 text-center border-0" style={{ width: "18rem", backgroundColor: "transparent" }}>
+                                        <img className="card-img-top mt-3" src={`/assets/${product.images[0].url}`} alt="Android 1" style={{ height: "250px"}} />
                                         <div className="card-body">
                                             <p className="card-text" style={{ fontSize: "16px" }}>{product.name}</p>
                                             <p className="card-text" style={{ fontSize: "18px" }}><i className="fa fa-solid fa-tags me-1"></i>{product.price}</p>
@@ -83,8 +88,8 @@ export default function ProductList() {
                         <Grid id={nextProduct._id} item xs={4} className='border-0'>
                             <Item>
                                     <Link to={`/product/${nextProduct._id}`} key={product._id} className='col-md-3 mt-3 mb-1' style={{textDecoration: "none"}}>
-                                        <div className="card h-100 text-center border-0" style={{ width: "18rem" }}>
-                                        <img className="card-img-top mt-3" src={`/assets/${nextProduct.images[0].url}`} alt="Android 1" style={{ height: "250px" }} />
+                                        <div className="card h-100 text-center border-0" style={{ width: "18rem", backgroundColor: "transparent" }}>
+                                        <img className="card-img-top mt-3" src={`/assets/${nextProduct.images[0].url}`} alt="Android 1" style={{ height: "250px"}} />
                                         <div className="card-body">
                                             <p className="card-text" style={{ fontSize: "16px" }}>{nextProduct.name}</p>
                                             <p className="card-text" style={{ fontSize: "18px" }}><i className="fa fa-solid fa-tags me-1"></i>{nextProduct.price}</p>
@@ -122,7 +127,6 @@ export default function ProductList() {
                         return categoryMatch && priceMatch;
                     });
                     setLoading(false);
-                    console.log('filtered prods: ', filteredProducts)
                     setProducts(filteredProducts);
                     
                 }
@@ -172,7 +176,7 @@ export default function ProductList() {
                                 <Typography variant="h6">Categories</Typography>
                                 <Divider style={{ height: '1.2rem' }}></Divider>
                                 <List
-                                    sx={{ width: '100%', bgcolor: 'background.paper'}}
+                                    sx={{ width: '100%', backgroundColor: "transparent"}}
                                     component="nav"
                                     aria-labelledby="nested-list-subheader"
                                     
@@ -207,7 +211,7 @@ export default function ProductList() {
                                 <Divider style={{ height: '1.2rem' }}></Divider>
                                 
                                 <List
-                                    sx={{ width: '100%', bgcolor: 'background.paper' }}
+                                    sx={{ width: '100%', backgroundColor: "transparent"}}
                                     component="nav"
                                     aria-labelledby="nested-list-subheader"
                                 >
