@@ -56,7 +56,6 @@ exports.refresh = catchAsyncError(async(req,res,next)=> {
   console.log('in refresh')
   try {
     const refreshToken = req.body.refreshToken;
-    console.log("refresh token in refresh : ", refreshToken)
     if (!refreshToken){
       return next(new ErrorHandler(401, "no refresh token found"));
     } 
@@ -66,7 +65,6 @@ exports.refresh = catchAsyncError(async(req,res,next)=> {
       const accessToken = jwt.sign({ userId: user._id, email: user.email }, secretKey, {
         expiresIn: '15m',
       });
-      console.log("new access token : ", accessToken)
       res.json({ accessToken });
     });
   } catch (error) {
