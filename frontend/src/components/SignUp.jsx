@@ -143,6 +143,7 @@ export default function SignUp() {
       setShowAlert(true);
     }
 
+
     return (
       <div>
       <section className="h-100" style={gradientForm}>
@@ -162,7 +163,6 @@ export default function SignUp() {
                   <img src="/assets/cart1.jpg" style={{width: "185px"}} alt="abc"/>
                   <h4 className="mt-1 mb-5 pb-1">We are The ShopCart Team</h4>
                   </div>
-
                   <form >
                           {
                               existingAccount ?  <p>Please login to your account</p> :  <p>Create Account</p>

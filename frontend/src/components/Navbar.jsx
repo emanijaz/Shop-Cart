@@ -2,12 +2,14 @@ import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-
+import { cartActions } from '../store/cartslice';
+import { useDispatch } from 'react-redux';
 
 export default function Navbar() {
   const totalQuantity = useSelector(state=> state.cart.totalQuantity);
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // const scrollToProducts = (event) => {
   //   event.preventDefault(); // Prevent the default anchor link behavior
@@ -27,6 +29,8 @@ export default function Navbar() {
   };
   const signOut = async () => {
     await logout();
+    dispatch(cartActions.resetCart());
+
     setTimeout(() => {
       navigate('/register'); // Redirect to homepage after 2 seconds
       }, 5000);

@@ -56,7 +56,13 @@ const cartSlice = createSlice({
         },
         setShowCart(state){
             state.showCart = true;
-        }
+        },
+        resetCart(state) {
+            state.productsList = [];
+            state.totalQuantity = 0;
+            state.showCart = false;
+            state.totalPrice = 0;
+        },
     }
 })
 
