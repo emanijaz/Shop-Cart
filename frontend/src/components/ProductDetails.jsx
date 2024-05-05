@@ -220,33 +220,40 @@ export default function ProductDetails() {
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                {
-                                    product.reviews.map((review)=>{
+                                
+                                    <div class="card mt-3 mb-1 border border-bottom">
+                                    <div class="card-body">
+                                        {product.reviews.map((review)=>{
                                         return (
-                                        <div key={review.title} class="card mt-3 mb-1 border border-bottom">
-                                            <div class="card-body">
-                                                <div className='row'>
+                                            <div>
+                                                <div className='row mb-5'>
                                                     <div className='col-md-2 d-md-flex justify-content-center mt-md-4'>
                                                         <Avatar src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" size="40" round={true} />
                                                     </div>
                                                     <div className='col-md-8'>
-                                                    <div className='row'>
-                                                        <div className='col-md-8'>
-                                                            <h5 class="card-title">{review.title}</h5>
+                                                        <div className='row mt-2'>
+                                                            <div className='col-md-8'>
+                                                                <h5 class="card-title">{review.title}</h5>
+                                                            </div>
+                                                            <div className='col-md-4 mb-3'>
+                                                                <p class="card-text">
+                                                                    <Rating name="read-only" value={review.rating} size="small" readOnly />
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                        <div className='col-md-4 mb-3'>
-                                                            <p class="card-text">
-                                                                <Rating name="read-only" value={review.rating} size="small" readOnly />
-                                                            </p>
-                                                        </div>
+                                                        <p>{review.comment}</p>
                                                     </div>
-                                                    <p>{review.comment}</p>
-                                                    </div>
+                                                    
                                                 </div>
-                                            </div>
-                                        </div>)
-                                    })
-                                }
+                                                <div className='mx-5'>
+                                                    <hr/>
+                                                </div>
+                                            </div>  
+                                            )
+                                    })}
+                                    </div>
+                                    </div>
+                                
                                 </div>
                             </div>
 

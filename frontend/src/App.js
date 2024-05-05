@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import ProductDetails from "./components/ProductDetails";
-
+import Account from "./components/Account";
 import SignUp from "./components/SignUp";
 import Cart from "./components/Cart";
 import ProductList from "./components/ProductList";
@@ -34,7 +34,9 @@ function App() {
               <Route exact path='/product-lists' element={<PrivateRoute/>}>
                 <Route exact path='/product-lists' element={<ProductList/>}/>
               </Route>
-
+              <Route exact path='/account' element={<PrivateRoute/>}>
+                <Route exact path='/account' element={<Account/>}/>
+              </Route>
 
             </Routes>
           </AuthProvider>

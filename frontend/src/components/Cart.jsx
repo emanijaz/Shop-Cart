@@ -3,6 +3,7 @@ import Navbar from './Navbar';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '../store/cartslice';
+import { Link } from 'react-router-dom';
 
 export default function Cart() {
     const cartItems = useSelector(state=> state.cart.productsList);
@@ -43,7 +44,7 @@ export default function Cart() {
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
-                    <th scope="col">Item</th>
+                    <th scope="col">Product</th>
                     <th scope="col">Price</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Total</th>
@@ -139,7 +140,8 @@ export default function Cart() {
                     
                     <img src="/assets/empty-cart.svg" alt="Empty cart" style={{ width: "400px", height: "400px" }} />
                     <p class="font-weight-bold">Your cart is empty</p>
-                    <p class="text-secondary">Looks like you haven't selected anything yet!</p>
+                    <p class="text-secondary">Looks like you haven't selected anything yet!.</p>
+                    <Link to='/'> Continue Shopping </Link>
                   </div>
             }
 
