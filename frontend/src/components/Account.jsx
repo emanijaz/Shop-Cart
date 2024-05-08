@@ -139,10 +139,6 @@ export default function Account() {
 
                             <form>
                                 <div className='mb-3'>
-                                    {/* <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" style={{width: "150px"}}alt="Avatar" /> */}
-                                    {/* <Avatar alt="Avatar" src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" sx={{ width: 150, height: 150 }} /> */}
-    
-                                    {/* <EditIcon style={{ marginLeft: '8px', cursor: 'pointer' }} /> */}
                                     <div className='mb-3' style={{ position: 'relative', display: 'inline-block' }}>
                                         <Avatar alt="Avatar" src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" sx={{ width: 150, height: 150 }} />
                                         <EditIcon style={{ position: 'absolute', bottom: 0  , right: 0, marginRight: '10px', marginBottom: '5px', cursor: 'pointer', backgroundColor: '#1F75FE', color: 'white', padding: '5px', borderRadius: '50%', width:35, height: 35 }} />
