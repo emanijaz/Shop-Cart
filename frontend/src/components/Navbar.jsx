@@ -68,10 +68,11 @@ export default function Navbar() {
                   {totalQuantity}
               </span>
             </Link>
-            <button style={{fontSize: "20px"}} type="button" className="btn btn-light" onClick={signOut}><i className="fa fa-sign-out" aria-hidden="true"></i></button>
             <Link to="/account">
               <button style={{fontSize: "20px"}} type="button" className="btn btn-light"><i class="fa fa-solid fa-user" aria-hidden="true"></i></button>
             </Link>
+            <button style={{fontSize: "20px"}} type="button" className="btn btn-light" onClick={signOut}><i className="fa fa-sign-out" aria-hidden="true"></i></button>
+            
           </div>
         </div>
       </nav>
