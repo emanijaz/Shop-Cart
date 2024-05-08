@@ -4,7 +4,6 @@ import Slider from './Slider';
 import Footer from './Footer';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import '../styles.css'; 
 import { useAuth } from '../context/AuthContext';
@@ -65,7 +64,8 @@ export default function Homepage() {
                             <p className="card-text" style={{ fontSize: "18px" }}><i className="fa fa-solid fa-tags me-1"></i>{product.price}</p>
                             
                             <Link to={`/product/${product._id}`} key={product._id} className='col-md-3 mt-3 mb-1'>
-                                <Button size="small" style={{ color: 'black', borderColor: 'black' }} variant="outlined">Add to Cart</Button>
+                                <button type="button" className="btn bt-sm btn-outline-dark mb-4">View</button>
+
                             </Link>
                             </div>
                         </div>
@@ -80,7 +80,9 @@ export default function Homepage() {
                             <p className="card-text" style={{ fontSize: "16px" }}>{nextProduct.name}</p>
                             <p className="card-text" style={{ fontSize: "18px" }}><i className="fa fa-solid fa-tags me-1"></i>{nextProduct.price}</p>
                             <Link to={`/product/${nextProduct._id}`} key={nextProduct._id} className='col-md-3 mt-3 mb-1'>
-                                <Button size="small" style={{ color: 'black', borderColor: 'black' }} variant="outlined">Add to Cart</Button>
+                                {/* <Button size="small" style={{ color: 'black', borderColor: 'black' }} variant="outlined">Add to Cart</Button> */}
+                                <button type="button" className="btn bt-sm btn-outline-dark mb-4">View</button>
+
                             </Link>
                         </div>
                         </div>

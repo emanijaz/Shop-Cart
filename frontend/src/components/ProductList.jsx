@@ -169,7 +169,7 @@ export default function ProductList() {
             <Navbar />
             <Container maxWidth="30">
                 <h3 className='d-md-flex justify-content-center mt-5 mb-3'>Product List </h3>
-                <Box sx={{  height: '100vh', paddingTop: '2%', px: "5%", flexGrow: 1}}>
+                <Box sx={{  height: '100vh', paddingTop: '2%', px: "10%", flexGrow: 1}}>
                     <Grid container spacing={6} columns={12}>
                         <Grid item xs={3}>
                             <Item>
