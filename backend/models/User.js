@@ -18,6 +18,24 @@ const userSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    firstName: {
+        type: String,
+
+    },
+    lastName: {
+        type: String,
+    },
+    phone: {
+        type: Number,
+
+    },
+    gender: {
+        type: String,
+        default: 'Male'
+    },
+    profilePhoto: {
+        type: String
+    }
     
 },{timestamps: true} // used for created At and updated At times in moongose
 )

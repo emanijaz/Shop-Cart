@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import List from '@mui/material/List';
-import { FormControl, useFormControlContext } from '@mui/base/FormControl';
+import axios from 'axios';
+import { useFormControlContext } from '@mui/base/FormControl';
 import Divider from '@mui/material/Divider';
 import { Input, inputClasses } from '@mui/base/Input';
 import { styled } from '@mui/system';
@@ -98,109 +100,162 @@ const grey = {
 };
 
 export default function Account() {
-  return (
-        <>
-            <Navbar />
-            <Container maxWidth="30">
-                <Box sx={{  height: '100vh', paddingTop: '5%', px: "10%", flexGrow: 1}}>
-                    <Grid container spacing={1} columns={12}>
-                        <Grid item xs={3}>
-                                
-                                <List
-                                    sx={{ width: '100%', backgroundColor: "transparent"}}
-                                    component="nav"
-                                    aria-labelledby="nested-list-subheader"
-                                    
-                                >
-                                    <div className='mb-2' style={{ paddingBlock:"10px", backgroundColor: 'black', color:'white', border: '1px solid black', borderRadius: '5px'}} >
-                                        <div className='px-3'>
-                                            Personal information
-                                        </div>
-                                    </div>
-                                    <div className='mb-2' style={{ paddingBlock:"10px", border: '1px solid black', borderRadius: '5px'}} >
-                                        <div className='px-3'>
-                                            My Orders
-                                        </div>
-                                    </div>
-                                    <div className='mb-2' style={{ paddingBlock:"10px", border: '1px solid black', borderRadius: '5px'}} >
-                                        <div className='px-3'>
-                                            FAQs
-                                        </div>
-                                    </div>
-                                    
+    const [userData, setUserData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    gender: ''});
 
-                                </List>
+    const handleInputChange = (event) => {
+        console.log('in input change')
+        const { name, value } = event.target;
+        console.log(value)
+        setUserData({ ...userData, [name]: value });
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const accessToken = localStorage.getItem('accessToken');
+            const response = await axios.put(`http://localhost:5000/users/update/${userData._id}`, userData,{
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                withCredentials: true,
+            });
+            console.log('User updated successfully:', response.data);
+        } catch (error) {
+            console.error('Error updating user:', error);
+        }
+    };
+
+    const fetchUserData = async () => {
+        try {
+            const accessToken = localStorage.getItem('accessToken');
+            const response = await axios.get('http://localhost:5000/users/user-details', {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                withCredentials: true,
+            });
+            console.log('response: ', response)
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            return null;
+        }
+    };
+    useEffect(() => {
+        const getUserData = async () => {
+            const userData = await fetchUserData();
+            if (userData) {
+                setUserData(userData);
+            }
+        };
+
+        getUserData();
+    }, []);
+
+    return (
+            <>
+                <Navbar />
+                <Container maxWidth="30">
+                    <Box sx={{  height: '100vh', paddingTop: '5%', px: "10%", flexGrow: 1}}>
+                        <Grid container spacing={1} columns={12}>
+                            <Grid item xs={3}>
+                                    
+                                    <List
+                                        sx={{ width: '100%', backgroundColor: "transparent"}}
+                                        component="nav"
+                                        aria-labelledby="nested-list-subheader"
+                                        
+                                    >
+                                        <div className='mb-2' style={{ paddingBlock:"10px", backgroundColor: 'black', color:'white', border: '1px solid black', borderRadius: '5px'}} >
+                                            <div className='px-3'>
+                                                Personal information
+                                            </div>
+                                        </div>
+                                        <div className='mb-2' style={{ paddingBlock:"10px", border: '1px solid black', borderRadius: '5px'}} >
+                                            <div className='px-3'>
+                                                My Orders
+                                            </div>
+                                        </div>
+                                        <div className='mb-2' style={{ paddingBlock:"10px", border: '1px solid black', borderRadius: '5px'}} >
+                                            <div className='px-3'>
+                                                FAQs
+                                            </div>
+                                        </div>
+                                        
+
+                                    </List>
+                                
+                            </Grid>
+                            <Grid item xs={1}>
+                                <Divider orientation="vertical" sx={{ backgroundColor: 'grey', width: '1px', margin: 'auto'  }}/>
+                            </Grid>
+                            <Grid item xs={8}>
+
+                                <form>
+                                    <div className='mb-3'>
+                                        <div className='mb-3' style={{ position: 'relative', display: 'inline-block' }}>
+                                            <Avatar alt="Avatar" src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" sx={{ width: 150, height: 150 }} />
+                                            <EditIcon style={{ position: 'absolute', bottom: 0  , right: 0, marginRight: '10px', marginBottom: '5px', cursor: 'pointer', backgroundColor: '#1F75FE', color: 'white', padding: '5px', borderRadius: '50%', width:35, height: 35 }} />
+                                        </div>
+                                    </div>
+                                    <div className="row mb-3">
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label htmlFor="first_name">First Name</label>
+                                                <input type="text" className="form-control" id="first_name" name="firstName" placeholder="First Name" value={userData?.firstName || ''} onChange={handleInputChange}/>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label htmlFor="last_name">Last Name</label>
+                                                <input type="text" className="form-control" id="last_name" name="lastName" placeholder="Last Name" value={userData?.lastName || ''} onChange={handleInputChange}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" value={userData?.email || ''} onChange={handleInputChange}/>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="phone">Phone</label>
+                                        <input type="phone" class="form-control" id="phone" name="phone" placeholder="Phone" value={userData?.phone || ''} onChange={handleInputChange}/>
+                                    </div>
+                                    <div class="form-row mb-3">
+                                        
+                                        <div class="form-group col-md-4">
+                                            <label for="inputGender">Gender</label>
+                                            <select id="inputGender" class="form-control" name="gender" onChange={handleInputChange}>
+                                                <option selected>Choose...</option>
+                                                <option>Female</option>
+                                                <option>Male</option>
+                                                <option>Other</option>
+
+                                            </select>
+                                        </div>
+                                        
+                                    </div>
+                                    <button type="submit" className="btn btn-dark btn-block"  onClick={handleSubmit}
+                                        style={{ 
+                                            width: '20%', 
+                                            padding: '10px', 
+                                            fontSize: '16px', 
+                                            textAlign: 'center'
+                                        }}
+                                    >
+                                            Update
+                                    </button>
+                                    </form>
+                            </Grid>
                             
                         </Grid>
-                        <Grid item xs={1}>
-                            <Divider orientation="vertical" sx={{ backgroundColor: 'grey', width: '1px', margin: 'auto'  }}/>
-                        </Grid>
-                        <Grid item xs={8}>
-
-                            <form>
-                                <div className='mb-3'>
-                                    {/* <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" style={{width: "150px"}}alt="Avatar" /> */}
-                                    {/* <Avatar alt="Avatar" src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" sx={{ width: 150, height: 150 }} /> */}
-    
-                                    {/* <EditIcon style={{ marginLeft: '8px', cursor: 'pointer' }} /> */}
-                                    <div className='mb-3' style={{ position: 'relative', display: 'inline-block' }}>
-                                        <Avatar alt="Avatar" src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" sx={{ width: 150, height: 150 }} />
-                                        <EditIcon style={{ position: 'absolute', bottom: 0  , right: 0, marginRight: '10px', marginBottom: '5px', cursor: 'pointer', backgroundColor: '#1F75FE', color: 'white', padding: '5px', borderRadius: '50%', width:35, height: 35 }} />
-                                    </div>
-                                </div>
-                                <div className="row mb-3">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <label htmlFor="first_name">First Name</label>
-                                            <input type="text" className="form-control" id="first_name" placeholder="First Name" />
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <label htmlFor="last_name">Last Name</label>
-                                            <input type="text" className="form-control" id="last_name" placeholder="Last Name" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" placeholder="Email"/>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="phone">Phone</label>
-                                    <input type="phone" class="form-control" id="phone" placeholder="Phone"/>
-                                </div>
-                                <div class="form-row mb-3">
-                                    
-                                    <div class="form-group col-md-4">
-                                        <label for="inputGender">Gender</label>
-                                        <select id="inputGender" class="form-control">
-                                            <option selected>Choose...</option>
-                                            <option>Female</option>
-                                            <option>Male</option>
-                                            <option>Other</option>
-
-                                        </select>
-                                    </div>
-                                    
-                                </div>
-                                <button type="button" className="btn btn-dark btn-block" 
-                                    style={{ 
-                                        width: '20%', 
-                                        padding: '10px', 
-                                        fontSize: '16px', 
-                                        textAlign: 'center'
-                                    }}
-                                >
-                                        Update
-                                </button>
-                                </form>
-                        </Grid>
-                        
-                    </Grid>
-                </Box>
-        </Container>
-            
-        </>
-    )
+                    </Box>
+            </Container>
+                
+            </>
+        )
 }

@@ -125,3 +125,59 @@ exports.googleLogin = catchAsyncError(async(req,res,next)=> {
       return next(new ErrorHandler(500, `Authentication failed , ${error}`));
   }
 })
+
+exports.getUserDetails = catchAsyncError(async (req, res, next) => {
+  try {
+      // Access the authenticated user data from req.userData
+      const user = req.userData;
+      console.log('user fetched details: ', user)
+      // Check if the user is authenticated
+      if (!user) {
+          return res.status(401).json({ message: 'User not authenticated' });
+      }
+
+      const foundUser = await User.findOne({email: user.email})
+      console.log(foundUser)
+
+      res.status(200).json(foundUser);
+  } catch (error) {
+      // Handle any errors
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+  exports.updateUser = catchAsyncError(async (req, res, next) => {
+    try {
+        const user = req.userData;
+        console.log('user fetched details: ', user)
+        // Check if the user is authenticated
+        if (!user) {
+            return res.status(401).json({ message: 'User not authenticated' });
+        }
+        const { firstName, lastName, email, phone, gender } = req.body;
+        console.log('data for update: ')
+        console.log(firstName)
+        console.log(lastName)
+        console.log(email)
+        console.log(phone)
+        console.log(gender)
+
+  
+      let userFound = await User.findById(req.params.id);
+      if (firstName) userFound.firstName = firstName;
+      if (lastName) userFound.lastName = lastName;
+      if (email) userFound.email = email;
+      if (phone) userFound.phone = phone;
+      if (gender) userFound.gender = gender;
+
+      await userFound.save();
+      res.status(200).json({ message: 'User updated successfully', userFound });
+
+        
+    } catch (error) {
+        // Handle any errors
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+  });
