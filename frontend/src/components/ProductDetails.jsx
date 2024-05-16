@@ -59,7 +59,7 @@ export default function ProductDetails() {
             setAlertMessage('');
             setShowAlert(false);
             setAlertSeverity('');
-          }, 2000);
+        }, 2000);
         
     };
     const handleSubmit = async (event) => {
