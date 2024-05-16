@@ -119,10 +119,10 @@ export default function Account() {
             value = value.replace(/\D/g, '');
         }
         value = event.target.type === 'select-one' ? event.target.selectedOptions[0].text : value;
-        // setUserData({ ...userData, [name]: value });
         setUserData({ ...userData, [name]: { value, isValid: validateField(name, value) } });
     };
     const validateField = (name, value) => {
+        console.log('in validate field')
         if (name === 'email') {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailRegex.test(value);
@@ -136,11 +136,9 @@ export default function Account() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('user data in submit: ', userData)
         const isAnyValidationFailed = Object.values(userData).some(field => !field.isValid);
 
         if (isAnyValidationFailed) {
-            // If any validation failed, prevent form submission
             console.log('validation failed')
             return;
         }
@@ -149,7 +147,6 @@ export default function Account() {
             Object.entries(userData).forEach(([fieldName, fieldValue]) => {
                 requestBody[fieldName] = fieldValue.value;
             });
-            console.log('req body ;', requestBody)
             const accessToken = localStorage.getItem('accessToken');
             const response = await axios.put(`http://localhost:5000/users/update/${requestBody._id}`, requestBody,{
                 headers: {
@@ -188,15 +185,14 @@ export default function Account() {
     useEffect(() => {
         const getUserData = async () => {
             const userData = await fetchUserData();
-            console.log('user data: ', userData)
             if (userData) {
                 setUserData(prevUserData => ({
                     ...prevUserData,
-                    _id: {value: userData._id},
+                    _id: {value: userData._id, isValid: true},
                     firstName: { value: userData.firstName || '', isValid: true },
                     lastName: { value: userData.lastName || '', isValid: true },
                     email: { value: userData.email || '', isValid: validateField('email', userData.email) },
-                    phone: { value: userData.phone || '', isValid: validateField('phone', userData.phone) },
+                    phone: { value: userData.phone || '', isValid: userData.phone? validateField('phone', userData.phone) : true },
                     gender: { value: userData.gender || '', isValid: true }
                 }));
             }
@@ -247,7 +243,7 @@ export default function Account() {
                             </Grid>
                             <Grid item xs={8}>
 
-                                <form>
+                                <form onSubmit={handleSubmit}>
                                     <div className='mb-3'>
                                         <div className='mb-3' style={{ position: 'relative', display: 'inline-block' }}>
                                             <Avatar alt="Avatar" src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" sx={{ width: 150, height: 150 }} />
@@ -288,7 +284,7 @@ export default function Account() {
                                             </select>
                                         </div>
                                     </div>
-                                    <button type="submit" className="btn btn-dark btn-block"  onClick={handleSubmit}
+                                    <button type="submit" className="btn btn-dark btn-block"
                                         style={{ 
                                             width: '20%', 
                                             padding: '10px', 
