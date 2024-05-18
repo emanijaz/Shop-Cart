@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 export default function MyOrders() {
   return (
     <div>
-        <h5>My Orders</h5>
+        <h5>Orders Summary</h5>
         <hr/>
         <div class="card mt-3 mb-1 border border-bottom">
             <div class="card-body mx-5">

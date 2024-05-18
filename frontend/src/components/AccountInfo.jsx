@@ -6,6 +6,8 @@ import Avatar from '@mui/material/Avatar';
 export default function AccountInfo({ userData, handleInputChange, handleSubmit }) {
     return (
     <div>
+        <h5>Account Settings</h5>
+        <hr/>
         <form onSubmit={handleSubmit}>
             <div className='mb-3'>
                 <div className='mb-3' style={{ position: 'relative', display: 'inline-block' }}>

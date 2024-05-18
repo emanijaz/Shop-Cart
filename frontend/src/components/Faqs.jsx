@@ -7,6 +7,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 export default function Faqs() {
   return (
     <div>
+        <h5>FAQs</h5>
+        <hr/>
             <Accordion>
             <AccordionSummary
             expandIcon={<ExpandMoreIcon />}

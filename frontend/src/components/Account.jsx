@@ -160,18 +160,15 @@ export default function Account() {
                             </Grid>
                             <Grid item xs={8}>
 
-                                {selectItem === 'personalInformation' ?
+                                {selectItem === 'personalInformation' &&
                                     <AccountInfo
                                         userData={userData} 
                                         handleInputChange={handleInputChange} 
                                         handleSubmit={handleSubmit} 
-                                    /> : ""}
-                                { selectItem === "myOrders" ? 
-                                    <MyOrders /> :""
+                                    />
                                 }
-                                {   selectItem === 'faqs' ?
-                                    <Faqs /> : ""
-                                }
+                                { selectItem === "myOrders" && <MyOrders /> }
+                                { selectItem === 'faqs' && <Faqs /> }
                             </Grid>
                             
                         </Grid>
