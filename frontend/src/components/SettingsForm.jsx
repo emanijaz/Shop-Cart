@@ -1,27 +1,6 @@
 import React, {useEffect, useState} from 'react'
-import EditIcon from '@mui/icons-material/Edit'
-import Avatar from '@mui/material/Avatar';
-import { Cloudinary } from '@cloudinary/url-gen';
-import { auto } from '@cloudinary/url-gen/actions/resize';
-import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity';
-import { AdvancedImage } from '@cloudinary/react';
 
 export default function SettingsForm({ userData, handleInputChange, handleSubmit, handleAvatarChange, handleEditIconClick, fileInputRef, children }) {
-    
-    // const [avatar, setAvatar] = useState(null); // State variable to hold the avatar image URL
-    // const cld = new Cloudinary({ cloud: { cloudName: 'dxfjnflzc' } });
-
-    // useEffect(() => {
-    //     if (userData.profilePhoto.value && userData.profilePhoto.value.public_id && userData.profilePhoto.value.url) {
-    //         const img = cld.image(userData.profilePhoto.value.public_id)
-    //             .format('auto')
-    //             .quality('auto')
-    //             .resize(auto().gravity(autoGravity()).width(150).height(150));
-
-    //         setAvatar(img);
-    //     }
-    // }, [userData]);
-
 
     return (
     <div>

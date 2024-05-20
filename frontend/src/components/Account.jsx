@@ -15,7 +15,6 @@ import Faqs from './Faqs';
 import { auto } from '@cloudinary/url-gen/actions/resize';
 import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity';
 import { AdvancedImage } from '@cloudinary/react';
-import Avatar from '@mui/material/Avatar';
 import CircularProgress from '@mui/material/CircularProgress';
 import EditIcon from '@mui/icons-material/Edit'
 
@@ -46,7 +45,6 @@ export default function Account() {
         setUserData({ ...userData, [name]: { value, isValid: validateField(name, value) } });
     };
     const validateField = (name, value) => {
-        console.log('in validate field')
         if (name === 'email') {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailRegex.test(value);
@@ -144,7 +142,6 @@ export default function Account() {
                 `https://api.cloudinary.com/v1_1/dxfjnflzc/image/upload`,
                 formData
             );
-            console.log(response)
             const img = cld.image(response.data.public_id)
                 .format('auto')
                 .quality('auto')
