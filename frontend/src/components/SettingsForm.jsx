@@ -1,37 +1,39 @@
-import React, {useState, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import EditIcon from '@mui/icons-material/Edit'
 import Avatar from '@mui/material/Avatar';
+import { Cloudinary } from '@cloudinary/url-gen';
+import { auto } from '@cloudinary/url-gen/actions/resize';
+import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity';
+import { AdvancedImage } from '@cloudinary/react';
+
+export default function SettingsForm({ userData, handleInputChange, handleSubmit, handleAvatarChange, handleEditIconClick, fileInputRef, children }) {
+    
+    // const [avatar, setAvatar] = useState(null); // State variable to hold the avatar image URL
+    // const cld = new Cloudinary({ cloud: { cloudName: 'dxfjnflzc' } });
+
+    // useEffect(() => {
+    //     if (userData.profilePhoto.value && userData.profilePhoto.value.public_id && userData.profilePhoto.value.url) {
+    //         const img = cld.image(userData.profilePhoto.value.public_id)
+    //             .format('auto')
+    //             .quality('auto')
+    //             .resize(auto().gravity(autoGravity()).width(150).height(150));
+
+    //         setAvatar(img);
+    //     }
+    // }, [userData]);
 
 
-export default function AccountInfo({ userData, handleInputChange, handleSubmit }) {
-    const [avatar, setAvatar] = useState("https://mdbcdn.b-cdn.net/img/new/avatars/2.webp");
-    const fileInputRef = useRef(null);
-
-    const handleAvatarChange = (event) => {
-        const file = event.target.files[0];
-        console.log('file :', file)
-        if (file) {
-            const reader = new FileReader();
-            console.log('reader: ', reader)
-            reader.onloadend = () => {
-                console.log('reader result: ', reader.result)
-                setAvatar(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-    const handleEditIconClick = () => {
-        fileInputRef.current.click();
-    };
     return (
     <div>
+
         <h5>Account Settings</h5>
         <hr/>
         <form onSubmit={handleSubmit}>
             <div className='mb-3'>
                 <div className='mb-3' style={{ position: 'relative', display: 'inline-block' }}>
-                    <Avatar alt="Avatar" src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" sx={{ width: 150, height: 150 }} />
-                    <EditIcon   onClick={handleEditIconClick} style={{ position: 'absolute', bottom: 0  , right: 0, marginRight: '10px', marginBottom: '5px', cursor: 'pointer', backgroundColor: '#1F75FE', color: 'white', padding: '5px', borderRadius: '50%', width:35, height: 35 }} />
+                    
+                    {children}
+                    {/* <EditIcon   onClick={handleEditIconClick} style={{ position: 'absolute', bottom: 0  , right: 0, marginRight: '10px', marginBottom: '5px', cursor: 'pointer', backgroundColor: '#1F75FE', color: 'white', padding: '5px', borderRadius: '50%', width:35, height: 35 }} /> */}
                     <input id="upload-avatar" type="file" accept="image/*" style={{ display: 'none' }}  ref={fileInputRef}  onChange={handleAvatarChange} />
                 </div>
             </div>

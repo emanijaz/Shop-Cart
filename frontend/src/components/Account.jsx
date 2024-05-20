@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Navbar from './Navbar';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -7,11 +7,17 @@ import Container from '@mui/material/Container';
 import List from '@mui/material/List';
 import axios from 'axios';
 import Divider from '@mui/material/Divider';
-import AccountInfo from './AccountInfo';
+import SettingsForm from './SettingsForm';
+import { Cloudinary } from '@cloudinary/url-gen';
 import Alert from '@mui/material/Alert';
 import MyOrders from './MyOrders';
 import Faqs from './Faqs';
-
+import { auto } from '@cloudinary/url-gen/actions/resize';
+import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity';
+import { AdvancedImage } from '@cloudinary/react';
+import Avatar from '@mui/material/Avatar';
+import CircularProgress from '@mui/material/CircularProgress';
+import EditIcon from '@mui/icons-material/Edit'
 
 
 export default function Account() {
@@ -20,12 +26,16 @@ export default function Account() {
         lastName: { value: '', isValid: true },
         email: { value: '', isValid: true },
         phone: { value: '', isValid: true },
-        gender: { value: '', isValid: true }
+        gender: { value: '', isValid: true }, 
+        profilePhoto: { value: null, isValid: true},
     });
+    const [loading, setLoading] = useState(false);
+    const [preview, setPreview] = useState(null);
     const [alertMessage, setAlertMessage] = useState('');
     const [showAlert, setShowAlert] = useState(false);
     const [alertSeverity, setAlertSeverity] = useState('');
     const [selectItem, setSelectedItem] = useState('personalInformation');
+    const cld = new Cloudinary({ cloud: { cloudName: 'dxfjnflzc' } });
 
     const handleInputChange = (event) => {
         let { name, value } = event.target;
@@ -110,13 +120,94 @@ export default function Account() {
                     lastName: { value: userData.lastName || '', isValid: true },
                     email: { value: userData.email || '', isValid: validateField('email', userData.email) },
                     phone: { value: userData.phone || '', isValid: userData.phone? validateField('phone', userData.phone) : true },
-                    gender: { value: userData.gender || '', isValid: true }
+                    gender: { value: userData.gender || '', isValid: true },
+                    profilePhoto: { value: userData.profilePhoto || null, isValid: true},
                 }));
             }
         };
 
         getUserData();
     }, []);
+
+    const fileInputRef = useRef(null);
+
+    const handleAvatarChange = async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setLoading(true); // loading avatar
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'preset1');
+
+            try {
+            const response = await axios.post(
+                `https://api.cloudinary.com/v1_1/dxfjnflzc/image/upload`,
+                formData
+            );
+            console.log(response)
+            const img = cld.image(response.data.public_id)
+                .format('auto')
+                .quality('auto')
+                .resize(auto().gravity(autoGravity()).width(150).height(150));
+            
+            
+            let photoData = {}
+            photoData['public_id'] = response.data.public_id;
+            photoData['url'] = img.toURL();
+
+            // Create a temporary URL for preview
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview(reader.result);
+                setUserData((prevData) => ({
+                    ...prevData,
+                    profilePhoto: { value: photoData, isValid: true },
+                }));
+            };
+            reader.readAsDataURL(file);
+
+            // setUserData({ ...userData,['profilePhoto']: {value: photoData, isValid: true} })
+            } catch (error) {
+            console.error('Error uploading the image:', error);
+            }
+            finally {
+                setLoading(false);
+            }
+        }
+    };
+    const handleEditIconClick = () => {
+        fileInputRef.current.click();
+    };
+    const AvatarDisplay = () => {
+        if (loading) {
+            return (
+                <div>
+                    <CircularProgress color="inherit"/>
+                </div>
+            )
+        }
+        if (preview) {
+            return(
+                <div style={{ position: 'relative', display: 'inline-block' }}>
+                <img src={preview} alt="Avatar" style={{ width: 150, height: 150 }} onLoad={() => setLoading(false)} />;
+                <EditIcon   onClick={handleEditIconClick} style={{ position: 'absolute', bottom: 0  , right: 0, marginRight: '10px', marginBottom: '5px', cursor: 'pointer', backgroundColor: '#1F75FE', color: 'white', padding: '5px', borderRadius: '50%', width:35, height: 35 }} />
+
+                </div>
+            )
+        }
+        if(userData.profilePhoto.value){
+        return (
+            <div style={{ position: 'relative', display: 'inline-block' }}>
+            <AdvancedImage
+                cldImg={cld.image(userData.profilePhoto.value.public_id).format('auto').quality('auto').resize(auto().gravity(autoGravity()).width(150).height(150))}
+                alt="Avatar"
+                style={{ width: 150, height: 150 }}
+            />
+            <EditIcon   onClick={handleEditIconClick} style={{ position: 'absolute', bottom: 0  , right: 0, marginRight: '10px', marginBottom: '5px', cursor: 'pointer', backgroundColor: '#1F75FE', color: 'white', padding: '5px', borderRadius: '50%', width:35, height: 35 }} />
+            </div>
+        );
+        }
+    };
 
     return (
             <>
@@ -161,11 +252,17 @@ export default function Account() {
                             <Grid item xs={8}>
 
                                 {selectItem === 'personalInformation' &&
-                                    <AccountInfo
+                                    <SettingsForm
                                         userData={userData} 
                                         handleInputChange={handleInputChange} 
                                         handleSubmit={handleSubmit} 
-                                    />
+                                        handleAvatarChange={handleAvatarChange}
+                                        handleEditIconClick={handleEditIconClick}
+                                        fileInputRef={fileInputRef}
+                                        loadingAvatar= {loading}>
+                                        <AvatarDisplay />
+                                    </SettingsForm>
+                                    
                                 }
                                 { selectItem === "myOrders" && <MyOrders /> }
                                 { selectItem === 'faqs' && <Faqs /> }
