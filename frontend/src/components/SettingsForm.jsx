@@ -1,18 +1,19 @@
-import React from 'react'
-import EditIcon from '@mui/icons-material/Edit'
-import Avatar from '@mui/material/Avatar';
+import React, {useEffect, useState} from 'react'
 
+export default function SettingsForm({ userData, handleInputChange, handleSubmit, handleAvatarChange, handleEditIconClick, fileInputRef, children }) {
 
-export default function AccountInfo({ userData, handleInputChange, handleSubmit }) {
     return (
     <div>
+
         <h5>Account Settings</h5>
         <hr/>
         <form onSubmit={handleSubmit}>
             <div className='mb-3'>
                 <div className='mb-3' style={{ position: 'relative', display: 'inline-block' }}>
-                    <Avatar alt="Avatar" src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" sx={{ width: 150, height: 150 }} />
-                    <EditIcon style={{ position: 'absolute', bottom: 0  , right: 0, marginRight: '10px', marginBottom: '5px', cursor: 'pointer', backgroundColor: '#1F75FE', color: 'white', padding: '5px', borderRadius: '50%', width:35, height: 35 }} />
+                    
+                    {children}
+                    {/* <EditIcon   onClick={handleEditIconClick} style={{ position: 'absolute', bottom: 0  , right: 0, marginRight: '10px', marginBottom: '5px', cursor: 'pointer', backgroundColor: '#1F75FE', color: 'white', padding: '5px', borderRadius: '50%', width:35, height: 35 }} /> */}
+                    <input id="upload-avatar" type="file" accept="image/*" style={{ display: 'none' }}  ref={fileInputRef}  onChange={handleAvatarChange} />
                 </div>
             </div>
             <div className="row mb-3">
