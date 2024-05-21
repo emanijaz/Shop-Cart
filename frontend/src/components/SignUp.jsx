@@ -36,6 +36,7 @@ export default function SignUp() {
     const { email, password, username } = formData;
     
     const handleSubmit = async (event) => {
+      // setLoadingLogin(true);
       if(!existingAccount){
         event.preventDefault();
         try {
@@ -70,6 +71,7 @@ export default function SignUp() {
             setShowAlert(false);
             setAlertSeverity('');
           }, 2000);
+
         }
       }
       else{  // login
@@ -106,6 +108,7 @@ export default function SignUp() {
               setShowAlert(false);
               setAlertSeverity('');
             }, 2000);
+
           }
       }
     };
@@ -182,7 +185,7 @@ export default function SignUp() {
                           {
                               existingAccount && 
                               <div className="pt-1 mb-3 pb-1 mt-3">
-                                  <button type="button" className="btn btn-dark btn-block mx-2" onClick={handleSubmit}>Login</button>
+                                <button type="button" className="btn btn-dark btn-block mx-2" onClick={handleSubmit}>Login</button>
                               </div>
                           }
                           {
@@ -216,9 +219,6 @@ export default function SignUp() {
                           { existingAccount && 
                             <div className="row">
                                     <div className="col-md-12">
-                                        {/* <button type="button" className="btn btn-md btn-google btn-outline-dark">
-                                            <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="sign up with google"/> Signin with Google
-                                        </button> */}
                                         <GoogleLogin
                                             clientId="189093438619-aqjp61l48qrbsv6okstcldm0a5bnoii0.apps.googleusercontent.com"
                                             buttonText="Log in with Google"

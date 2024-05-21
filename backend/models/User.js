@@ -34,7 +34,12 @@ const userSchema = mongoose.Schema({
         default: 'Male'
     },
     profilePhoto: {
-        type: String
+        public_id: {
+            type: String,
+        },
+        url: {
+            type: String,
+        }
     }
     
 },{timestamps: true} // used for created At and updated At times in moongose
