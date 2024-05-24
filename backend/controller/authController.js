@@ -156,13 +156,6 @@ exports.getUserDetails = catchAsyncError(async (req, res, next) => {
             return res.status(401).json({ message: 'User not authenticated' });
         }
         const { firstName, lastName, email, phone, gender, profilePhoto } = req.body;
-        console.log('data for update: ')
-        console.log(firstName)
-        console.log(lastName)
-        console.log(email)
-        console.log(phone)
-        console.log(gender)
-        console.log(profilePhoto)
 
   
       let userFound = await User.findById(req.params.id);
