@@ -17,6 +17,7 @@ import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity';
 import { AdvancedImage } from '@cloudinary/react';
 import CircularProgress from '@mui/material/CircularProgress';
 import EditIcon from '@mui/icons-material/Edit'
+import { Avatar } from '@mui/material';
 
 
 export default function Account() {
@@ -203,6 +204,14 @@ export default function Account() {
             <EditIcon   onClick={handleEditIconClick} style={{ position: 'absolute', bottom: 0  , right: 0, marginRight: '10px', marginBottom: '5px', cursor: 'pointer', backgroundColor: '#1F75FE', color: 'white', padding: '5px', borderRadius: '50%', width:35, height: 35 }} />
             </div>
         );
+        }
+        else{
+            return (
+                <div style={{ position: 'relative', display: 'inline-block' }} >
+                    <Avatar alt="Upload Photo" style={{ width: 150, height: 150 }}></Avatar>
+                    <EditIcon   onClick={handleEditIconClick} style={{ position: 'absolute', bottom: 0  , right: 0, marginRight: '10px', marginBottom: '5px', cursor: 'pointer', backgroundColor: '#1F75FE', color: 'white', padding: '5px', borderRadius: '50%', width:35, height: 35 }} />
+                </div>
+            )
         }
     };
     const highlightList =(event) => {
