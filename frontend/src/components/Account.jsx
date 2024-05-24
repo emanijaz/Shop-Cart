@@ -205,7 +205,15 @@ export default function Account() {
         );
         }
     };
+    const highlightList =(event) => {
+        event.currentTarget.style.backgroundColor = 'black';
+        event.currentTarget.style.color = 'white'
+    }
 
+    const unHighLightList =(event) => {
+        event.currentTarget.style.backgroundColor = 'white';
+        event.currentTarget.style.color = 'black'
+    }
     return (
             <>
                 <Navbar />
@@ -223,17 +231,20 @@ export default function Account() {
                                         aria-labelledby="nested-list-subheader"
                                         
                                     >
-                                        <div className='mb-2' style={{ paddingBlock:"10px", backgroundColor: selectItem === 'personalInformation' ? 'black' : '', color:selectItem === 'personalInformation' ? 'white' : '', border: '1px solid black', borderRadius: '5px'}} onClick = {()=>{handleListItem('personalInformation')}} >
+                                        <div className='mb-2' style={{ paddingBlock:"10px", border: '1px solid black', borderRadius: '5px'}} onClick = {()=>{handleListItem('personalInformation')}} 
+                                            onMouseEnter={highlightList} onMouseLeave={unHighLightList}>
                                             <div className='px-3'>
                                                 Personal information
                                             </div>
                                         </div>
-                                        <div className='mb-2' style={{ paddingBlock:"10px", backgroundColor: selectItem === 'myOrders' ? 'black' : '', color: selectItem === 'myOrders' ? 'white' : '' ,border: '1px solid black', borderRadius: '5px'}} onClick = {()=>{handleListItem('myOrders')}}>
+                                        <div className='mb-2' style={{ paddingBlock:"10px", border: '1px solid black', borderRadius: '5px'}} onClick = {()=>{handleListItem('myOrders')}}
+                                            onMouseEnter={highlightList} onMouseLeave={unHighLightList}>
                                             <div className='px-3'>
                                                 My Orders
                                             </div>
                                         </div>
-                                        <div className='mb-2' style={{ paddingBlock:"10px", backgroundColor: selectItem === 'faqs' ? 'black' : '', color: selectItem === 'faqs' ? 'white' : '', border: '1px solid black', borderRadius: '5px'}} onClick = {()=>{handleListItem('faqs')}} >
+                                        <div className='mb-2' style={{ paddingBlock:"10px", border: '1px solid black', borderRadius: '5px'}} onClick = {()=>{handleListItem('faqs')}}
+                                            onMouseEnter={highlightList} onMouseLeave={unHighLightList}>
                                             <div className='px-3'>
                                                 FAQs
                                             </div>

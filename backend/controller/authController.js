@@ -155,13 +155,7 @@ exports.getUserDetails = catchAsyncError(async (req, res, next) => {
         if (!user) {
             return res.status(401).json({ message: 'User not authenticated' });
         }
-        const { firstName, lastName, email, phone, gender } = req.body;
-        console.log('data for update: ')
-        console.log(firstName)
-        console.log(lastName)
-        console.log(email)
-        console.log(phone)
-        console.log(gender)
+        const { firstName, lastName, email, phone, gender, profilePhoto } = req.body;
 
   
       let userFound = await User.findById(req.params.id);
@@ -170,6 +164,7 @@ exports.getUserDetails = catchAsyncError(async (req, res, next) => {
       if (email) userFound.email = email;
       if (phone) userFound.phone = phone;
       if (gender) userFound.gender = gender;
+      if (profilePhoto) userFound.profilePhoto = profilePhoto;
 
       await userFound.save();
       res.status(200).json({ message: 'User updated successfully', userFound });
