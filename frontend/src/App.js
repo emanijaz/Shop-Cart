@@ -9,6 +9,7 @@ import Cart from "./components/Cart";
 import ProductList from "./components/ProductList";
 import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
+import AdminDashboard from "./components/AdminDashboard";
 
 
 
@@ -37,6 +38,8 @@ function App() {
               <Route exact path='/account' element={<PrivateRoute/>}>
                 <Route exact path='/account' element={<Account/>}/>
               </Route>
+
+              <Route path="/admin-dashboard" element={<AdminDashboard />}/>
 
             </Routes>
           </AuthProvider>
