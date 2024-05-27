@@ -36,7 +36,6 @@ export default function SignUp() {
     const { email, password, username } = formData;
     
     const handleSubmit = async (event) => {
-      // setLoadingLogin(true);
       if(!existingAccount){
         event.preventDefault();
         try {

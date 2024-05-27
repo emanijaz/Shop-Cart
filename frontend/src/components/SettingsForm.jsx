@@ -12,7 +12,6 @@ export default function SettingsForm({ userData, handleInputChange, handleSubmit
                 <div className='mb-3' style={{ position: 'relative', display: 'inline-block' }}>
                     
                     {children}
-                    {/* <EditIcon   onClick={handleEditIconClick} style={{ position: 'absolute', bottom: 0  , right: 0, marginRight: '10px', marginBottom: '5px', cursor: 'pointer', backgroundColor: '#1F75FE', color: 'white', padding: '5px', borderRadius: '50%', width:35, height: 35 }} /> */}
                     <input id="upload-avatar" type="file" accept="image/*" style={{ display: 'none' }}  ref={fileInputRef}  onChange={handleAvatarChange} />
                 </div>
             </div>
