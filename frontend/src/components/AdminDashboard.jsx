@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Box, Container, Drawer, AppBar, Toolbar, List, Typography, ListItem, ListItemIcon, ListItemText ,Grid, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
+import { Box, Container, Drawer, AppBar, Toolbar, List, Typography, ListItem, ListItemIcon, ListItemText ,Grid, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Avatar } from '@mui/material';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import EditIcon from '@mui/icons-material/Edit';
@@ -8,14 +8,15 @@ import Card from '@mui/material/Card';
 import AddIcon from '@mui/icons-material/Add';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
-import { Unstable_NumberInput as NumberInput } from '@mui/base/Unstable_NumberInput';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import axios from 'axios';
 
 const drawerWidth = 210;
 
 export default function AdminDashboard() {
     const [products, setProducts] = useState([]);
     const [open, setOpen] = useState(false);
-    const [newProduct, setNewProduct] = useState({ name: '', price: '', image: '', category: '', description: '', stock: '' });
+    const [newProduct, setNewProduct] = useState({ name: '', price: '', images: [], category: '', description: '', stock: '' });
 
 
     useEffect(()=> {
@@ -37,7 +38,6 @@ export default function AdminDashboard() {
 
 
     const handleAddProduct = () => {
-        console.log('adding new product')
         setOpen(true);
     };
 
@@ -51,11 +51,28 @@ export default function AdminDashboard() {
     };
 
     const handleSubmit = async () => {
-        // Handle form submission to add new product
-        // For now, we'll just log the new product
-        console.log(newProduct);
+
+        const response = await axios.post(`http://localhost:5000/products/create/`, newProduct);
         // Close the modal
         setOpen(false);
+    };
+
+    const handleImageUpload = () => {
+        window.cloudinary.openUploadWidget(
+            { cloudName: 'dxfjnflzc', uploadPreset: 'preset1', sources: ['local', 'url', 'camera'] },
+            (error, result) => {
+                if (!error && result && result.event === 'success') {
+                    console.log('setting image:', result.info)
+                    let uploaded_images = [
+                        {
+                            public_id: result.info.public_id,
+                            url: result.info.secure_url
+                        }
+                    ]
+                    setNewProduct({ ...newProduct, images: uploaded_images });
+                }
+            }
+        );
     };
     return (
         <Box sx={{ display: 'flex' }}>
@@ -118,7 +135,8 @@ export default function AdminDashboard() {
                                                 <Grid container spacing={2} alignItems="center">
                                                     <Grid item>
                                                     <img
-                                                        src={`/assets/${product.images[0].url}`}
+                                                        // src={`/assets/${product.images[0].url}`}
+                                                        src={`${product.images[0].url}`}
                                                         alt="Product"
                                                         style={{ width: 150, height: 150,}}
                                                     />
@@ -232,28 +250,30 @@ export default function AdminDashboard() {
                         margin="dense"
                         name="stock"
                         label="Product Stock"
-                        type="text"
+                        type="number"
                         fullWidth
                         variant="standard"
                         value={newProduct.stock}
                         onChange={handleInputChange}
                     />
-                    <NumberInput
-                        aria-label="Product Stock"
-                        placeholder="Type a number…"
-                        value={newProduct.stock}
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        margin="dense"
-                        name="image"
-                        label="Product Image URL"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={newProduct.image}
-                        onChange={handleInputChange}
-                    />
+                    <Typography sx={{color: 'grey', mt: '5%'}} >Upload Image</Typography>
+                    <div
+                        onClick={handleImageUpload}
+                        sx={{
+                            bgcolor: 'grey.200',
+                            height: 150,
+                            cursor: 'pointer',
+                            borderRadius: 1
+                        }}
+                    >
+                    {newProduct.images.length > 0 ? (
+                            <Avatar src={newProduct.images[0]['url']} alt="new Product Image" sx={{ width: 150, height: 150 }} />
+                    ) : 
+                    (
+                            <CloudUploadIcon sx={{ fontSize: 48, color: 'grey.700' }} />
+                    )
+                    }
+                    </div>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
