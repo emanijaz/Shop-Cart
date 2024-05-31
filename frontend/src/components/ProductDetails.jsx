@@ -139,7 +139,7 @@ export default function ProductDetails() {
                     
                             <div className='row'>
                                 <div className='col-md-6 mt-5 mb-1'>
-                                    <img src={`/assets/${product.images[0].url}`} alt="" style={{height: "500px", width: "500px"}} />
+                                    <img src={`${product.images[0].url}`} alt="" style={{height: "500px", width: "500px"}} />
                                 </div>
                                 <div className='col-md-6 mt-5 mb-1'>
                                     <h3>{product.name}</h3><hr/>
