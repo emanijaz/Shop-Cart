@@ -57,7 +57,7 @@ export default function Homepage() {
                 <div key={product._id} className='row'>
                     <div className='col-md-3 mt-3 mb-1'>
                         <div className="card h-100 text-center border-0 card-hover" style={{ width: "18rem" }} >
-                            <img className="card-img-top mt-3" src={`/assets/${product.images[0].url}`} alt="Android 1" style={{ height: "250px" }} />
+                            <img className="card-img-top mt-3" src={`${product.images[0].url}`} alt="Android 1" style={{ height: "250px" }} />
                             <div className="card-body">
                             <p className="card-text" style={{ fontSize: "16px" }}>{product.name}</p>
 
@@ -75,12 +75,11 @@ export default function Homepage() {
                     {products.slice(index + 1, index + 4).map((nextProduct) => (
                     <div key={nextProduct._id} className='col-md-3 mt-3 mb-1'>
                         <div className="card h-100 text-center border-0" style={{ width: "18rem" }}>
-                        <img className="card-img-top mt-3" src={`/assets/${nextProduct.images[0].url}`} alt="Android 1" style={{ height: "250px" }} />
+                        <img className="card-img-top mt-3" src={`${nextProduct.images[0].url}`} alt="Android 1" style={{ height: "250px" }} />
                         <div className="card-body">
                             <p className="card-text" style={{ fontSize: "16px" }}>{nextProduct.name}</p>
                             <p className="card-text" style={{ fontSize: "18px" }}><i className="fa fa-solid fa-tags me-1"></i>{nextProduct.price}</p>
                             <Link to={`/product/${nextProduct._id}`} key={nextProduct._id} className='col-md-3 mt-3 mb-1'>
-                                {/* <Button size="small" style={{ color: 'black', borderColor: 'black' }} variant="outlined">Add to Cart</Button> */}
                                 <button type="button" className="btn bt-sm btn-outline-dark mb-4">View</button>
 
                             </Link>

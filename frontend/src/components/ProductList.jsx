@@ -73,7 +73,7 @@ export default function ProductList() {
                             <Item>
                                 <Link to={`/product/${product._id}`} key={product._id} className='col-md-3 mt-3 mb-1' style={{textDecoration: "none"}}>
                                     <div className="card h-100 text-center border-0" style={{ width: "18rem", backgroundColor: "transparent" }}>
-                                        <img className="card-img-top mt-3" src={`/assets/${product.images[0].url}`} alt="Android 1" style={{ height: "250px"}} />
+                                        <img className="card-img-top mt-3" src={`${product.images[0].url}`} alt="Android 1" style={{ height: "250px"}} />
                                         <div className="card-body">
                                             <p className="card-text" style={{ fontSize: "16px" }}>{product.name}</p>
                                             <p className="card-text" style={{ fontSize: "18px" }}><i className="fa fa-solid fa-tags me-1"></i>{product.price}</p>
@@ -89,7 +89,7 @@ export default function ProductList() {
                             <Item>
                                     <Link to={`/product/${nextProduct._id}`} key={product._id} className='col-md-3 mt-3 mb-1' style={{textDecoration: "none"}}>
                                         <div className="card h-100 text-center border-0" style={{ width: "18rem", backgroundColor: "transparent" }}>
-                                        <img className="card-img-top mt-3" src={`/assets/${nextProduct.images[0].url}`} alt="Android 1" style={{ height: "250px"}} />
+                                        <img className="card-img-top mt-3" src={`${nextProduct.images[0].url}`} alt="Android 1" style={{ height: "250px"}} />
                                         <div className="card-body">
                                             <p className="card-text" style={{ fontSize: "16px" }}>{nextProduct.name}</p>
                                             <p className="card-text" style={{ fontSize: "18px" }}><i className="fa fa-solid fa-tags me-1"></i>{nextProduct.price}</p>

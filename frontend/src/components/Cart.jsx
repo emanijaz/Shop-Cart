@@ -58,7 +58,7 @@ export default function Cart() {
                         <tr key={item.id}>
                             <th scope="row" style={{display: "flex", flexDirection: "column", alignItems: "center"}} >
                                 
-                                <img src={`/assets/${item.url}`} alt="product" style={{height: "250px", width: "250px", marginBottom: "5%"}} />
+                                <img src={`${item.url}`} alt="product" style={{height: "250px", width: "250px", marginBottom: "5%"}} />
                                 <div >
                                     <p>{item.name}</p>
                                 </div>
