@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Box, Container, Drawer, AppBar, Toolbar, List, Typography, ListItem, ListItemIcon, ListItemText ,Grid, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Avatar } from '@mui/material';
+import { Box, Container, Grid, Dialog,Toolbar, Typography, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Avatar } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Card from '@mui/material/Card';
@@ -7,14 +7,11 @@ import AddIcon from '@mui/icons-material/Add';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import axios from 'axios';
 import Alert from '@mui/material/Alert';
 import Chip from '@mui/material/Chip';
+import AdminAppbar from './AdminAppbar';
 
-const drawerWidth = 210;
 
 export default function AdminDashboard() {
     const [products, setProducts] = useState([]);
@@ -200,38 +197,7 @@ export default function AdminDashboard() {
         
         <Box sx={{ display: 'flex' }}>
 
-            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-                <Toolbar>
-                    <Typography variant="h6" noWrap>
-                    ShopCart Dashboard
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-
-            <Drawer
-            variant="permanent"
-            sx={{
-                width: drawerWidth,
-                flexShrink: 0,
-                [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
-            }}
-            >
-                <Toolbar />
-                <Box sx={{ overflow: 'auto' }}>
-                    <List>
-                    {[['Products', <InventoryIcon/>], ['Order',<ShoppingCartIcon/>], ['Customers', <SupervisorAccountIcon/>]].map((item, index) => (
-                        <ListItem button key={item[0]}>
-                        <ListItemIcon>
-                            {item[1]}
-
-                        </ListItemIcon>
-                        <ListItemText primary={item[0]} />
-                        </ListItem>
-                    ))}
-                    </List>
-                    
-                </Box>
-            </Drawer>
+            <AdminAppbar />
             <Box
             component="main"
             sx={{ flexGrow: 1, bgcolor: '#f5f5f5', p: 2 }}
