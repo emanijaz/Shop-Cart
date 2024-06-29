@@ -2,18 +2,6 @@ import React, {useState, useEffect} from 'react'
 import { Card, CardContent, Typography, Avatar, Grid, Box ,IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
-// const customers = [
-//   { id: 1, name: 'Eman', email: 'eman@example.com', avatar: '/path/to/avatar1.jpg' },
-//   { id: 2, name: 'Alex', email: 'alex@example.com', avatar: '/path/to/avatar2.jpg' },
-//   { id: 3, name: 'Borg', email: 'borg@example.com', avatar: '/path/to/avatar2.jpg' },
-//   { id: 4, name: 'Elan', email: 'elan@example.com', avatar: '/path/to/avatar2.jpg' },
-
-//   { id: 5, name: 'Max', email: 'max@example.com', avatar: '/path/to/avatar2.jpg' },
-
-
-//   // Add more customers here
-// ];
-
 
 export default function AdminCustomerList() {
   const [customers, setCustomers] = useState(null);
@@ -22,7 +10,6 @@ export default function AdminCustomerList() {
           const response = await fetch('http://localhost:5000/users/admin/users');
           const data = await response.json();
           if(data.success){
-            console.log(data.users)
             setCustomers(data.users);
           }
       }
