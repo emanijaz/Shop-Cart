@@ -170,7 +170,7 @@ export default function ProductDetails() {
                             <div class="row">
                                 <div class="col-md-6">
                                     <div className='row'>
-                                        {product.numOfReviews > 0 ? 
+                                        {product.numOfReviews > 0 && 
                                         <div class="card mt-3 mb-1 border border-bottom" style={{height: "150px", width: "500px"}}>
                                             <div class="card-body">
                                                 <h5 class="card-title">Rating</h5>
@@ -180,7 +180,7 @@ export default function ProductDetails() {
                                                 </p>
                                             </div>
                                         </div>
-                                        : "No Reviews"
+                                        
                                         }
                                     </div>
                                     <div className='row'>
@@ -219,42 +219,49 @@ export default function ProductDetails() {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
                                 
-                                    <div class="card mt-3 mb-1 border border-bottom">
-                                    <div class="card-body">
-                                        {product.reviews.map((review)=>{
-                                        return (
-                                            <div>
-                                                <div className='row mb-5'>
-                                                    <div className='col-md-2 d-md-flex justify-content-center mt-md-4'>
-                                                        <Avatar src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" size="40" round={true} />
-                                                    </div>
-                                                    <div className='col-md-8'>
-                                                        <div className='row mt-2'>
-                                                            <div className='col-md-8'>
-                                                                <h5 class="card-title">{review.title}</h5>
-                                                            </div>
-                                                            <div className='col-md-4 mb-3'>
-                                                                <p class="card-text">
-                                                                    <Rating name="read-only" value={review.rating} size="small" readOnly />
-                                                                </p>
-                                                            </div>
+                                    <div class="col-md-6">
+                                    {product?.reviews.length > 0 ? 
+                                        <div class="card mt-3 mb-1 border border-bottom">
+                                        <div class="card-body">
+                                            {product.reviews.map((review)=>{
+                                            return (
+                                                <div>
+                                                    <div className='row mb-5'>
+                                                        <div className='col-md-2 d-md-flex justify-content-center mt-md-4'>
+                                                            <Avatar src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" size="40" round={true} />
                                                         </div>
-                                                        <p>{review.comment}</p>
+                                                        <div className='col-md-8'>
+                                                            <div className='row mt-2'>
+                                                                <div className='col-md-8'>
+                                                                    <h5 class="card-title">{review.title}</h5>
+                                                                </div>
+                                                                <div className='col-md-4 mb-3'>
+                                                                    <p class="card-text">
+                                                                        <Rating name="read-only" value={review.rating} size="small" readOnly />
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <p>{review.comment}</p>
+                                                        </div>
+                                                        
                                                     </div>
-                                                    
-                                                </div>
-                                                <div className='mx-5'>
-                                                    <hr/>
-                                                </div>
-                                            </div>  
-                                            )
-                                    })}
+                                                    <div className='mx-5'>
+                                                        <hr/>
+                                                    </div>
+                                                </div>  
+                                                )
+                                        })}
+                                        </div>
+                                        </div>
+                                        : (<div>
+                                            <Typography variant="h6">No reviews yet</Typography>
+                                            <hr/>
+                                            </div>
+                                        )
+
+                                    }
                                     </div>
-                                    </div>
-                                
-                                </div>
                             </div>
 
                 </div>
