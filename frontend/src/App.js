@@ -16,8 +16,6 @@ function App() {
         <BrowserRouter>
         <Routes>
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
-            
-
             <Route
               path="*"
               element={
