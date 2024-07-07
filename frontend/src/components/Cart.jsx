@@ -1,14 +1,22 @@
-import React from 'react'
+import React , { useState }from 'react'
 import Navbar from './Navbar';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '../store/cartslice';
 import { Link } from 'react-router-dom';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import StripeCheckoutForm from './StripeCheckoutForm';
+import Drawer from '@mui/material/Drawer';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 export default function Cart() {
+    const stripePromise = loadStripe('pk_test_51PZscnFND5h0Xtc7KZ1jJZW536HNBAMM19VQ8W9fOJPjrTxuU31ooTPnsHMiCSrjg9cNBHVi8Tkcy6STdy6yFZ7V00DOqMPQ9a'); // Replace with your Stripe publishable key
     const cartItems = useSelector(state=> state.cart.productsList);
     const totalPrice = useSelector(state=> state.cart.totalPrice);
     const dispatch = useDispatch();
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
     const addToCart = (prodid,name,quantity, price,stock,url) => {
         dispatch(cartActions.addToCart({
@@ -34,6 +42,12 @@ export default function Cart() {
         dispatch(cartActions.deleteItemFromCart({
             id: prodid,
         }));
+    };
+    const toggleDrawer = (open) => (event) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+        setDrawerOpen(open);
     };
     return (
     <div>
@@ -128,6 +142,7 @@ export default function Cart() {
                                 fontSize: '16px', 
                                 textAlign: 'center'
                             }}
+                            onClick={toggleDrawer(true)}
                         >
                             Checkout
                         </button>
@@ -146,7 +161,23 @@ export default function Cart() {
             }
 
         </div>
-
+        <Drawer
+            anchor='right'
+            open={drawerOpen}
+            onClose={toggleDrawer(false)}
+        >
+            <Box
+                sx={{ width: 450, padding: 3 }}
+                role="presentation"
+            >
+                <Typography variant="h6" gutterBottom>
+                    Complete your purchase
+                </Typography>
+                <Elements stripe={stripePromise}>
+                    <StripeCheckoutForm totalPrice={totalPrice}/>
+                </Elements>
+            </Box>
+        </Drawer>
         
     </div>
     )
