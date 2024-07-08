@@ -9,6 +9,9 @@ const ErrorHandler = require('../utils/errorHandler');
 const secretKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
 const { OAuth2Client } = require('google-auth-library')
 const client = new OAuth2Client("189093438619-aqjp61l48qrbsv6okstcldm0a5bnoii0.apps.googleusercontent.com")
+const Stripe = require('stripe');
+const stripe = Stripe('sk_test_51PZscnFND5h0Xtc7iBRX9ZTNP1pX5kCzEy0vAlblXOi9ZaC5lHCeNOG4K1gbzZoKAqJ8RyI1TSpRWL7j7jmFOcvX00N4CeNgME'); // Replace with your Stripe secret key
+
 
 exports.signup = catchAsyncError(async (req, res, next) => {
   try {
@@ -199,3 +202,20 @@ exports.deleteUser = catchAsyncError(async (req, res, next) => {
       res.status(500).json({ message: 'Server error', error });
   }
 });
+
+exports.createPaymentIntent = catchAsyncError(async (req, res, next) => {
+  const  amount  = req.body.totalPrice;
+  try {
+      const paymentIntent = await stripe.paymentIntents.create({
+          amount, // Amount in cents
+          currency: 'usd',
+          payment_method_types: ['card'],
+      });
+      console.log('client sec: ',paymentIntent.client_secret);
+      res.send({
+          clientSecret: paymentIntent.client_secret,
+      });
+  } catch (error) {
+      res.status(500).send({ error: error.message });
+  }
+})

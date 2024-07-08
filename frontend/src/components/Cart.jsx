@@ -1,14 +1,28 @@
-import React from 'react'
+import React , { useState }from 'react'
 import Navbar from './Navbar';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '../store/cartslice';
 import { Link } from 'react-router-dom';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import StripeCheckoutForm from './StripeCheckoutForm';
+import Drawer from '@mui/material/Drawer';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
+
 
 export default function Cart() {
+    const stripePromise = loadStripe('pk_test_51PZscnFND5h0Xtc7KZ1jJZW536HNBAMM19VQ8W9fOJPjrTxuU31ooTPnsHMiCSrjg9cNBHVi8Tkcy6STdy6yFZ7V00DOqMPQ9a'); // Replace with your Stripe publishable key
     const cartItems = useSelector(state=> state.cart.productsList);
     const totalPrice = useSelector(state=> state.cart.totalPrice);
     const dispatch = useDispatch();
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertSeverity, setAlertSeverity] = useState('');
+
 
     const addToCart = (prodid,name,quantity, price,stock,url) => {
         dispatch(cartActions.addToCart({
@@ -35,9 +49,32 @@ export default function Cart() {
             id: prodid,
         }));
     };
+    const toggleDrawer = (open) => (event) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+        setDrawerOpen(open);
+    };
+    const onClose = (paymentState) =>{
+        setDrawerOpen(false);
+        if(paymentState){
+            setShowAlert(true);
+            setAlertMessage("Order placed successfully, Go to orders page to view");
+            setAlertSeverity("success");
+
+        }
+    }
+    const closeAlert = () => {
+        setShowAlert(false);
+        setAlertMessage("");
+        setAlertSeverity("");
+    }
     return (
     <div>
         <Navbar />
+        {showAlert && (
+            <Alert severity={alertSeverity} onClose={closeAlert}>{alertMessage}</Alert>    
+         )}
         <div className='container mt-5'>
         {cartItems.length>0 ? 
             <div>
@@ -128,6 +165,7 @@ export default function Cart() {
                                 fontSize: '16px', 
                                 textAlign: 'center'
                             }}
+                            onClick={toggleDrawer(true)}
                         >
                             Checkout
                         </button>
@@ -146,7 +184,23 @@ export default function Cart() {
             }
 
         </div>
-
+        <Drawer
+            anchor='right'
+            open={drawerOpen}
+            onClose={toggleDrawer(false)}
+        >
+            <Box
+                sx={{ width: 450, padding: 3 }}
+                role="presentation"
+            >
+                <Typography variant="h6" gutterBottom>
+                    Complete your purchase
+                </Typography>
+                <Elements stripe={stripePromise}>
+                    <StripeCheckoutForm totalPrice={totalPrice} onClose ={onClose}/>
+                </Elements>
+            </Box>
+        </Drawer>
         
     </div>
     )
