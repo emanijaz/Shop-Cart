@@ -128,16 +128,6 @@ const StripeCheckoutForm = ({totalPrice, onClose}) => {
             >
                 {loading ? <CircularProgress size={24} /> : 'Pay'}
             </Button>
-             {/* <Button
-                type="submit"
-                variant="contained"
-                color={paymentSuccess ? 'success' : 'primary'}
-                fullWidth
-                disabled={!stripe || loading}
-                startIcon={paymentSuccess ? <CheckIcon /> : null}
-            >
-                {loading ? <CircularProgress size={24} /> : paymentSuccess ? 'Payment Succeeded' : 'Pay'}
-            </Button> */}
         </Form>
     );
 };
