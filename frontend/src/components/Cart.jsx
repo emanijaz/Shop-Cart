@@ -10,6 +10,8 @@ import StripeCheckoutForm from './StripeCheckoutForm';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
+
 
 export default function Cart() {
     const stripePromise = loadStripe('pk_test_51PZscnFND5h0Xtc7KZ1jJZW536HNBAMM19VQ8W9fOJPjrTxuU31ooTPnsHMiCSrjg9cNBHVi8Tkcy6STdy6yFZ7V00DOqMPQ9a'); // Replace with your Stripe publishable key
@@ -17,6 +19,10 @@ export default function Cart() {
     const totalPrice = useSelector(state=> state.cart.totalPrice);
     const dispatch = useDispatch();
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertSeverity, setAlertSeverity] = useState('');
+
 
     const addToCart = (prodid,name,quantity, price,stock,url) => {
         dispatch(cartActions.addToCart({
@@ -49,9 +55,26 @@ export default function Cart() {
         }
         setDrawerOpen(open);
     };
+    const onClose = (paymentState) =>{
+        setDrawerOpen(false);
+        if(paymentState){
+            setShowAlert(true);
+            setAlertMessage("Order placed successfully, Go to orders page to view");
+            setAlertSeverity("success");
+
+        }
+    }
+    const closeAlert = () => {
+        setShowAlert(false);
+        setAlertMessage("");
+        setAlertSeverity("");
+    }
     return (
     <div>
         <Navbar />
+        {showAlert && (
+            <Alert severity={alertSeverity} onClose={closeAlert}>{alertMessage}</Alert>    
+         )}
         <div className='container mt-5'>
         {cartItems.length>0 ? 
             <div>
@@ -174,7 +197,7 @@ export default function Cart() {
                     Complete your purchase
                 </Typography>
                 <Elements stripe={stripePromise}>
-                    <StripeCheckoutForm totalPrice={totalPrice}/>
+                    <StripeCheckoutForm totalPrice={totalPrice} onClose ={onClose}/>
                 </Elements>
             </Box>
         </Drawer>

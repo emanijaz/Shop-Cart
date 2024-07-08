@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { Button, Box, TextField, Typography, CircularProgress } from '@mui/material';
+import { Button, Box, TextField, Typography, CircularProgress, MenuItem } from '@mui/material';
 import { styled } from '@mui/system';
+
 import axios from "axios";
 
 
@@ -17,12 +18,19 @@ const CardElementWrapper = styled(Box)(({ theme }) => ({
     borderRadius: '4px',
 }));
 
-const StripeCheckoutForm = ({totalPrice}) => {
+const countries = [
+    { code: 'US', label: 'United States' },
+    { code: 'CA', label: 'Canada' },
+];
+
+const StripeCheckoutForm = ({totalPrice, onClose}) => {
     const stripe = useStripe();
     const elements = useElements();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [userName, setUserName] = useState(null);
+    const [email, setEmail] = useState('');
+    const [country, setCountry] = useState('');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -36,7 +44,6 @@ const StripeCheckoutForm = ({totalPrice}) => {
         const cardElement = elements.getElement(CardElement);
 
         try {
-            // Create a PaymentIntent on the backend
             const accessToken = localStorage.getItem('accessToken');
 
             const response = await axios.post('http://localhost:5000/users/create_payment_intent',  { totalPrice }, {
@@ -45,15 +52,17 @@ const StripeCheckoutForm = ({totalPrice}) => {
                 },
                 withCredentials: true,
             });
-            console.log(response.data);
             const { clientSecret } =  response.data;
 
-            console.log('usernmae on card :',  userName)
             const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
                 payment_method: {
                     card: cardElement,
                     billing_details: {
-                        name: userName, // Replace with actual customer data
+                        name: userName,
+                        email: email,
+                        address: {
+                            country: country,
+                        },
                     },
                 },
             });
@@ -61,7 +70,7 @@ const StripeCheckoutForm = ({totalPrice}) => {
             if (error) {
                 setError(error.message);
             } else if (paymentIntent.status === 'succeeded') {
-                console.log('Payment succeeded:', paymentIntent);
+                onClose(true);
             }
 
         } catch (error) {
@@ -78,12 +87,34 @@ const StripeCheckoutForm = ({totalPrice}) => {
                 Payment Details
             </Typography>
             <TextField
+                label="Email"
+                variant="outlined"
+                fullWidth
+                required
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
                 label="Name on Card"
                 variant="outlined"
                 fullWidth
                 required
                 onChange={(e)=> setUserName(e.target.value)}
             />
+            <TextField
+                select
+                label="Country/Region"
+                variant="outlined"
+                fullWidth
+                required
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+            >
+                {countries.map((option) => (
+                    <MenuItem key={option.code} value={option.code}>
+                        {option.label}
+                    </MenuItem>
+                ))}
+            </TextField>
             <CardElementWrapper>
                 <CardElement />
             </CardElementWrapper>
@@ -97,6 +128,16 @@ const StripeCheckoutForm = ({totalPrice}) => {
             >
                 {loading ? <CircularProgress size={24} /> : 'Pay'}
             </Button>
+             {/* <Button
+                type="submit"
+                variant="contained"
+                color={paymentSuccess ? 'success' : 'primary'}
+                fullWidth
+                disabled={!stripe || loading}
+                startIcon={paymentSuccess ? <CheckIcon /> : null}
+            >
+                {loading ? <CircularProgress size={24} /> : paymentSuccess ? 'Payment Succeeded' : 'Pay'}
+            </Button> */}
         </Form>
     );
 };
