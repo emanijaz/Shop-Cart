@@ -1,9 +1,27 @@
-import { Link } from "react-router-dom";
-import { useSelector } from 'react-redux';
-import { useAuth } from '../context/AuthContext';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useAuth } from '../context/AuthContext';
 import { cartActions } from '../store/cartslice';
-import { useDispatch } from 'react-redux';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import Badge from '@mui/material/Badge';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { Link } from 'react-router-dom';
+
+const StyledToolbar = styled(Toolbar)({
+  backgroundColor: '#F8F8F8', // Beige background color
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  color: 'black',
+});
 
 export default function Navbar() {
   const totalQuantity = useSelector(state=> state.cart.totalQuantity);
@@ -11,14 +29,6 @@ export default function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // const scrollToProducts = (event) => {
-  //   event.preventDefault(); // Prevent the default anchor link behavior
-    
-  //   const productsElement = document.getElementById('products');
-  //   if (productsElement) {
-  //     productsElement.scrollIntoView({ behavior: 'smooth' }); // Scroll to the target element
-  //   }
-  // };
   const scrollToContacts = (event) => {
     event.preventDefault(); // Prevent the default anchor link behavior
     navigate('/');
@@ -39,43 +49,39 @@ export default function Navbar() {
   
   return(
     <>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary shadow-sm py-3">
-        <div className="container">
-          <a className="navbar-brand fw-bold fs-4" href="/#">ShopCart</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/">Home</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/product-lists">Products</Link>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#contacts" onClick={scrollToContacts}>Contact</a>
-              </li>
-            
-            </ul>
-            <Link to="/cart">
-              <button style={{fontSize: "20px"}} type="button" className="btn btn-light">
-                
-                <i className="fa fa-shopping-cart" aria-hidden="true"></i>
-                
-              </button>
-              <span className="position-absolute translate-middle badge rounded-pill bg-danger">
-                  {totalQuantity}
-              </span>
-            </Link>
-            <Link to="/account">
-              <button style={{fontSize: "20px"}} type="button" className="btn btn-light"><i class="fa fa-solid fa-user" aria-hidden="true"></i></button>
-            </Link>
-            <button style={{fontSize: "20px"}} type="button" className="btn btn-light" onClick={signOut}><i className="fa fa-sign-out" aria-hidden="true"></i></button>
-            
-          </div>
+      <AppBar position="static">
+      <StyledToolbar>
+        <Typography variant="h6" component="div">
+          <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            ShopCart
+          </Link>
+        </Typography>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Button color="inherit" component={Link} to="/" style={{ marginRight: 10 }}>
+            Home
+          </Button>
+          <Button color="inherit" component={Link} to="/product-lists" style={{ marginRight: 10 }}>
+            Products
+          </Button>
+          <Button color="inherit" onClick={scrollToContacts} style={{ marginRight: 10 }}>
+            Contact
+          </Button>
         </div>
-      </nav>
+        <div>
+          <IconButton color="inherit" component={Link} to="/cart" style={{ marginRight: 10 }}>
+            <Badge badgeContent={totalQuantity} color="error">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
+          <IconButton color="inherit" component={Link} to="/account" style={{ marginRight: 10 }}>
+            <AccountCircleIcon />
+          </IconButton>
+          <IconButton color="inherit" onClick={signOut}>
+            <ExitToAppIcon />
+          </IconButton>
+        </div>
+      </StyledToolbar>
+    </AppBar>
     </>
   );
 }
