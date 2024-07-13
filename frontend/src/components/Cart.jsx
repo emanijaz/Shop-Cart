@@ -11,6 +11,7 @@ import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
+import axios from 'axios';
 
 
 export default function Cart() {
@@ -22,6 +23,7 @@ export default function Cart() {
     const [alertMessage, setAlertMessage] = useState('');
     const [showAlert, setShowAlert] = useState(false);
     const [alertSeverity, setAlertSeverity] = useState('');
+    const [shippingAddress, setShippingAddress] = useState('');
 
 
     const addToCart = (prodid,name,quantity, price,stock,url) => {
@@ -55,12 +57,72 @@ export default function Cart() {
         }
         setDrawerOpen(open);
     };
+    const addOrder = async () =>{
+        const accessToken = localStorage.getItem('accessToken');
+        let userEmail = '';
+        try {
+            const response = await axios.get('http://localhost:5000/users/user-details', {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                withCredentials: true,
+            });
+            userEmail = response.data['email'];
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            return null;
+        }
+        console.log('founded email : ', userEmail);
+        try {
+            console.log('cart items: ',cartItems)
+            let new_order = {}
+            new_order['products'] = cartItems.map((item)=>{
+                return {
+                    productId: item.id,
+                    productName: item.name,
+                    quantity: item.quantity,
+                    price: item.price,
+                    url: item.url
+                }
+            })
+            new_order['userEmail'] = userEmail;
+            new_order['address'] = shippingAddress;
+            new_order['status'] = 'pending';
+            new_order['amount'] = totalPrice;
+            const response = await axios.post(`http://localhost:5000/orders/create/`, new_order, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                withCredentials: true,
+            });
+            if(response.status === 201){
+                setShowAlert(true);
+                setAlertMessage('Order Added')
+                setAlertSeverity('success');
+            }
+            else{
+                setShowAlert(true);
+                setAlertMessage('Error creating Order')
+                setAlertSeverity('error');
+            }
+            setTimeout(() => {
+                setAlertMessage('');
+                setShowAlert(false);
+                setAlertSeverity('');
+            }, 2000);
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            return null;
+        }
+
+    }
     const onClose = (paymentState) =>{
         setDrawerOpen(false);
         if(paymentState){
             setShowAlert(true);
             setAlertMessage("Order placed successfully, Go to orders page to view");
             setAlertSeverity("success");
+            addOrder();
 
         }
     }
@@ -197,7 +259,7 @@ export default function Cart() {
                     Complete your purchase
                 </Typography>
                 <Elements stripe={stripePromise}>
-                    <StripeCheckoutForm totalPrice={totalPrice} onClose ={onClose}/>
+                    <StripeCheckoutForm totalPrice={totalPrice} onClose ={onClose} setShippingAddress = {setShippingAddress}/>
                 </Elements>
             </Box>
         </Drawer>

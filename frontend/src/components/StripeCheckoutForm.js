@@ -23,7 +23,7 @@ const countries = [
     { code: 'CA', label: 'Canada' },
 ];
 
-const StripeCheckoutForm = ({totalPrice, onClose}) => {
+const StripeCheckoutForm = ({totalPrice, onClose, setShippingAddress}) => {
     const stripe = useStripe();
     const elements = useElements();
     const [loading, setLoading] = useState(false);
@@ -115,6 +115,13 @@ const StripeCheckoutForm = ({totalPrice, onClose}) => {
                     </MenuItem>
                 ))}
             </TextField>
+            <TextField
+                label="Shippingg Address"
+                variant="outlined"
+                fullWidth
+                required
+                onChange={(e) => setShippingAddress(e.target.value)}
+            />
             <CardElementWrapper>
                 <CardElement />
             </CardElementWrapper>
