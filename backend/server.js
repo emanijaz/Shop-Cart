@@ -31,9 +31,13 @@ connection.once('open', () => {
 
     const productRoutes = require('./routes/productRoute');
     const userRoutes = require('./routes/userRoute');
+    const orderRoutes = require('./routes/orderRoute');
+
 
     app.use('/products', productRoutes);
     app.use('/users', userRoutes);
+    app.use('/orders', orderRoutes);
+
     app.use(errorMiddleware);
 
 

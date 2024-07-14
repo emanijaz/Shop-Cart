@@ -24,7 +24,8 @@ export default function Homepage() {
     useEffect(()=> {
         const fetchAllProducts = async()=>{
             try{
-                const token = localStorage.getItem('token');
+                const token = localStorage.getItem('accessToken');
+                console.log('in homepage access token : ', token)
                 const response = await fetch('http://localhost:5000/products/',{
                     headers: {
                         Authorization: `Bearer ${token}`,

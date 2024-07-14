@@ -133,7 +133,7 @@ exports.getUserDetails = catchAsyncError(async (req, res, next) => {
   try {
       // Access the authenticated user data from req.userData
       const user = req.userData;
-      console.log('user fetched details: ', user)
+      // console.log('user fetched details: ', user)
       // Check if the user is authenticated
       if (!user) {
           return res.status(401).json({ message: 'User not authenticated' });

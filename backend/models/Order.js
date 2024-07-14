@@ -6,10 +6,21 @@ const OrderSchema = mongoose.Schema({
             productId: {
                 type: String
             },
+            productName: {
+                type: String
+            },
             quantity: {
                 type: Number,
                 default: 1
+            },
+            price:{
+                type: Number,
+                default: 0
+            },
+            url: {
+                type: String,
             }
+                
         }
     ],
     amount: {
@@ -23,6 +34,9 @@ const OrderSchema = mongoose.Schema({
     status: {
         type: String,
         default: "pending"
+    },
+    userEmail: {
+        type: String,
     }
 
     
